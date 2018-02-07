@@ -1,0 +1,13 @@
+reference:
+  class: File
+  path: data/genome.fa
+
+reads:
+  [
+    class: File
+    path: data/samples/A.fastq
+  ]
+
+output_filename: data/genome.fa.bwt
+
+threads: 1

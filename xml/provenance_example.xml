@@ -1,0 +1,15 @@
+<dataprov>
+  <file>genome.fa.bwt</file>
+  <hash>123456789abcdef</hash>
+  <history>
+    <op>
+      <startdate>2002-05-30T09:00:00</startdate>
+      <enddate>2002-05-30T11:00:00</enddate>
+      <executor>fbartusch</executor>
+      <machine>u-023-d137.wae76.uni-tuebingen.de</machine>
+      <class>CWLCommandLineTool</class>
+      <wrappedCommand>cwltool bwa-index.cwl bwa-index-job.yml</wrappedCommand>
+      <comment>Create index for mapping, try out wfprovenance package</comment>
+    </op>
+  </history>
+</dataprov>
