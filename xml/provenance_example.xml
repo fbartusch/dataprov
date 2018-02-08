@@ -1,15 +1,21 @@
 <dataprov>
   <file>genome.fa.bwt</file>
-  <hash>123456789abcdef</hash>
+  <sha1>123456789abcdef</sha1>
   <history>
     <op>
-      <startdate>2002-05-30T09:00:00</startdate>
-      <enddate>2002-05-30T11:00:00</enddate>
-      <executor>fbartusch</executor>
-      <machine>u-023-d137.wae76.uni-tuebingen.de</machine>
-      <class>CWLCommandLineTool</class>
+      <startTime>2002-05-30T09:00:00</startTime>
+      <endTime>2002-05-30T11:00:00</endTime>
+      <executor>
+        <honorific>M.Sc.</honorific>
+        <firstName>Felix</firstName>
+        <surname>Bartusch</surname>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <hostname>u-023-d137.wae76.uni-tuebingen.de</machine>
+      <class>CommandLine</class>
       <wrappedCommand>cwltool bwa-index.cwl bwa-index-job.yml</wrappedCommand>
-      <comment>Create index for mapping, try out wfprovenance package</comment>
+      <message>Create index for mapping, try out wfprovenance package</message>
     </op>
   </history>
 </dataprov>

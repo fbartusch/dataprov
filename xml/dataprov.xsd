@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:simpleType name="operationClass">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CommandLine"/>
+      <xs:enumeration value="CWLCommandLineTool"/>
+      <xs:enumeration value="CWLWorkflow"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="person">
+    <xs:sequence>
+      <xs:element name="honorific" type="xs:normalizedString" minOccurs="0"/>
+      <xs:element name="firstName" type="xs:normalizedString"/>
+      <xs:element name="middleName" type="xs:normalizedString" minOccurs="0"/>
+      <xs:element name="surname" type="xs:normalizedString"/>
+      <xs:element name="suffix" type="xs:normalizedString" minOccurs="0"/>
+      <xs:element name="mail" type="xs:normalizedString"/>
+      <xs:element name="affiliation" maxOccurs="unbounded"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="operation">
+    <xs:sequence>
+      <xs:element name="startTime"      type="xs:dateTime"/>
+      <xs:element name="endTime"        type="xs:dateTime"/> 
+      <xs:element name="executor"       type="person"/>
+      <xs:element name="hostname"       type="xs:normalizedString"/>
+      <xs:element name="opClass"        type="operationClass"/>
+      <xs:element name="wrappedCommand" type="xs:string" />
+      <xs:element name="message"        type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="dataprov">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="file"  type="xs:anyURI"/>
+        <xs:element name="sha1"  type="xs:string"/>
+        <xs:element name="history">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="op" type="operation" maxOccurs="unbounded"/>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
