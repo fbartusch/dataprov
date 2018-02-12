@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="executor">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="title" type="xs:normalizedString" minOccurs="0"/>
+        <xs:element name="firstName" type="xs:normalizedString"/>
+        <xs:element name="middleName" type="xs:normalizedString" minOccurs="0"/>
+        <xs:element name="surname" type="xs:normalizedString"/>
+        <xs:element name="suffix" type="xs:normalizedString" minOccurs="0"/>
+        <xs:element name="mail" type="xs:normalizedString"/>
+        <xs:element name="affiliation" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

@@ -11,6 +11,8 @@ import socket
 from xml.etree import ElementTree
 from xml.dom import minidom
 from collections import defaultdict
+from dataprov.elements.executor import Executor
+from dataprov.elements.host import Host
 
 
 def prettify(elem):
@@ -35,7 +37,7 @@ def create_empty_executor_config(path):
     '''
     # A simple, empty configuration
     config = configparser.ConfigParser()
-    config['executor'] = {'honorific': '',
+    config['executor'] = {'title': '',
                           'firstName': '',
                           'middleName': '',
                           'surname': '',
@@ -148,7 +150,7 @@ def main():
     executor_config = read_executor_config(executor_config_file)
     if debug:
         print("Executor configuration: ", executor_config_file)
-        print("\tHonorific: " + executor_config.get('executor', 'honorific'))
+        print("\tHonorific: " + executor_config.get('executor', 'title'))
         print("\tFirst Name: " + executor_config.get('executor', 'firstName'))
         print("\tMiddle Name: " + executor_config.get('executor', 'middleName'))
         print("\tSurname: " + executor_config.get('executor', 'surname'))
@@ -166,6 +168,9 @@ def main():
         if not os.path.exists(input_prov_file):
             print("Metadate for input file specified by -i does not exist: ", input_prov_file)
             print("No provenance information will be considered for this file.")
+            
+        # Parse XML and store in dictionary
+        #TODO
     
     # Record start datetime
     # YYYY-MM-DDThh:mm:ss
@@ -211,7 +216,7 @@ def main():
         
         # Insert the operations taken from the input files metadata
         #TODO         
-        
+                 
         # History of the file. This is a list, because there can be several operations
         new_history = defaultdict(list)
         # The new operation
@@ -219,18 +224,11 @@ def main():
         new_op['startTime'] = start_time
         new_op['endTime'] = end_time
         # Executor
-        new_executor = defaultdict()
-        new_executor['honorific'] = executor_config.get('executor', 'honorific')
-        new_executor['firstName'] = executor_config.get('executor', 'firstName')
-        new_executor['middleName'] = executor_config.get('executor', 'middleName')
-        new_executor['surname'] = executor_config.get('executor', 'surname')
-        new_executor['suffix'] = executor_config.get('executor', 'suffix')
-        new_executor['mail'] = executor_config.get('executor', 'mail')
-        new_executor['affiliation'] = executor_config.get('executor', 'affiliation')
-        new_op['executor'] = new_executor
+        new_executor = Executor(executor_config_file)
+        new_op['executor'] = new_executor.data
         # hostname
-        hostname = socket.gethostname()
-        new_op['hostname'] = hostname
+        new_host = Host()
+        new_op['host'] = new_host.data
         # Operation class
         new_op['opClass'] = 'CommandLine'
         # WrappedCommand
@@ -270,8 +268,8 @@ def main():
             xml_endTime.text = op['endTime']
             # Executor
             xml_executor = SubElement(xml_new_op, 'executor')
-            xml_executor_honorific = SubElement(xml_executor, 'honorific')
-            xml_executor_honorific.text = op['executor']['honorific']
+            xml_executor_honorific = SubElement(xml_executor, 'title')
+            xml_executor_honorific.text = op['executor']['title']
             xml_executor_firstName = SubElement(xml_executor, 'firstName')
             xml_executor_firstName.text = op['executor']['firstName']
             xml_executor_middleName = SubElement(xml_executor, 'middleName')

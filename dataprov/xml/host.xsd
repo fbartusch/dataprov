@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="host">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="system"        type="xs:string"/>
+        <xs:element name="dist"          type="xs:string"/>
+        <xs:element name="version"       type="xs:string"/>
+        <xs:element name="codename"      type="xs:string"/>
+        <xs:element name="kernelVersion" type="xs:string"/>
+        <xs:element name="machine"       type="xs:string"/>
+        <xs:element name="processor"     type="xs:string"/>
+        <xs:element name="hostname"      type="xs:string"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

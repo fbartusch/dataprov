@@ -12,7 +12,9 @@ setup(name='dataprov',
           'console_scripts': ['dataprov=dataprov.dataprov:main']
       },
       install_requires=[
-          'argparse'
+          'argparse',
+          'lxml'
       ],
+      include_package_data=True,
       zip_safe=False)
 
