@@ -1,5 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:simpleType name="operationClass">
+  <xs:include schemaLocation="file.xsd"/>
+  <xs:include schemaLocation="fileList.xsd"/>
+  <xs:include schemaLocation="executor.xsd"/>
+  <xs:include schemaLocation="host.xsd"/>
+  
+  <xs:simpleType name="opClass">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CommandLine"/>
       <xs:enumeration value="Docker"/>
@@ -9,32 +16,15 @@
     </xs:restriction>
   </xs:simpleType>
 
-  <xs:complexType name="file">
-    <xs:sequence>
-      <xs:element name="name" type="xs:string"/>
-      <xs:element name="uri"  type="xs:anyURI"/>
-      <xs:element name="sha1" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:complexType name="fileList">
-    <xs:sequence>
-      <xs:element name="file" type="file" maxOccurs="unbounded"/>
-    </xs:sequence>
-  </xs:complexType>
-
-  <xs:include schemaLocation="executor.xsd"/>
-  <xs:include schemaLocation="host.xsd"/>
-
   <xs:complexType name="operation">
     <xs:sequence>
-      <xs:element name="inputFiles"     type="fileList"/>
+      <xs:element name="inputFiles"     type="fileList" minOccurs="0"/>
       <xs:element name="targetFiles"    type="fileList"/>
       <xs:element name="startTime"      type="xs:dateTime"/>
       <xs:element name="endTime"        type="xs:dateTime"/> 
       <xs:element name="executor"       type="executor"/>
       <xs:element name="host"           type="host"/>
-      <xs:element name="opClass"        type="operationClass"/>
+      <xs:element name="opClass"        type="opClass"/>
       <xs:element name="wrappedCommand" type="xs:string" />
       <xs:element name="message"        type="xs:string" minOccurs="0"/>
     </xs:sequence>
@@ -47,7 +37,7 @@
         <xs:element name="history">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="op" type="operation" maxOccurs="unbounded"/>
+              <xs:element name="operation" type="operation" maxOccurs="unbounded"/>
             </xs:sequence>
           </xs:complexType>
         </xs:element>

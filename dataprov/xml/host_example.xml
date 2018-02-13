@@ -1,0 +1,11 @@
+<host>
+  <system>Linux</system>
+  <dist>CentOS Linux</dist>
+  <version>7.3.1611</version>
+  <codename>Core</codename>
+  <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+  <machine>x86_64</machine>
+  <processor>x86_64</processor>
+  <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+</host>
+

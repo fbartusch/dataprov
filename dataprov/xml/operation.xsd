@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="fileList.xsd"/> 
+  <xs:include schemaLocation="executor.xsd"/>
+  <xs:include schemaLocation="host.xsd"/>
+
+  <xs:simpleType name="opClass">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CommandLine"/>
+      <xs:enumeration value="Docker"/>
+      <xs:enumeration value="Singularity"/>
+      <xs:enumeration value="CWLCommandLineTool"/>
+      <xs:enumeration value="CWLWorkflow"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="operation">
+    <xs:sequence>
+      <xs:element name="inputFiles"     type="fileList" minOccurs="0"/>
+      <xs:element name="targetFiles"    type="fileList"/>
+      <xs:element name="startTime"      type="xs:dateTime"/>
+      <xs:element name="endTime"        type="xs:dateTime"/> 
+      <xs:element name="executor"       type="executor"/>
+      <xs:element name="host"           type="host"/>
+      <xs:element name="opClass"        type="opClass"/>
+      <xs:element name="wrappedCommand" type="xs:string" />
+      <xs:element name="message"        type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+

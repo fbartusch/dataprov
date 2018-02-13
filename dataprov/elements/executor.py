@@ -1,17 +1,18 @@
 import os
 import configparser
-from dataprov.elements.dataprov_element import DataprovElement
+from collections import defaultdict
+from dataprov.elements.generic_element import GenericElement
 from dataprov.definitions import XML_DIR
 from lxml import etree
 
 
-class Executor(DataprovElement):
+class Executor(GenericElement):
     '''
     Class describing the executor of an operation
     '''
     
     element_name = "executor"
-    schema_file = os.path.join(XML_DIR, 'executor.xsd')
+    schema_file = os.path.join(XML_DIR, 'executor_element.xsd')
     
     def __init__(self, config_file):
         super().__init__()
@@ -39,7 +40,27 @@ class Executor(DataprovElement):
             affiliation_list.append(affiliation)
         self.data['affiliation'] = affiliation_list
     
-
+    
+    def from_xml(self, root):
+        '''
+        Cannot use the from_xml of the super class, because affiliation is a complex type.
+        '''
+        self.data = defaultdict()
+        if not self.validate_xml(root):
+            print("XML document does not match XML-schema")
+            return
+        self.data['title'] = root.find('title').text
+        self.data['firstName'] = root.find('firstName').text
+        self.data['middleName'] = root.find('middleName').text
+        self.data['surname'] = root.find('surname').text
+        self.data['suffix'] = root.find('suffix').text
+        self.data['mail'] = root.find('mail').text
+        affiliation_list = []
+        for affiliation_ele in root.findall('affiliation'):
+            affiliation_list.append(affiliation_ele.text)
+        self.data['affiliation'] = affiliation_list
+            
+    
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute. 

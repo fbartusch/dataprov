@@ -1,17 +1,17 @@
 import os
 import platform
-from dataprov.elements.dataprov_element import DataprovElement
+from dataprov.elements.generic_element import GenericElement
 from dataprov.definitions import XML_DIR
 from lxml import etree
 
 
-class Host(DataprovElement):
+class Host(GenericElement):
     '''
     Class describing the host system of an operation
     '''
     
     element_name = "host"
-    schema_file = os.path.join(XML_DIR, 'host.xsd')
+    schema_file = os.path.join(XML_DIR, 'host_element.xsd')
     
     def __init__(self):
         super().__init__()
@@ -25,9 +25,9 @@ class Host(DataprovElement):
         self.data["kernelVersion"] = uname[2]
         self.data["machine"] = platform.machine()
         self.data["processor"] = platform.processor()
-        self.data["hostname"] = uname[0]
-     
-     
+        self.data["hostname"] = uname[1]
+         
+    
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute. 
