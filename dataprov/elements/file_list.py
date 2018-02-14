@@ -74,5 +74,12 @@ class FileList(GenericElement):
             if not isFile:
                 print("file in fileList is not a valid")
                 exit(1)
+    
+    
+    def add_file(self, new_file):
+        '''
+        Add a file to the file list.
+        '''
+        self.data['file'].append(new_file)
             
         

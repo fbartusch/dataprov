@@ -1,6 +1,8 @@
 import os
+import datetime
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.file import File
 from dataprov.elements.file_list import FileList
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
@@ -103,3 +105,73 @@ class Operation(GenericElement):
         message_ele = etree.SubElement(root, 'message')
         message_ele.text = self.data['message']
         return root
+    
+    
+    def record_input_files(self, input_provenance_data):
+        '''
+        Record the input files.
+        '''
+        input_files = FileList()
+        for input_file,provenance_object in input_provenance_data.items():
+            # Check if there is provenance data available
+            if provenance_object is not None:
+                input_files.add_file(provenance_object.data['target'])
+            else:
+                new_file = File(input_file)
+                input_files.add_File(new_file)
+        self.data['inputFiles'] = input_files
+            
+    
+    def record_start_time(self):
+        '''
+        Record start time in the format:
+        YYYY-MM-DDThh:mm:ss
+        '''
+        start_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
+        self.data['startTime'] = start_time
+    
+    
+    def record_end_time(self):
+        '''
+        Record end time in the format:
+        YYYY-MM-DDThh:mm:ss
+        '''
+        end_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
+        self.data['endTime'] = end_time
+    
+    
+    def record_wrapped_command(self, wrapped_command):
+        '''
+        Record wrapped command
+        '''
+        self.data['wrappedCommand'] = wrapped_command
+        
+    
+    def record_host(self):
+        '''
+        Record host system
+        '''
+        host = Host()
+        self.data['host'] = host
+
+
+    def record_executor(self, executor):
+        '''
+        Record executor
+        '''
+        self.data['executor'] = executor
+    
+    
+    def record_op_class(self, op_class):
+        '''
+        Record operation class
+        '''
+        self.data['opClass'] = op_class
+    
+    
+    def record_message(self, message):
+        '''
+        Record message
+        '''
+        self.data['message'] = message
+        
