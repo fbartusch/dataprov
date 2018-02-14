@@ -1,6 +1,7 @@
 import os
 import configparser
 from collections import defaultdict
+from dataprov.utils.io import mkdir_p
 from dataprov.elements.generic_element import GenericElement
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -14,24 +15,33 @@ class Executor(GenericElement):
     element_name = "executor"
     schema_file = os.path.join(XML_DIR, 'executor_element.xsd')
     
-    def __init__(self, config_file):
+    def __init__(self, config_file=None):
         super().__init__()
         # Load data from config file
-        self.from_config(config_file)
+        if config_file:
+            self.from_config(config_file)
 
         
     def from_config(self, config_file):
         '''
-        Get Executor data from config file
+        Get Executor data from config file.
+        Create an empty file, if the config file does not exist.
         '''
-        config = configparser.ConfigParser()
-        config.read(config_file)
-        self.data['title'] = config.get('executor', 'title')
-        self.data['firstName'] = config.get('executor', 'firstName')
-        self.data['middleName'] = config.get('executor', 'middleName')
-        self.data['surname'] = config.get('executor', 'surname')
-        self.data['suffix'] = config.get('executor', 'suffix')
-        self.data['mail'] = config.get('executor', 'mail')
+        if not os.path.exists(config_file):
+            print("No personal information found at ", config_file)
+            print("An empy personal information file will be created at ", config_file)
+            print("Please fill this file with your personal information and try again.")
+            self.create_empty_executor_config(config_file)
+            exit(0)
+        else:
+            config = configparser.ConfigParser()
+            config.read(config_file)
+            self.data['title'] = config.get('executor', 'title')
+            self.data['firstName'] = config.get('executor', 'firstName')
+            self.data['middleName'] = config.get('executor', 'middleName')
+            self.data['surname'] = config.get('executor', 'surname')
+            self.data['suffix'] = config.get('executor', 'suffix')
+            self.data['mail'] = config.get('executor', 'mail')
 
         # A person can have more than one affiliation
         affiliation_list = []
@@ -41,19 +51,31 @@ class Executor(GenericElement):
         self.data['affiliation'] = affiliation_list
     
     
-    def from_xml(self, root):
+    def from_xml(self, root, validate=True):
         '''
         Cannot use the from_xml of the super class, because affiliation is a complex type.
         '''
         self.data = defaultdict()
-        if not self.validate_xml(root):
+        if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['title'] = root.find('title').text
+        title_ele = root.find('title')
+        if title_ele is not None:
+            self.data['title'] = title_ele.text
+        else:
+            self.data['title'] = None
         self.data['firstName'] = root.find('firstName').text
-        self.data['middleName'] = root.find('middleName').text
+        middle_name_ele = root.find('middleName')
+        if middle_name_ele is not None:
+            self.data['middleName'] = middle_name_ele.text
+        else:
+            self.data['middleName'] = None
         self.data['surname'] = root.find('surname').text
-        self.data['suffix'] = root.find('suffix').text
+        suffix_ele = root.find('suffix')
+        if suffix_ele is not None:
+            self.data['suffix'] = suffix_ele.text
+        else:
+            self.data['suffix'] = None
         self.data['mail'] = root.find('mail').text
         affiliation_list = []
         for affiliation_ele in root.findall('affiliation'):
@@ -66,13 +88,37 @@ class Executor(GenericElement):
         Create a xml ElementTree object from the data attribute. 
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, "title").text = self.data["title"]
+        if self.data['title'] is not None:
+            etree.SubElement(root, "title").text = self.data["title"]
         etree.SubElement(root, "firstName").text = self.data["firstName"]
-        etree.SubElement(root, "middleName").text = self.data["middleName"]
+        if self.data['middleName'] is not None:
+            etree.SubElement(root, "middleName").text = self.data["middleName"]
         etree.SubElement(root, "surname").text = self.data["surname"]
-        etree.SubElement(root, "suffix").text = self.data["suffix"]
+        if self.data['suffix'] is not None:
+            etree.SubElement(root, "suffix").text = self.data["suffix"]
         etree.SubElement(root, "mail").text = self.data["mail"]
         # Affiliation(s)
         for affiliation in self.data['affiliation']:
             etree.SubElement(root, "affiliation").text = affiliation
         return root
+        
+    
+    def create_empty_executor_config(self, path):
+        '''
+        Create an empty executor information file.
+        '''
+        # A simple, empty configuration
+        config = configparser.ConfigParser()
+        config['executor'] = {'title': '',
+                              'firstName': '',
+                              'middleName': '',
+                              'surname': '',
+                              'suffix': '',
+                              'mail': ''}
+        config['affiliations'] = {'affiliation1': ''}
+
+        # Create base directory if needed
+        base_dir = os.path.dirname(path)
+        mkdir_p(base_dir)
+        with open(path, 'w') as configfile:
+            config.write(configfile)

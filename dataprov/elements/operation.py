@@ -1,6 +1,9 @@
 import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.file_list import FileList
+from dataprov.elements.executor import Executor
+from dataprov.elements.host import Host
 from dataprov.definitions import XML_DIR
 from lxml import etree
 
@@ -12,30 +15,91 @@ class Operation(GenericElement):
     element_name = "operation"
     schema_file = os.path.join(XML_DIR, 'operation_element.xsd')
     
+    # Known operation classes
+    op_classes = ['CommandLine']
+    
     def __init__(self):
         # Empty data attribute
         self.data = defaultdict()
         
         
-    def from_xml(self, root):
+    def from_xml(self, root, validate=True):
         '''
         Populate data attribute from the root of a xml ElementTree object.
         '''
         self.data = defaultdict()
-        if not self.validate_xml(root):
+        if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        #TODO
-        for child in root:
-            self.data[child.tag] = child.text    
+        # Input Files (minOccurs=0)
+        input_files_ele = root.find('inputFiles')
+        if input_files_ele is not None:
+            input_files = FileList()
+            input_files.from_xml(input_files_ele, validate)
+            self.data['inputFiles'] = input_files
+        else:
+            self.data['inputFiles'] = None
+        # Target Files
+        target_files_ele = root.find('targetFiles')
+        target_files = FileList()
+        target_files.from_xml(target_files_ele, validate)
+        self.data['targetFiles'] = target_files
+        # Start time
+        start_time_ele = root.find('startTime')
+        self.data['startTime'] = start_time_ele.text
+        # End time
+        end_time_ele = root.find('endTime')
+        self.data['endTime'] = end_time_ele.text
+        # Executor
+        executor_ele = root.find('executor')
+        executor = Executor()
+        executor.from_xml(executor_ele, validate)
+        self.data['executor'] = executor
+        # Host
+        host_ele = root.find('host')
+        host = Host()
+        host.from_xml(host_ele, validate)
+        self.data['host'] = host
+        # Operation class (opClass)
+        op_class_ele = root.find('opClass')
+        self.data['opClass'] = op_class_ele.text
+        # Wrapped Command
+        wrapped_command_ele = root.find('wrappedCommand')
+        self.data['wrappedCommand'] = wrapped_command_ele.text
+        # Message
+        message_ele = root.find('message')
+        self.data['message'] = message_ele.text
+        
     
     
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute.
-        Each subclass has to implement itself, because data (defaultdict) elements
-        are not ordered.
         '''
-        #TODO
-        return
-
+        root = etree.Element(self.element_name)
+        # Input Files
+        if self.data['inputFiles']:
+            input_files_ele = self.data['inputFiles'].to_xml(root_tag='inputFiles')
+            root.append(input_files_ele)
+        # Target Files
+        root.append(self.data['targetFiles'].to_xml(root_tag='targetFiles'))
+        # Start Time
+        start_time_ele = etree.SubElement(root, 'startTime')
+        start_time_ele.text = self.data['startTime']
+        # End Time
+        end_time_ele = etree.SubElement(root, 'endTime')
+        end_time_ele.text = self.data['endTime']
+        # Executor
+        root.append(self.data['executor'].to_xml())
+        # Host
+        root.append(self.data['host'].to_xml())
+        # Operation class (opClass)
+        op_class_ele = etree.SubElement(root, 'opClass')
+        op_class_ele.text = self.data['opClass']
+        # Wrapped command
+        wrapped_command_ele = etree.SubElement(root, 'wrappedCommand')
+        wrapped_command_ele.text = self.data['wrappedCommand']
+        # Message
+        message_ele = etree.SubElement(root, 'message')
+        message_ele.text = self.data['message']
+        return root

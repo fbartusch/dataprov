@@ -1,0 +1,86 @@
+<dataprov>
+  <target>
+    <name>mapped_reads.sam</name>
+    <uri>/home/fbartusch/mapped_reads.sam</uri>
+    <sha1>79437f5edda13f9c0669b978dd7a9066dd2059f1</sha1>
+  <target>
+  <history>
+    <operation>
+      <inputFiles>
+        <file>
+          <name>genome.fa</name>
+          <uri>/home/fbartusch/genome.fa</uri>
+          <sha1>3da541559918a808c2402bba5012f6c60b27661c</sha1>
+        </file>
+      </inputFiles>
+      <targetFiles>
+        <file>
+           <name>genome.fa.bwt</name>
+           <uri>/home/fbartusch/genome.fa.bwt</uri>
+           <sha1>92429d82a41e930486c6de5ebda9602d55c39986</sha1>
+        </file>
+      </targetFiles>
+      <startTime>2002-05-30T09:00:00</startTime>
+      <endTime>2002-05-30T11:00:00</endTime>
+      <executor>
+        <title>M.Sc.</title>
+        <firstName>Felix</firstName>
+        <surname>Bartusch</surname>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <host>
+        <system>Linux</system>
+        <dist>CentOS Linux</dist>
+        <version>7.3.1611</version>
+        <codename>Core</codename>
+        <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+        <machine>x86_64</machine>
+        <processor>x86_64</processor>
+        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+      </host>
+      <opClass>CommandLine</opClass>
+      <wrappedCommand>bwa index</wrappedCommand>
+      <message>Just for testing</message>
+    </operation>
+    <operation>
+      <inputFiles>
+        <file>
+          <name>genome.fa</name>
+          <uri>/home/fbartusch/genome.fa.bwt</uri>
+          <sha1>92429d82a41e930486c6de5ebda9602d55c39986</sha1>
+        </file>
+      </inputFiles>
+      <targetFiles>
+        <file>
+           <name>mapped_reads.sam</name>
+           <uri>/home/fbartusch/mapped_reads.sam</uri>
+           <sha1>79437f5edda13f9c0669b978dd7a9066dd2059f1</sha1>
+        </file>
+      </targetFiles>
+      <startTime>2002-05-30T09:00:00</startTime>
+      <endTime>2002-05-30T11:00:00</endTime>
+      <executor>
+        <title>M.Sc.</title>
+        <firstName>Felix</firstName>
+        <surname>Bartusch</surname>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <host>
+        <system>Linux</system>
+        <dist>CentOS Linux</dist>
+        <version>7.3.1611</version>
+        <codename>Core</codename>
+        <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+        <machine>x86_64</machine>
+        <processor>x86_64</processor>
+        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+      </host>
+      <opClass>CommandLine</opClass>
+      <wrappedCommand>bwa mem</wrappedCommand>
+      <message>Just for testing</message>
+    </operation>
+  </history>
+</dataprov>
+

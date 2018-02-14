@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(name='dataprov',
       version='0.1',
@@ -7,9 +7,9 @@ setup(name='dataprov',
       author='Felix Bartusch',
       author_email='felix.bartusch@uni-tuebingen.de',
       license='TODO',
-      packages=['dataprov'],
+      packages=find_packages(),
       entry_points = {
-          'console_scripts': ['dataprov=dataprov.dataprov:main']
+          'console_scripts': ['dataprov=dataprov.__main__:main']
       },
       install_requires=[
           'argparse',

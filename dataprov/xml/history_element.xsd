@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:include schemaLocation="operation.xsd"/> 
-  <xs:element name="operation" type="fileList"/>
+  <xs:include schemaLocation="history.xsd"/>
+  <xs:element name="history" type="history"/>
 </xs:schema>

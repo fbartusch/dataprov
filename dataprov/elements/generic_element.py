@@ -1,5 +1,6 @@
 from collections import defaultdict
 from lxml import etree
+from dataprov.utils.io import prettify
 
 class GenericElement:
     '''
@@ -7,7 +8,7 @@ class GenericElement:
     This class provides basic functionalities to read/write the dataprov element.
     '''
     
-    element_name = ""
+    element_name = "generic"
     schema_file = ""
     
     def __init__(self):
@@ -15,13 +16,15 @@ class GenericElement:
         self.data = defaultdict()
         
         
-    def from_xml(self, root):
+    def from_xml(self, root, validate=True):
         '''
         Populate data attribute from the root of a xml ElementTree object.
         This only works for simple elements like Host.
+        Validity is not checked if not validate. This can be the case if validity
+        is already checked by a superior element (e.g. dataprov vs. history)
         '''
         self.data = defaultdict()
-        if not self.validate_xml(root):
+        if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
         for child in root:
@@ -34,7 +37,7 @@ class GenericElement:
         Each subclass has to implement itself, because data (defaultdict) elements
         are not ordered.
         '''
-        return
+        return ""
     
     
     def validate_xml(self, root):
@@ -50,21 +53,9 @@ class GenericElement:
         return xml_schema.validate(root)
 
 
-    def to_string(self):
-        '''
-        String representation of the data.
-        '''
-        return
-
-
-    def print_xml(self, path):
-        print('Element name: ', self.element_name)
-        print('Schema: ', self.schema_file)
-        with open(path, 'r') as xml_file:
-            parser = etree.XMLParser(remove_blank_text=True)
-            tree = etree.parse(xml_file, parser)
-            s = etree.tostring(tree, pretty_print=True)
-        with open('./test.xml', 'wb') as f:
-            f.write(s)
+    def __str__(self):
+        root = self.to_xml()
+        return prettify(root)
+        
             
 

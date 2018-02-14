@@ -1,64 +1,17 @@
 import os
-import dataprov
 import argparse
 import subprocess
-import configparser
-import errno
 from xml.etree.ElementTree import Element, SubElement
 import hashlib
 import datetime
-import socket
-from xml.etree import ElementTree
-from xml.dom import minidom
 from collections import defaultdict
+from dataprov.elements.dataprov import Dataprov
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
 
 
-def prettify(elem):
-    """Return a pretty-printed XML string for the Element.
-    """
-    rough_string = ElementTree.tostring(elem, 'utf-8')
-    reparsed = minidom.parseString(rough_string)
-    return reparsed.toprettyxml(indent="  ")
-
-def mkdir_p(path):
-    try:
-        os.makedirs(path)
-    except OSError as exc:  # Python >2.5
-        if exc.errno == errno.EEXIST and os.path.isdir(path):
-            pass
-        else:
-            raise
-
-def create_empty_executor_config(path):
-    '''
-    Create an empty executor information file
-    '''
-    # A simple, empty configuration
-    config = configparser.ConfigParser()
-    config['executor'] = {'title': '',
-                          'firstName': '',
-                          'middleName': '',
-                          'surname': '',
-                          'suffix': '',
-                          'mail': '',
-                          'affiliation': ''}
-                          
-    # Create base directory if needed
-    base_dir = os.path.dirname(path)
-    mkdir_p(base_dir)
-    with open(path, 'w') as configfile:
-        config.write(configfile)
 
 
-def read_executor_config(path):
-    '''
-    Read an executor information file
-    '''
-    config = configparser.ConfigParser()
-    config.read(path)
-    return config
 
 def main():
 
@@ -100,7 +53,8 @@ def main():
     # If the user uses a workflow manager / workflow engine supported by this tool,
     # The output will be handled automatically     
     parser.add_argument('-i','--input', nargs='+',
-                        help='path to input files used by the wrapped command')    
+                        help='path to input files used by the wrapped command',
+                        default=None)    
 
     # Message incorporated into metadata
     parser.add_argument('-m', '--message',
@@ -117,11 +71,6 @@ def main():
     run = subparsers.add_parser("run",
                                  help="Run a command line command and create provenance metadata")
 
-    # CWL
-    #cwltool = subparsers.add_parser("cwltool",
-    #                             help="")
-
-                        
     # Parse command line arguments
     args, remaining = parser.parse_known_args()
     debug = args.debug
@@ -139,38 +88,35 @@ def main():
         print("Message: ", message)
 
     # Check if executor information are available
-    if not os.path.exists(executor_config_file):
-        print("No personal information found at ", executor_config_file)
-        print("An empy personal information file will be created at ", executor_config_file)
-        print("Please provide your personal information at ", executor_config_file, " or provide a configuration file with the --p/--person option")
-        create_empty_executor_config(executor_config_file)
-        exit(1)
-    
-    # Read executor information
-    executor_config = read_executor_config(executor_config_file)
+    executor = Executor(executor_config_file)
     if debug:
-        print("Executor configuration: ", executor_config_file)
-        print("\tHonorific: " + executor_config.get('executor', 'title'))
-        print("\tFirst Name: " + executor_config.get('executor', 'firstName'))
-        print("\tMiddle Name: " + executor_config.get('executor', 'middleName'))
-        print("\tSurname: " + executor_config.get('executor', 'surname'))
-        print("\tSuffix: " + executor_config.get('executor', 'suffix'))
-        print("\tMail: " + executor_config.get('executor', 'mail'))
-        print("\tAffiliation: " + executor_config.get('executor', 'affiliation'))
+        print("Executor:" , executor)
 
     # Read input provenance metadata
-    for input_file in command_input_files:
-        # Check if input file and the corresponding provenance metadata exists
-        if not os.path.exists(input_file):
-            print("Input file specified by -i does not exist: ", input_file)
-            print("No provenance information will be considered for this file.")
-        input_prov_file = input_file + '.prov'
-        if not os.path.exists(input_prov_file):
-            print("Metadate for input file specified by -i does not exist: ", input_prov_file)
-            print("No provenance information will be considered for this file.")
+    if command_input_files:
+        input_provenance_data = defaultdict()
+        for input_file in command_input_files:
+            # Check if input file and the corresponding provenance metadata exists
+            if not os.path.exists(input_file):
+                print("Input file specified by -i does not exist: ", input_file)
+                print("No provenance information will be considered for this file.")
+                continue
+            input_prov_file = input_file + '.prov'
+            if not os.path.exists(input_prov_file):
+                print("Metadate for input file specified by -i does not exist: ", input_prov_file)
+                print("No provenance information will be considered for this file.")
+                continue
+        
+            #Parse XML and store in dictionary
+            new_provenance_object = Dataprov(input_prov_file)
+            input_provenance_data[input_file] = new_provenance_object
             
-        # Parse XML and store in dictionary
-        #TODO
+    # Print input provenance data
+    if debug:
+        for key, value in input_provenance_data.items():
+            print("Read provenance data for ", key, ":")
+            print(str(value))
+    exit(0)
     
     # Record start datetime
     # YYYY-MM-DDThh:mm:ss
@@ -312,3 +258,6 @@ def main():
 
 
     print(return_code)
+
+if __name__ == '__main__':
+    main()

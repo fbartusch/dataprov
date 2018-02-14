@@ -29,29 +29,29 @@ class FileList(GenericElement):
                 self.data['file'].append(new_file)
             
 
-    def from_xml(self, root):
+    def from_xml(self, root, validate=True):
         '''
         Cannot use the from_xml of the super class,
         because fileList is a complex type.
         '''
         self.data = defaultdict(list)
-        if not self.validate_xml(root):
+        if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             exit(1)
         for file_ele in root.findall('file'):
             new_file = File()
-            new_file.from_xml(file_ele)
+            new_file.from_xml(file_ele, validate)
             self.data['file'].append(new_file)
 
     
-    def to_xml(self, root_name=None):
+    def to_xml(self, root_tag=None):
         '''
         Create a xml ElementTree object from the data attribute. 
         '''
-        if not root_name:
+        if not root_tag:
             root = etree.Element(self.element_name)
         else:
-            root = etree.Element(root_name)
+            root = etree.Element(root_tag)
         for file in self.data['file']:
             file_ele = file.to_xml()
             root.append(file_ele)
