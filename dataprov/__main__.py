@@ -7,6 +7,9 @@ from dataprov.elements.dataprov import Dataprov
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
 from dataprov.elements.operation import Operation
+from dataprov.elements.file import File
+from dataprov.elements.file_list import FileList
+from dataprov.utils.io import write_xml
 
 
 def main():
@@ -37,8 +40,9 @@ def main():
     # If the user uses a workflow manager / workflow engine supported by this tool,
     # The output will be detected automatically
     cwd = os.getcwd()
-    command_output_files = [os.path.join(cwd, "dataprov_output")]
-    parser.add_argument('-o', '--output', nargs='+',
+    #command_output_files = [os.path.join(cwd, "dataprov_output")]
+    command_output_files = []
+    parser.add_argument('-o', '--output', action='append',
                         help="path to output files of the wrapped command. The provenance files with the same name + .prov suffix will be created beside the output files",
                         default=command_output_files)
                         
@@ -48,7 +52,7 @@ def main():
     # it will be incorporated into the resulting provenance metadata
     # If the user uses a workflow manager / workflow engine supported by this tool,
     # The output will be handled automatically     
-    parser.add_argument('-i','--input', nargs='+',
+    parser.add_argument('-i','--input', action='append',
                         help='path to input files used by the wrapped command',
                         default=None)    
 
@@ -85,12 +89,10 @@ def main():
 
     # Check if executor information are available
     executor = Executor(executor_config_file)
-    if debug:
-        print("Executor:" , executor)
 
     # Read input provenance metadata
+    input_provenance_data = defaultdict()
     if command_input_files:
-        input_provenance_data = defaultdict()
         for input_file in command_input_files:
             # Check if input file and the corresponding provenance metadata exists
             if not os.path.exists(input_file):
@@ -100,21 +102,13 @@ def main():
             abs_path = os.path.abspath(input_file)
             input_prov_file = input_file + '.prov'
             if not os.path.exists(input_prov_file):
-                print("Metadate for input file specified by -i does not exist: ", input_prov_file)
-                print("No provenance information will be used for this file.")
+                print("Metadata for input file specified by -i does not exist: ", input_file)
                 input_provenance_data[abs_path] = None
                 continue
         
             #Parse XML and store in dictionary
             new_provenance_object = Dataprov(input_prov_file)
             input_provenance_data[abs_path] = new_provenance_object
-            
-    # Print input provenance data
-    if debug:
-        for key, value in input_provenance_data.items():
-            print("Read provenance data for ", key, ":")
-            print(str(value))
-            
             
     # Create a new provenance object
     new_operation = Operation()
@@ -135,7 +129,7 @@ def main():
     new_operation.record_message(message)
             
     # Execute the wrapped command
-    return_code = subprocess.call(remaining, shell=True)  
+    return_code = subprocess.call(' '.join(remaining), shell=True)  
     #command_string = ' '.join(remaining)
     #commands = command_string.split('&&')
     #for command in commands:
@@ -146,23 +140,28 @@ def main():
     # Record end time
     new_operation.record_end_time()
     
-    # TODO Record target files
-    # Check which of the specified target files are present
-    
-    
-    print(str(new_operation))
+    # Record target files
+    new_operation.record_target_files(command_output_files)
+
+    # Create the final dataprov object for each output file
+    result_dataprov_objects = []
+    for output_file in command_output_files:
+        new_dataprov = Dataprov()
+        new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
+        result_dataprov_objects.append(new_dataprov)
+
+    # Check if the create xml is valid, then write to file
+    for dataprov_object in result_dataprov_objects:
+        dataprov_xml = dataprov_object.to_xml()
+        if not dataprov_object.validate_xml(dataprov_xml):
+            # TODO do this with an Error type
+            print("Resulting dataprov object is not valid!")
+        else:
+            output_xml_file = dataprov_object.get_xml_file_path()
+            write_xml(dataprov_xml, output_xml_file)
+
     exit(0)
     
-
-    
-  
-    
-
-   
-   
-   
-
-
     print(return_code)
 
 if __name__ == '__main__':

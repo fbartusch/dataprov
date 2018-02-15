@@ -112,14 +112,33 @@ class Operation(GenericElement):
         Record the input files.
         '''
         input_files = FileList()
-        for input_file,provenance_object in input_provenance_data.items():
-            # Check if there is provenance data available
-            if provenance_object is not None:
-                input_files.add_file(provenance_object.data['target'])
-            else:
-                new_file = File(input_file)
-                input_files.add_File(new_file)
-        self.data['inputFiles'] = input_files
+        if input_provenance_data is not None:
+            for input_file,provenance_object in input_provenance_data.items():
+                # Check if there is provenance data available
+                if provenance_object is not None:
+                    input_files.add_file(provenance_object.data['target'])
+                else:
+                    new_file = File(input_file)
+                    input_files.add_file(new_file)
+            self.data['inputFiles'] = input_files
+        else:
+            self.data['inputFiles'] = None
+        
+    
+    def record_target_files(self, files):
+        '''
+        Record target files
+        '''
+        # Check which of the specified target files are present
+        target_files = FileList()
+        for file in files:
+            try:
+                new_file = File(os.path.abspath(file))
+                target_files.add_file(new_file)
+            except IOError:
+                print("Target file not found: ", file)
+                continue
+        self.data['targetFiles'] = target_files
             
     
     def record_start_time(self):
@@ -174,4 +193,11 @@ class Operation(GenericElement):
         Record message
         '''
         self.data['message'] = message
+    
+    
+    def get_target_file(self, target_file):
+        '''
+        Get the File object for a specific target_file.
+        '''
+        return self.data['targetFiles'].get_file(target_file)
         

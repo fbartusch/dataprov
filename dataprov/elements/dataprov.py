@@ -38,11 +38,6 @@ class Dataprov(GenericElement):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             exit(1)
-            
-        # Traverse the tree
-        # Just for testing
-        for child in root:
-            print(child.tag)
         
         # Get the target from the xml
         target_ele = root.find('target')
@@ -69,3 +64,25 @@ class Dataprov(GenericElement):
         # History
         root.append(self.data['history'].to_xml())
         return root
+    
+    
+    def create_provenance(self, target_file, input_prov_data, applied_operation):
+        '''
+        Create the final provenance object from the path to an output file,
+        A dictionary of input provenance data and the object describing the
+        applied operation
+        '''
+        self.data = defaultdict()
+        # Target: Get this from the applied operation object
+        self.data['target'] = applied_operation.get_target_file(target_file)
+        # History: Combine the history of all input files with the applied operation
+        new_history = History()
+        new_history.combine_histories(input_prov_data, applied_operation)
+        self.data['history'] = new_history
+    
+    
+    def get_xml_file_path(self):
+        '''
+        Return the path to the corresponding xml file.
+        '''
+        return self.data['target'].get_uri() + '.prov'

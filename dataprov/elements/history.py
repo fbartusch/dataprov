@@ -43,4 +43,18 @@ class History(GenericElement):
             new_operation_ele = operation.to_xml()
             root.append(new_operation_ele)
         return root
-
+    
+    
+    def combine_histories(self, prov_data, applied_operation):
+        '''
+        Create a new history by combining the history of the
+        given provenance data and the applied operation.
+        '''
+        self.data = defaultdict(list)
+        # Iterate over the prov_data, get all operations
+        for file, prov in prov_data.items():
+            if prov is not None:
+                for operation in prov.data['history'].data['operation']:
+                    self.data['operation'].append(operation)
+        # Append the applied operation
+        self.data['operation'].append(applied_operation)

@@ -22,6 +22,9 @@ class File(GenericElement):
         '''
         super().__init__()
         if file:
+            # Check if file exists
+            if not os.path.exists(file):
+                raise IOError("File not found: ", file)
             basename = os.path.basename(file)
             uri = file
             sha1 = self.compute_hash(file)
@@ -30,7 +33,7 @@ class File(GenericElement):
             self.data['sha1'] = sha1
         
     
-    def compute_hash(file):
+    def compute_hash(self, file):
         '''
         Compute the sha1 hashsum of a file
         '''
@@ -59,3 +62,10 @@ class File(GenericElement):
         etree.SubElement(root, "uri").text = self.data["uri"]
         etree.SubElement(root, "sha1").text = self.data["sha1"]
         return root
+    
+    
+    def get_uri(self):
+        '''
+        Get the URI of this file object.
+        '''
+        return self.data['uri']

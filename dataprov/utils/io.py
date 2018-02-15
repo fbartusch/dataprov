@@ -26,12 +26,10 @@ def prettify(elem):
     return reparsed.toprettyxml(indent="  ")
 
 
-def print_xml(self, path):
-    print('Element name: ', self.element_name)
-    print('Schema: ', self.schema_file)
-    with open(path, 'r') as xml_file:
-        parser = etree.XMLParser(remove_blank_text=True)
-        tree = etree.parse(xml_file, parser)
-        s = etree.tostring(tree, pretty_print=True)
-        with open('./test.xml', 'wb') as f:
-            f.write(s)
+def write_xml(root, output_file):
+    '''
+    Write an lxml Element to file.
+    '''
+    with open(output_file, 'w') as xml_file:
+        s = etree.tostring(root, pretty_print=True).decode('ascii')
+        xml_file.write(s)        

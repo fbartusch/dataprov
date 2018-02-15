@@ -1,8 +1,10 @@
-# dataprov: Automatic provenance data generation
+# dataprov: Automatic provenance metadata generation
+
+Dataprov is a wrapper that produces provenance metadata at the same time the data processing happens.
 
 ## Install
 
-Create new Python 3 environment
+It's the best to install dataprov in a new conda environment.
 
 ```
 conda create -n dataprov python=3.6
@@ -17,46 +19,53 @@ cd dataprov
 pip install .
 ```
 
-TODO
-Create executor information
+## First steps
 
-Install cwltool, the reference CWL implementation.
-
-```
-pip install cwlref-runner
-```
-
-## Usage
-
-dataprov is a wrapper that executes CWLCommandLineTools and CWLWorkflows.
-dataprov will examine the .cwl file and the input files given and creates provenance data for the resulting files.
-
-### Example: Compute reference index with bwa on command line
-
-First, get bwa from the  biocontainer project.
+A important part of the recorded metadata is **who** computed something.
+This information is stored at `~/.dataprov/executor.conf`. If you start dataprov for the first time, the file will be created for you. You hjust have to fill in the information. 
 
 ```
+$ dataprov
+No personal information found at ~/.dataprov/executor.conf
+An empy personal information file will be created at ~/.dataprov/executor.conf
+Please fill this file with your personal information and try again.
+```
+
+## First Computation
+
+The repository contains a very small reference genome. First we compute an index with bwa. 
+
+```
+# bwa is installed already
+dataprov -i data/index/genome.fa -o data/index/genome.fa.bwt run bwa index data/index/genome.fa
+
+# bwa is not installed already
 docker pull biocontainers/bwa
+dataprov -i data/index/genome.fa -o data/index/genome.fa.bwt run docker run -v $PWD/data/:/tmp/:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/index/genome.fa
 ```
 
-Get the reference genome. We will use data from a snakemake tutorial for this purpose. The command downloads the archive, untars it into the data directory and annotates the genome.fa file. Usually the wrapped command needs no quotes, but here they are needed because of the '&&'.
+Everything after the keyword `run` is the command wrapped by dataprov. The `-i/--input` and `-o/--output` options tell dataprov the input/output files of the wrapped command.
+Take a look at the created metadata file at `data/index/genome.bwt.prov`. It's an xml-file answering the following questions:
+
+  * **Who** computed the result?
+  * **When** was the result computed?
+  * **How** was the result computed?
+  * **What Input** files were used?
+  * **How** were the **input files** computed?
+  * On which machine were the computation executed?
+  * Was the input/output data changed? 
+
+## Second computation
+
+We can also incorporate existing metadata into the metadata of new computations. We map now a small set of reads against the previously computed index.
 
 ```
-dataprov -d -o data/genome.fa -m "Download of snakemake tutorial test data" run 'wget https://bitbucket.org/snakemake/snakemake-tutorial/get/v3.11.0.tar.bz2 && mkdir data && tar xvjf  v3.11.0.tar.bz2 -C data --strip-components 2'
+# bwa installed
+dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_reads/A.bam 'run bwa mem data/index/genome.fa data/samples/A.fastq > data/mapped_reads/A.bam'
+
+# bwa not installed
+dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_reads/A.bam \
+    run 'docker run -v $PWD/data/:/tmp/:z  docker.io/biocontainers/bwa:latest bwa mem /tmp/index/genome.fa /tmp/samples/A.fastq > data/mapped_reads/A.bam'
 ```
 
-Run bwa in the biocontainer. The command is wrapped by dataprov and genome.fa.bwt is annotated with provenance metadata. 
-
-```
-dataprov -d -o data/genome.fa.bwt -m "Test dataprov" run docker run -v $PWD/data:/tmp:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/genome.fa
-```
-
-If you want to annotate all files created by bwa.
-
-```
-cd data/index
-dataprov -d -o genome.fa.amb genome.fa.ann genome.fa.bwt genome.fa.pac genome.fa.sa -m "Test dataprov" run docker run -v $PWD:/tmp/:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/genome.fa
-```
-
-The commands tend to be very long and unreadable if you want to annotate more result files.
-TODO: Option to annotate all files in one directory (except the input files)
+The resulting metadata file inherits the metadata of the index file: `data/mapped_reads/A.bam.prov`

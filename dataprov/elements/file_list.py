@@ -81,5 +81,14 @@ class FileList(GenericElement):
         Add a file to the file list.
         '''
         self.data['file'].append(new_file)
+    
+    
+    def get_file(self, file):
+        '''
+        Return the file object of a specific file
+        '''
+        for file_object in self.data['file']:
+            if os.path.realpath(file_object.data['uri']) == os.path.realpath(file):
+                return file_object
             
         
