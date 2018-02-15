@@ -48,15 +48,15 @@ Everything after the keyword `run` is the command wrapped by dataprov. The `-i/-
 Take a look at the created metadata file at `data/index/genome.bwt.prov`.
 
 ```
-$ ls -l data/index/
+ls -go data/index/
 total 629
--rw-r--r-- 1 iioba01 ii 234112 Feb 15 15:37 genome.fa
--rw-r--r-- 1 iioba01 ii   2598 Feb 15 15:40 genome.fa.amb
--rw-r--r-- 1 iioba01 ii     83 Feb 15 15:40 genome.fa.ann
--rw-r--r-- 1 iioba01 ii 230320 Feb 15 15:40 genome.fa.bwt
--rw-r--r-- 1 iioba01 ii   1658 Feb 15 15:40 genome.fa.bwt.prov
--rw-r--r-- 1 iioba01 ii  57556 Feb 15 15:40 genome.fa.pac
--rw-r--r-- 1 iioba01 ii 115160 Feb 15 15:40 genome.fa.sa
+-rw-r--r-- 1 234112 Feb 15 15:37 genome.fa
+-rw-r--r-- 1   2598 Feb 15 15:40 genome.fa.amb
+-rw-r--r-- 1     83 Feb 15 15:40 genome.fa.ann
+-rw-r--r-- 1 230320 Feb 15 15:40 genome.fa.bwt
+-rw-r--r-- 1   1658 Feb 15 15:40 genome.fa.bwt.prov
+-rw-r--r-- 1  57556 Feb 15 15:40 genome.fa.pac
+-rw-r--r-- 1 115160 Feb 15 15:40 genome.fa.sa
 ```
 
 It's an xml-file answering the following questions:
@@ -87,8 +87,8 @@ dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_read
 The resulting metadata file inherits the metadata of the index file: `data/mapped_reads/A.bam.prov`:
 
 ```
-$ ls -l data/mapped_reads/
+ls -go data/mapped_reads/
 total 6112
--rw-r--r-- 1 iioba01 ii 6254845 Feb 15 15:46 A.bam
--rw-r--r-- 1 iioba01 ii    3253 Feb 15 15:46 A.bam.prov
+-rw-r--r-- 1 6254845 Feb 15 15:46 A.bam
+-rw-r--r-- 1    3253 Feb 15 15:46 A.bam.prov
 ```
