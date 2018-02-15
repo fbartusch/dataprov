@@ -9,4 +9,5 @@
 
 TODO
 data/index/genome.fa.*
+data/mapped_reads/*
 *.log

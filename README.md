@@ -14,7 +14,7 @@ source activate dataprov
 Install dataprov
 
 ```
-git clone git clone https://github.com/fbartusch/cwltool.git
+git clone git clone https://github.com/fbartusch/dataprov.git
 cd dataprov
 pip install .
 ```
@@ -45,7 +45,21 @@ dataprov -i data/index/genome.fa -o data/index/genome.fa.bwt run docker run -v $
 ```
 
 Everything after the keyword `run` is the command wrapped by dataprov. The `-i/--input` and `-o/--output` options tell dataprov the input/output files of the wrapped command.
-Take a look at the created metadata file at `data/index/genome.bwt.prov`. It's an xml-file answering the following questions:
+Take a look at the created metadata file at `data/index/genome.bwt.prov`.
+
+```
+$ ls -l data/index/
+total 629
+-rw-r--r-- 1 iioba01 ii 234112 Feb 15 15:37 genome.fa
+-rw-r--r-- 1 iioba01 ii   2598 Feb 15 15:40 genome.fa.amb
+-rw-r--r-- 1 iioba01 ii     83 Feb 15 15:40 genome.fa.ann
+-rw-r--r-- 1 iioba01 ii 230320 Feb 15 15:40 genome.fa.bwt
+-rw-r--r-- 1 iioba01 ii   1658 Feb 15 15:40 genome.fa.bwt.prov
+-rw-r--r-- 1 iioba01 ii  57556 Feb 15 15:40 genome.fa.pac
+-rw-r--r-- 1 iioba01 ii 115160 Feb 15 15:40 genome.fa.sa
+```
+
+It's an xml-file answering the following questions:
 
   * **Who** computed the result?
   * **When** was the result computed?
@@ -55,17 +69,26 @@ Take a look at the created metadata file at `data/index/genome.bwt.prov`. It's a
   * On which machine were the computation executed?
   * Was the input/output data changed? 
 
-## Second computation
+## Second computation: Inherit metadata
 
 We can also incorporate existing metadata into the metadata of new computations. We map now a small set of reads against the previously computed index.
 
 ```
+mkdir data/mapped_reads
+
 # bwa installed
-dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_reads/A.bam 'run bwa mem data/index/genome.fa data/samples/A.fastq > data/mapped_reads/A.bam'
+dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_reads/A.bam run 'bwa mem data/index/genome.fa data/samples/A.fastq > data/mapped_reads/A.bam'
 
 # bwa not installed
 dataprov -i data/index/genome.fa.bwt -i data/samples/A.fastq -o data/mapped_reads/A.bam \
     run 'docker run -v $PWD/data/:/tmp/:z  docker.io/biocontainers/bwa:latest bwa mem /tmp/index/genome.fa /tmp/samples/A.fastq > data/mapped_reads/A.bam'
 ```
 
-The resulting metadata file inherits the metadata of the index file: `data/mapped_reads/A.bam.prov`
+The resulting metadata file inherits the metadata of the index file: `data/mapped_reads/A.bam.prov`:
+
+```
+$ ls -l data/mapped_reads/
+total 6112
+-rw-r--r-- 1 iioba01 ii 6254845 Feb 15 15:46 A.bam
+-rw-r--r-- 1 iioba01 ii    3253 Feb 15 15:46 A.bam.prov
+```
