@@ -1,6 +1,8 @@
+import os
 from collections import defaultdict
 from lxml import etree
 from dataprov.utils.io import prettify
+from dataprov.definitions import XML_DIR
 
 class GenericElement:
     '''
@@ -9,7 +11,7 @@ class GenericElement:
     '''
     
     element_name = "generic"
-    schema_file = ""
+    schema_file = os.path.join(XML_DIR, 'generic_element.xsd')
     
     def __init__(self):
         # Empty data attribute

@@ -6,6 +6,7 @@ from dataprov.elements.file import File
 from dataprov.elements.file_list import FileList
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
+from dataprov.elements.op_class import OpClass
 from dataprov.definitions import XML_DIR
 from lxml import etree
 
@@ -64,10 +65,9 @@ class Operation(GenericElement):
         self.data['host'] = host
         # Operation class (opClass)
         op_class_ele = root.find('opClass')
-        self.data['opClass'] = op_class_ele.text
-        # Wrapped Command
-        wrapped_command_ele = root.find('wrappedCommand')
-        self.data['wrappedCommand'] = wrapped_command_ele.text
+        op_class= OpClass()
+        op_class.from_xml(op_class_ele, validate)
+        self.data['opClass'] = op_class
         # Message
         message_ele = root.find('message')
         self.data['message'] = message_ele.text
@@ -97,10 +97,7 @@ class Operation(GenericElement):
         root.append(self.data['host'].to_xml())
         # Operation class (opClass)
         op_class_ele = etree.SubElement(root, 'opClass')
-        op_class_ele.text = self.data['opClass']
-        # Wrapped command
-        wrapped_command_ele = etree.SubElement(root, 'wrappedCommand')
-        wrapped_command_ele.text = self.data['wrappedCommand']
+        op_class_ele.append(self.data['opClass'].to_xml())
         # Message
         message_ele = etree.SubElement(root, 'message')
         message_ele.text = self.data['message']
@@ -159,6 +156,13 @@ class Operation(GenericElement):
         self.data['endTime'] = end_time
     
     
+    def record_op_class(self, op_class):
+        '''
+        Record op class.
+        '''  
+        self.data['opClass'] = op_class
+        
+        
     def record_wrapped_command(self, wrapped_command):
         '''
         Record wrapped command
@@ -179,13 +183,6 @@ class Operation(GenericElement):
         Record executor
         '''
         self.data['executor'] = executor
-    
-    
-    def record_op_class(self, op_class):
-        '''
-        Record operation class
-        '''
-        self.data['opClass'] = op_class
     
     
     def record_message(self, message):

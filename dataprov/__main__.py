@@ -1,14 +1,11 @@
 import os
 import argparse
 import subprocess
-from xml.etree.ElementTree import Element, SubElement
 from collections import defaultdict
 from dataprov.elements.dataprov import Dataprov
 from dataprov.elements.executor import Executor
-from dataprov.elements.host import Host
 from dataprov.elements.operation import Operation
-from dataprov.elements.file import File
-from dataprov.elements.file_list import FileList
+from dataprov.elements.op_class import OpClass
 from dataprov.utils.io import write_xml
 
 
@@ -66,10 +63,20 @@ def main():
                                        dest="command")
                 
     # Run
-    # This subcommand will run arbitrary command line arguments
-    # No further arguments. All input following 'run' will be given to subprocess.call directly                       
+    # This subcommand will run arbitrary command line commands                      
     run = subparsers.add_parser("run",
                                  help="Run a command line command and create provenance metadata")
+
+    # Singularity
+    # This subcommand will wrap Singularity commmands. The Metadata will
+    # contain a special element describing the container.
+    #singularity = subparsers.add_parser("singularity",
+    #                                    help="Run a Singularity command and create provenance metadata")
+    # Docker
+    # This subcommand will wrap Docker commmands. The Metadata will
+    # contain a special element describing the container.
+    #docker = subparsers.add_parser("docker",
+    #                               help="Run a Docker command and create provenance metadata")
 
     # Parse command line arguments
     args, remaining = parser.parse_known_args()
@@ -115,16 +122,22 @@ def main():
     # Record input files
     new_operation.record_input_files(input_provenance_data)
     # Record start time
-    new_operation.record_start_time()
-    # Record wrapped command
-    wrapped_command = ' '.join(remaining)
-    new_operation.record_wrapped_command(wrapped_command)          
+    new_operation.record_start_time()        
     # Record Host
     new_operation.record_host()
+    #TODO Introduce an environment element: PATH, LIBRARY_PATH, glibc, ... Check for loaded modules / conda environments and update schema/code
     # Record executor
     new_operation.record_executor(executor)
     # Record operation class
-    new_operation.record_op_class('CommandLine')
+    new_operation.record_op_class(remaining)
+
+    #TODO Implement the opClasses
+    #TODO discriminate based on following executable names; docker, singularity, cwltool, cwl-runner
+    #TODO Change the to/from_xml methods of operation
+    op_class = OpClass(remaining)    
+    new_operation.record_op_class(op_class)
+    
+    
     # Record message
     new_operation.record_message(message)
             
@@ -153,6 +166,7 @@ def main():
     # Check if the create xml is valid, then write to file
     for dataprov_object in result_dataprov_objects:
         dataprov_xml = dataprov_object.to_xml()
+        write_xml(dataprov_xml, "test.prov")
         if not dataprov_object.validate_xml(dataprov_xml):
             # TODO do this with an Error type
             print("Resulting dataprov object is not valid!")
