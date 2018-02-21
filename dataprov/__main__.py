@@ -72,11 +72,12 @@ def main():
     # contain a special element describing the container.
     #singularity = subparsers.add_parser("singularity",
     #                                    help="Run a Singularity command and create provenance metadata")
-    # Docker
-    # This subcommand will wrap Docker commmands. The Metadata will
-    # contain a special element describing the container.
-    #docker = subparsers.add_parser("docker",
-    #                               help="Run a Docker command and create provenance metadata")
+
+    #Docker
+    #This subcommand will wrap Docker commmands. The Metadata will
+    #contain a special element describing the container.
+    docker = subparsers.add_parser("docker",
+                                   help="Run a Docker command and create provenance metadata")
 
     # Parse command line arguments
     args, remaining = parser.parse_known_args()

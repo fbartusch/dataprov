@@ -27,12 +27,13 @@ class CommandLine(GenericElement):
             toolPath = shutil.which(tool)
             self.data['toolPath'] = toolPath
             # Tool Version
+            FNULL = open(os.devnull, 'w')
             try:
-                toolVersion1 = subprocess.check_output([tool,  '--version'])
+                toolVersion1 = subprocess.check_output([tool,  '--version'], stderr=FNULL)
             except:
                 toolVersion1 = None
             try:
-                toolVersion2 = subprocess.check_output([tool,  '-v'])
+                toolVersion2 = subprocess.check_output([tool,  '-v'], stderr=FNULL)
             except:
                 toolVersion2 = None
             if toolVersion1 is not None:
