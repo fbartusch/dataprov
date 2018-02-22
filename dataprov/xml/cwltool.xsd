@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="dict.xsd"/>
+  <xs:complexType name="cwltool">
+    <xs:sequence>
+      <xs:element name="wrappedCommand" type="xs:string"/>
+      <xs:element name="cwltoolPath" type="xs:anyURI"/>
+      <xs:element name="cwltoolVersion" type="xs:string"/>
+      <xs:element name="cwlFile" type="xs:anyURI"/>
+      <xs:element name="basecommand" type="xs:string"/>
+      <xs:element name="inputs" type="cwlInput"/>
+      <xs:element name="arguments"   type="dict"/>
+      <xs:element name="outputs" type="cwlOutput"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

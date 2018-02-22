@@ -92,3 +92,10 @@ total 6112
 -rw-r--r-- 1 6254845 Feb 15 15:46 A.bam
 -rw-r--r-- 1    3253 Feb 15 15:46 A.bam.prov
 ```
+
+## Running workflows
+
+```
+cd data/cwl/tutorial
+cwl-runner 1st-workflow.cwl 1st-workflow-job.yml
+```

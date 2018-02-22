@@ -30,17 +30,11 @@ class Docker(GenericElement):
             
             # Tool Version
             try:
-                toolVersion1 = subprocess.check_output(['docker',  '--version'])
+                toolVersion1 = subprocess.check_output([tool,  '--version'])
             except:
                 toolVersion1 = None
-            try:
-                toolVersion2 = subprocess.check_output(['docker',  '-v'])
-            except:
-                toolVersion2 = None
             if toolVersion1 is not None:
                 self.data['dockerVersion'] = toolVersion1
-            elif toolVersion2 is not None:
-                self.data['dockerVersion'] = toolVersion2
             else:
                 self.data['dockerVersion'] = 'unknown'
 

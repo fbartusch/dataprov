@@ -129,8 +129,6 @@ def main():
     #TODO Introduce an environment element: PATH, LIBRARY_PATH, glibc, ... Check for loaded modules / conda environments and update schema/code
     # Record executor
     new_operation.record_executor(executor)
-    # Record operation class
-    new_operation.record_op_class(remaining)
 
     #TODO Implement the opClasses
     #TODO discriminate based on following executable names; docker, singularity, cwltool, cwl-runner
