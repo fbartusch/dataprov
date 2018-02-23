@@ -84,8 +84,14 @@ def main():
     debug = args.debug
     executor_config_file = args.executor
     message = args.message
-    command_output_files = args.output
-    command_input_files = args.input
+    if args.output is not None:
+        command_output_files = args.output
+    else:
+        command_output_files = []
+    if args.input is not None:
+        command_input_files = args.input
+    else:
+        command_input_files = []
     
     if debug:
         print("Arguments: " + str(args))
@@ -98,48 +104,66 @@ def main():
     # Check if executor information are available
     executor = Executor(executor_config_file)
 
-    # Read input provenance metadata
-    input_provenance_data = defaultdict()
-    if command_input_files:
-        for input_file in command_input_files:
-            # Check if input file and the corresponding provenance metadata exists
-            if not os.path.exists(input_file):
-                print("Input file specified by -i does not exist: ", input_file)
-                print("No provenance information will be considered for this file.")
-                continue
-            abs_path = os.path.abspath(input_file)
-            input_prov_file = input_file + '.prov'
-            if not os.path.exists(input_prov_file):
-                print("Metadata for input file specified by -i does not exist: ", input_file)
-                input_provenance_data[abs_path] = None
-                continue
+    # Create the object describing this operation
+    op_class = OpClass(remaining)  
+
+
+    # Combine output files specified on commmand line and the files specified
+    # in the wrapped command (e.g. from CWL file's output binding)
+    output_files_tmp = command_output_files + op_class.get_output_files()
+    output_files = []
+    for output_file in output_files_tmp:
+        abs_path = os.path.abspath(output_file)
+        if abs_path not in output_files:
+            output_files.append(abs_path)
+
+
+    # Combine input files specified on command line and the files specified in
+    # the wrapped command (e.g. from CWL file's input binding)
+    input_files_tmp = command_input_files + op_class.get_input_files()
+    input_files = []
+    for input_file in input_files_tmp:
+        # Check if input file and the corresponding provenance metadata exists
+        if not os.path.exists(input_file):
+            print("Input file specified by -i does not exist: ", input_file)
+            print("No provenance information will be considered for this file.")
+            continue
+        abs_path = os.path.abspath(input_file)
+        if abs_path not in input_files:
+            input_files.append(abs_path)
         
-            #Parse XML and store in dictionary
-            new_provenance_object = Dataprov(input_prov_file)
-            input_provenance_data[abs_path] = new_provenance_object
+     # Read provenance data   
+    input_provenance_data = defaultdict()
+    for input_file in input_files:
+        input_prov_file = input_file + '.prov'
+        if not os.path.exists(input_prov_file):
+            print("Metadata for input file specified by -i does not exist: ", input_file)
+            input_provenance_data[abs_path] = None
+            continue   
+        #Parse XML and store in dictionary
+        new_provenance_object = Dataprov(input_prov_file)
+        input_provenance_data[abs_path] = new_provenance_object
             
     # Create a new provenance object
     new_operation = Operation()
-    # Record input files
-    new_operation.record_input_files(input_provenance_data)
-    # Record start time
-    new_operation.record_start_time()        
+      
     # Record Host
     new_operation.record_host()
     #TODO Introduce an environment element: PATH, LIBRARY_PATH, glibc, ... Check for loaded modules / conda environments and update schema/code
     # Record executor
     new_operation.record_executor(executor)
-
-    #TODO Implement the opClasses
-    #TODO discriminate based on following executable names; docker, singularity, cwltool, cwl-runner
-    #TODO Change the to/from_xml methods of operation
-    op_class = OpClass(remaining)    
+  
     new_operation.record_op_class(op_class)
     
+    # Record input files
+    new_operation.record_input_files(input_provenance_data)
     
     # Record message
     new_operation.record_message(message)
-            
+    
+    # Record start time
+    new_operation.record_start_time()  
+      
     # Execute the wrapped command
     return_code = subprocess.call(' '.join(remaining), shell=True)  
     #command_string = ' '.join(remaining)
@@ -152,12 +176,16 @@ def main():
     # Record end time
     new_operation.record_end_time()
     
+    #TODO Add output files that were not specified on command line with -o, but 
+    # specified in workflow files (e.g. cwlfiles)
+    # command_output_files.append(opClass.get_output_files())
+    
     # Record target files
-    new_operation.record_target_files(command_output_files)
+    new_operation.record_target_files(output_files)
 
     # Create the final dataprov object for each output file
     result_dataprov_objects = []
-    for output_file in command_output_files:
+    for output_file in output_files:
         new_dataprov = Dataprov()
         new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
         result_dataprov_objects.append(new_dataprov)

@@ -22,6 +22,8 @@ class OpClass(GenericElement):
         Initialize this file element.
         '''
         super().__init__()
+        self.input_files = []
+        self.output_files = []
         if remaining is not None:
             # Try to determine the correct opClass
             # (e.g. docker, singularity, commandLine, ...)
@@ -36,62 +38,6 @@ class OpClass(GenericElement):
             else:
                 #Generic command line tool
                 self.data['opClass'] = CommandLine(remaining)
-
-
-
-
-#CWL command line example
-#argsl = ["data/cwl/20_software-requirements/custom-types.cwl", "data/cwl/20_software-requirements/custom-types.yml"]
-
-
-
-# Has it's own module now
-#argsl = ["data/cwl/user_guide/1st-tool.cwl", "data/cwl/user_guide/echo-job.yml"]
-#arg_parser = cwltool.main.arg_parser()
-#args = arg_parser.parse_args(argsl)
-
-#uri, tool_file_uri = cwltool.load_tool.resolve_tool_uri(args.workflow, resolver=cwltool.resolver.tool_resolver, fetcher_constructor=None)
-
-
-#job_order_object, input_basedir, jobloader = cwltool.main.load_job_order(args, sys.stdin, None, None, tool_file_uri)
-
-
-#cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)
-#cwl_tool.tool
-#cwl_tool.requirements
-#cwl_tool.hints
-#cwl_tool.inputs_record_schema # + job_order_dict to describe inputs
-#cwl_tool.outputs_record_schem # to describe outputs
-# Prints on which .cwl files the command depends:
-#cwltool.main.main(["--print-deps", "data/cwl/user_guide/1st-tool.cwl", "data/cwl/user_guide/echo-job.yml"])
-#{
-#    "class": "File",
-#    "location": "1st-tool.cwl"
-#}
-
-# cwlCommandLineTool:
-#cwl_tool = cwltool.load_tool.load_tool("data/cwl/user_guide/1st-tool.cwl", cwltool.workflow.defaultMakeTool)
-# tool (what to execute)
-#cwl_tool.tool
-# hints (docker, directories, ...)
-#cwl_tool.hints
-# inputs of the tool
-#cwl_tool.inputs_record_schema
-# outputs of the tool
-#cwl_tool.outputs_record_schema
-
-
-# cwlWorkflow
-#cwl_tool = cwltool.load_tool.load_tool("data/cwl/user_guide/1st-workflow.cwl", cwltool.workflow.defaultMakeTool)
-
-# Run workflow
-#cwltool.main.main(["data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])
-
-# Validate tool definition
-#cwltool.main.main(["--validate", "data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])
-
-# print rdf: 
-# cwltool.main.main(["--print-rdf", "data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])
 
 
     def from_xml(self, root, validate=True):
@@ -125,3 +71,19 @@ class OpClass(GenericElement):
         '''
         root = self.data['opClass'].to_xml()
         return root
+    
+    
+    def get_input_files(self):
+        '''
+        Get input files specified by the wrapped command
+        (e.g. from CWL input bindings)
+        '''
+        return self.data['opClass'].get_input_files()
+
+
+    def get_output_files(self):
+        '''
+        Get output files specified by the wrapped command
+        (e.g. from outputs specified by CWL files)
+        '''
+        return self.data['opClass'].get_output_files()

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="../file.xsd"/> 
+  <xs:include schemaLocation="cwlCommandLineTool.xsd"/>
+  <xs:include schemaLocation="cwlWorkflow.xsd"/>
   <xs:complexType name="cwltool">
     <xs:sequence>
       <xs:element name="wrappedCommand" type="xs:string"/>
-      <xs:element name="cwlToolPath" type="xs:anyURI"/>
-      <xs:element name="cwlToolVersion" type="xs:string"/>
+      <xs:element name="cwltoolPath" type="xs:anyURI"/>
+      <xs:element name="cwltoolVersion" type="xs:string"/>
       <xs:element name="cwlVersion" type="xs:string"/>
       <xs:element name="cwlFile" type="file"/>
       <xs:element name="cwlJobOrder" type="file"/>

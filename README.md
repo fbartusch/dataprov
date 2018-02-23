@@ -93,8 +93,13 @@ total 6112
 -rw-r--r-- 1    3253 Feb 15 15:46 A.bam.prov
 ```
 
-## Running workflows
+## Running CWL CommandLineTools and Workflows
 
+Tool example. Needs input output because they are not parsed from CWL files yet.
+
+```
+dataprov -i hello.tar -o hello.txt run cwltool tar.cwl tar-job.yml
+```
 ```
 cd data/cwl/tutorial
 cwl-runner 1st-workflow.cwl 1st-workflow-job.yml

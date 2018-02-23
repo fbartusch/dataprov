@@ -53,11 +53,13 @@ class File(GenericElement):
         return sha1sum
 
     
-    def to_xml(self):
+    def to_xml(self, root_tag=None):
         '''
         Create a xml ElementTree object from the data attribute. 
         '''
         root = etree.Element(self.element_name)
+        if root_tag is not None:
+            root.tag = root_tag
         etree.SubElement(root, "name").text = self.data["name"]
         etree.SubElement(root, "uri").text = self.data["uri"]
         etree.SubElement(root, "sha1").text = self.data["sha1"]

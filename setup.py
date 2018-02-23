@@ -14,7 +14,8 @@ setup(name='dataprov',
       install_requires=[
           'argparse',
           'lxml',
-          'docker'
+          'docker',
+          'html5lib'
       ],
       include_package_data=True,
       zip_safe=False)
