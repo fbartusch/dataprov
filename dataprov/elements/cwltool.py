@@ -4,9 +4,11 @@ import shutil
 import subprocess
 import cwltool
 import cwltool.main
+import cwltool.stdfsaccess
 from collections import defaultdict
 from lxml import etree
 from urllib.parse import urlparse
+from ruamel.yaml.comments import CommentedMap
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
@@ -42,18 +44,16 @@ class CWLTool(GenericElement):
                 self.data['cwltoolVersion'] = toolVersion
             else:
                 self.data['cwltoolVersion'] = 'unknown'
-
+       
             # Get information from the CWL file and the job order (e.g. input bindings)
             arg_parser = cwltool.main.arg_parser()
             args = arg_parser.parse_args(remaining[1:])
-            # Output directory
-            outdir = args.outdir
             # Path to CWL file
             uri, tool_file_uri = cwltool.load_tool.resolve_tool_uri(args.workflow, resolver=cwltool.resolver.tool_resolver, fetcher_constructor=None)
             # Job order (e.g. input bindings)
             job_order_object, input_basedir, jobloader = cwltool.main.load_job_order(args, sys.stdin, None, None, tool_file_uri)
             # Parse CWL file and create a CWL tool
-            cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)
+            cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)       
             self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']
             self.data['cwlFile'] = File(urlparse(tool_file_uri).path)
             self.data['cwlJobOrder'] = File(urlparse(job_order_object['id']).path)
@@ -61,10 +61,10 @@ class CWLTool(GenericElement):
             # Is the a CommandLineTool or a Workflow?
             cwl_tool_class = cwl_tool.tool['class']
             if cwl_tool_class == "CommandLineTool":
-                self.data['cwlCommandLineTool'] = CWLCommandLineTool(cwl_tool, job_order_object, outdir)
+                self.data['cwlCommandLineTool'] = CWLCommandLineTool(remaining[1:])
                 self.data['cwlWorkflow'] = None
             elif cwl_tool_class == "Workflow":
-                self.data['cwlWorkflow'] = CWLWorkflow(cwl_tool, job_order_object, outdir)
+                self.data['cwlWorkflow'] = CWLWorkflow(remaining[1:])
                 self.data['cwlCommandLineTool'] = None
             else:
                 print("Unknown cwl tool class: ", cwl_tool_class)
@@ -151,7 +151,11 @@ class CWLTool(GenericElement):
             return self.data['cwlCommandLineTool'].get_output_files()
         elif self.data['cwlWorkflow'] is not None:
             return self.data['cwlWorkflow'].get_output_files()
-            
+
+
+
+
+
             
 #CWL command line example
 #argsl = ["data/cwl/20_software-requirements/custom-types.cwl", "data/cwl/20_software-requirements/custom-types.yml"]
@@ -170,29 +174,6 @@ class CWLTool(GenericElement):
 
 
 #cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)
-#cwl_tool.tool
-#cwl_tool.requirements
-#cwl_tool.hints
-#cwl_tool.inputs_record_schema # + job_order_dict to describe inputs
-#cwl_tool.outputs_record_schem # to describe outputs
-# Prints on which .cwl files the command depends:
-#cwltool.main.main(["--print-deps", "data/cwl/user_guide/1st-tool.cwl", "data/cwl/user_guide/echo-job.yml"])
-#{
-#    "class": "File",
-#    "location": "1st-tool.cwl"
-#}
-
-# cwlCommandLineTool:
-#cwl_tool = cwltool.load_tool.load_tool("data/cwl/user_guide/1st-tool.cwl", cwltool.workflow.defaultMakeTool)
-# tool (what to execute)
-#cwl_tool.tool
-# hints (docker, directories, ...)
-#cwl_tool.hints
-# inputs of the tool
-#cwl_tool.inputs_record_schema
-# outputs of the tool
-#cwl_tool.outputs_record_schema
-
 
 # cwlWorkflow
 #cwl_tool = cwltool.load_tool.load_tool("data/cwl/user_guide/1st-workflow.cwl", cwltool.workflow.defaultMakeTool)
