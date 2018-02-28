@@ -151,38 +151,3 @@ class CWLTool(GenericElement):
             return self.data['cwlCommandLineTool'].get_output_files()
         elif self.data['cwlWorkflow'] is not None:
             return self.data['cwlWorkflow'].get_output_files()
-
-
-
-
-
-            
-#CWL command line example
-#argsl = ["data/cwl/20_software-requirements/custom-types.cwl", "data/cwl/20_software-requirements/custom-types.yml"]
-
-
-
-# Has it's own module now
-#argsl = ["data/cwl/user_guide/1st-tool.cwl", "data/cwl/user_guide/echo-job.yml"]
-#arg_parser = cwltool.main.arg_parser()
-#args = arg_parser.parse_args(argsl)
-
-#uri, tool_file_uri = cwltool.load_tool.resolve_tool_uri(args.workflow, resolver=cwltool.resolver.tool_resolver, fetcher_constructor=None)
-
-
-#job_order_object, input_basedir, jobloader = cwltool.main.load_job_order(args, sys.stdin, None, None, tool_file_uri)
-
-
-#cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)
-
-# cwlWorkflow
-#cwl_tool = cwltool.load_tool.load_tool("data/cwl/user_guide/1st-workflow.cwl", cwltool.workflow.defaultMakeTool)
-
-# Run workflow
-#cwltool.main.main(["data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])
-
-# Validate tool definition
-#cwltool.main.main(["--validate", "data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])
-
-# print rdf: 
-# cwltool.main.main(["--print-rdf", "data/cwl/user_guide/1st-workflow.cwl", "data/cwl/user_guide/1st-workflow-job.yml"])

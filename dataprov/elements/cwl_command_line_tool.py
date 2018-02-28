@@ -16,7 +16,7 @@ class CWLCommandLineTool(GenericElement):
     element_name = "cwlCommandLineTool"
     schema_file = os.path.join(XML_DIR, 'cwl/cwlCommandLineTool_element.xsd')
     
-    def __init__(self, argsl):
+    def __init__(self, argsl=None):
         # Empty data attribute
         self.data = defaultdict()
 

@@ -8,8 +8,6 @@
       <xs:element name="wrappedCommand" type="xs:string"/>
       <xs:element name="cwltoolPath" type="xs:anyURI"/>
       <xs:element name="cwltoolVersion" type="xs:string"/>
-      <xs:element name="cwlVersion" type="xs:string"/>
-      <xs:element name="cwlFile" type="file"/>
       <xs:element name="cwlJobOrder" type="file"/>
       <xs:choice>
         <xs:element name="cwlCommandLineTool" type="cwlCommandLineTool"/>

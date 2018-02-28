@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="dict.xsd"/>
+  <xs:include schemaLocation="../file.xsd"/>
+
+  <xs:complexType name="dockerPull">
+    <xs:element name="url" type="xs:anyURI"/>
+  </xs:complexType>
+
+  <xs:complexType name="dockerLoad">
+    <xs:element name="archive" type="File"/>
+  </xs:complexType>
+
+  <xs:complexType name="dockerFile">
+    <xs:element name="dockerfile" type="File"/>
+  </xs:complexType>
+
+  <xs:complexType name="dockerImport">
+    <xs:element name="url" type="xs:anyURI"/>
+  </xs:complexType>
+
+  <xs:complexType name="imageSource">
+    <xs:choice>
+      <xs:element name="dockerPull" type="dockerPull"/>
+      <xs:element name="dockerLoad" type="dockerLoad"/>
+      <xs:element name="dockerFile" type="dockerFile"/>
+      <xs:element name="dockerImport" type="dockerImport"/>
+    </xs:choice>
+  </xs:complexType>
+
+  <xs:complexType name="imageDetails">
+    <xs:sequence>
+      <xs:element name="imageID" type="xs:string"/>
+      <xs:element name="repoTag" type="xs:string"/>
+      <xs:element name="repoDigest" type="xs:string"/>
+      <xs:element name="created" type="xs:dateTime"/>
+      <xs:element name="labels" type="dict"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="dockerContainer">
+    <xs:sequence>
+      <xs:element name="imageID" type="xs:string"/>
+      <xs:element name="imageSource" type="imageSource"/>
+      <xs:element name="imageDetails" type="imageDetails" minOccurs="0"/>
+      <xs:element name="dockerPath" type="xs:anyURI"/>
+      <xs:element name="dockerVersion" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
