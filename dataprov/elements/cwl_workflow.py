@@ -6,6 +6,8 @@ from collections import defaultdict
 from lxml import etree
 from urllib.parse import urlparse
 from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.file import File
+from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
 from dataprov.definitions import XML_DIR
 
 class CWLWorkflow(GenericElement):
@@ -19,6 +21,7 @@ class CWLWorkflow(GenericElement):
     def __init__(self, argsl=None):
         # Empty data attribute
         self.data = defaultdict()
+        self.data['workflowSteps'] = []
         
         self.input_files = []
         self.output_files = []
@@ -37,19 +40,27 @@ class CWLWorkflow(GenericElement):
             # Parse CWL file and create a CWL tool
             cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)          
             
+            # cwlFile
+            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)
+            # cwlVersion
+            self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']                        
+            
             # Additional input files
             #for input in job_order_object:
-            #    if input != 'id' and job_order_object[input]['class'] == 'File':
+            #   if input != 'id' and job_order_object[input]['class'] == 'File':
             #        path = urlparse(job_order_object[input]['path']).path
             #        self.input_files.append(path)
                     
             # Additional output files
+            #TODO same problem as for cwlCommandLineTools
             #for output in cwl_tool.tool['outputs']:
             #    if output != 'id' and output['type'] == 'File':
             #        name = output['outputBinding']['glob']
             #        path = os.path.join(outdir, name)
             #        self.output_files.append(path)
             
+            
+            #TODO Get workflow docker requirement and give them to workflow steps
             
             job_order_object = cwltool.main.init_job_order(job_order_object, args, cwl_tool, print_input_deps=args.print_input_deps, relative_deps=args.relative_deps, stdout=sys.stdout, make_fs_access=cwltool.stdfsaccess.StdFsAccess, loader=jobloader, input_basedir=input_basedir)
             del args.workflow
@@ -60,11 +71,12 @@ class CWLWorkflow(GenericElement):
             workflow_job = jobiter.__next__()
             
             # Iterate over the workflow steps and collect data about them
-            for workflow_step in jobiter:
-                # Get type of the step
-                step_type = type(workflow_step1)
-            
-                # Based on the type, create the corresponding objects
+            for workflow_step_job in jobiter:
+                if not workflow_step_job:
+                    break
+                cur_step = CWLCommandLineTool()
+                cur_step.from_job(workflow_job, workflow_step_job)
+                self.data['workflowSteps'].append(cur_step)
             
         
     def from_xml(self, root, validate=True):
@@ -82,12 +94,37 @@ class CWLWorkflow(GenericElement):
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute.
-        Each subclass has to implement itself, because data (defaultdict) elements
-        are not ordered.
         '''
         root = etree.Element(self.element_name)
-        #etree.SubElement(root, "name").text = self.data["name"]
-        return root
+        # CWL file
+        cwl_file_ele = self.data["cwlFile"].to_xml("cwlFile")
+        root.append(cwl_file_ele)
+        # CWL Version
+        etree.SubElement(root, "cwlVersion").text = self.data["cwlVersion"]
+        # WorkflowSteps
+        steps_ele = etree.SubElement(root, "workflowSteps")
+        print(self.data['workflowSteps'])
+        for workflow_step in self.data['workflowSteps']:
+            step_ele = CWLCommandLineTool()
+            steps_ele.append(step_ele.to_xml())
         
-            
+        return root
+    
+    
+    def get_input_files(self):
+        '''
+        Get input files specified by the wrapped command
+        (e.g. from CWL input bindings)
+        '''
+        return self.input_files
 
+
+    def get_output_files(self):
+        '''
+        Get output files specified by the wrapped command
+        (e.g. from outputs specified by CWL files)
+        '''
+        return self.output_files
+        
+    def do_nothing():
+        return

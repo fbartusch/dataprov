@@ -3,7 +3,7 @@
   <xs:include schemaLocation="cwlCommandLineTool.xsd"/>
   <xs:complexType name="cwlWorkflow">
     <xs:sequence>
-      <xs:element name="cwlFile" type="File"/>
+      <xs:element name="cwlFile" type="file"/>
       <xs:element name="cwlVersion" type="xs:string"/>
       <xs:element name="workflowSteps" type="cwlCommandLineTool" maxOccurs="unbounded"/>
     </xs:sequence>

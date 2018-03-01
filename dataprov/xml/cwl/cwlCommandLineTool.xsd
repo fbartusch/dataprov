@@ -3,7 +3,7 @@
   <xs:include schemaLocation="../docker/dockerContainer.xsd"/>
   <xs:complexType name="cwlCommandLineTool">
     <xs:sequence>
-      <xs:element name="cwlFile" type="File"/>
+      <xs:element name="cwlFile" type="file"/>
       <xs:element name="cwlVersion" type="xs:string"/>
       <xs:element name="command" type="xs:string"/>
       <xs:element name="dockerRequirement" type="dockerContainer" minOccurs="0"/>

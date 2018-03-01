@@ -184,7 +184,9 @@ def main():
     new_operation.record_target_files(output_files)
 
     # Create the final dataprov object for each output file
+    #TODO Implement checks if output file exists and handle exception 
     result_dataprov_objects = []
+    print(output_files)
     for output_file in output_files:
         new_dataprov = Dataprov()
         new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
@@ -198,6 +200,7 @@ def main():
             # TODO do this with an Error type
             print("Resulting dataprov object is not valid!")
         else:
+            print("Resulting dataprov object is valid!")
             output_xml_file = dataprov_object.get_xml_file_path()
             write_xml(dataprov_xml, output_xml_file)
 

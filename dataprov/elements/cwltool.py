@@ -54,8 +54,8 @@ class CWLTool(GenericElement):
             job_order_object, input_basedir, jobloader = cwltool.main.load_job_order(args, sys.stdin, None, None, tool_file_uri)
             # Parse CWL file and create a CWL tool
             cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)       
-            self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']
-            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)
+            self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']  # record it, but isn't part of schema
+            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)  # record it, but isn't part of schema
             self.data['cwlJobOrder'] = File(urlparse(job_order_object['id']).path)
             
             # Is the a CommandLineTool or a Workflow?
@@ -88,12 +88,14 @@ class CWLTool(GenericElement):
         self.data['wrappedCommand'] = root.find('wrappedCommand').text
         self.data['cwltoolPath'] = root.find('cwltoolPath').text
         self.data['cwltoolVersion'] = root.find('cwltoolVersion').text
-        self.data['cwlVersion'] = root.find('cwlVersion').text
+        
+        #self.data['cwlVersion'] = root.find('cwlVersion').text
         # CWL file
-        cwl_file_ele = root.find('cwlFile')
-        cwl_file = File()
-        cwl_file.from_xml(cwl_file_ele)
-        self.data['cwlFile'] = cwl_file
+        #cwl_file_ele = root.find('cwlFile')
+        #cwl_file = File()
+        #cwl_file.from_xml(cwl_file_ele)
+        #self.data['cwlFile'] = cwl_file
+        
         # CWL job order
         cwl_job_order_ele = root.find('cwlJobOrder')
         cwl_job_order = File()
@@ -103,9 +105,9 @@ class CWLTool(GenericElement):
         cwl_command_line_tool_ele = root.find('cwlCommandLineTool')
         cwl_workflow_ele = root.find('cwlWorkflow')
         if cwl_command_line_tool_ele is not None:
-            self.data['cwlCommandLineTool'] = cwl_command_line_tool_ele.to_xml()
+            self.data['cwlCommandLineTool'] = cwl_command_line_tool_ele.from_xml()
         elif cwl_workflow_ele is not None:
-            self.data['cwlWorkflow'] = cwl_workflow_ele.to_xml()
+            self.data['cwlWorkflow'] = cwl_workflow_ele.from_xml()
     
     
     def to_xml(self):
@@ -116,9 +118,11 @@ class CWLTool(GenericElement):
         etree.SubElement(root, "wrappedCommand").text = self.data["wrappedCommand"]
         etree.SubElement(root, "cwltoolPath").text = self.data["cwltoolPath"]
         etree.SubElement(root, "cwltoolVersion").text = self.data["cwltoolVersion"]
-        etree.SubElement(root, "cwlVersion").text = self.data["cwlVersion"]
-        cwl_file_ele = self.data["cwlFile"].to_xml("cwlFile")
-        root.append(cwl_file_ele)
+        
+        #etree.SubElement(root, "cwlVersion").text = self.data["cwlVersion"]
+        #cwl_file_ele = self.data["cwlFile"].to_xml("cwlFile")
+        #root.append(cwl_file_ele)
+        
         cwl_job_order_ele = self.data["cwlJobOrder"].to_xml("cwlJobOrder")
         root.append(cwl_job_order_ele)
         if self.data['cwlCommandLineTool'] is not None:

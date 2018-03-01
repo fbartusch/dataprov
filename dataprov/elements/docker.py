@@ -40,13 +40,11 @@ class Docker(GenericElement):
 
             # Get the output of docker inspect on the container
             image_dict = self.get_container_image(remaining)
-            print(image_dict)
             self.data['id'] = image_dict['Id']
             self.data['repoTag'] = image_dict['RepoTags'][0]
             self.data['repoDigest'] = image_dict['RepoDigests'][0]
             self.data['created'] = image_dict['Created']
             self.data['labels'] = image_dict['ContainerConfig']['Labels']
-            print(self.data)
 
             
     def from_xml(self, root, validate=True):

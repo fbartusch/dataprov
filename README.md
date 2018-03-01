@@ -100,6 +100,15 @@ Tool example. Needs input output because they are not parsed from CWL files yet.
 ```
 dataprov -i hello.tar -o hello.txt run cwltool tar.cwl tar-job.yml
 ```
+
+CWLTool example that uses docker container
+
+```
+dataprov run cwltool data/cwl/user_guide/arguments.cwl data/cwl/user_guide/arguments-job.yml
+```
+
+Workflow example:
+
 ```
 cd data/cwl/tutorial
 cwl-runner 1st-workflow.cwl 1st-workflow-job.yml
