@@ -71,12 +71,21 @@ class CWLWorkflow(GenericElement):
             workflow_job = jobiter.__next__()
             
             # Iterate over the workflow steps and collect data about them
-            for workflow_step_job in jobiter:
+            i = 0
+            print(workflow_job.steps)
+            #for workflow_step_job in jobiter:
+            for workflow_step in workflow_job.steps:
+                print(i)
+                workflow_step_job = jobiter.__next__()
+                i = i+1
                 if not workflow_step_job:
                     break
                 cur_step = CWLCommandLineTool()
                 cur_step.from_job(workflow_job, workflow_step_job)
                 self.data['workflowSteps'].append(cur_step)
+                # Fake the run of this job ...
+                # Set workflow_step_job.completed = True
+                # Set workflow_job.made_progress = True
             
         
     def from_xml(self, root, validate=True):
@@ -105,8 +114,7 @@ class CWLWorkflow(GenericElement):
         steps_ele = etree.SubElement(root, "workflowSteps")
         print(self.data['workflowSteps'])
         for workflow_step in self.data['workflowSteps']:
-            step_ele = CWLCommandLineTool()
-            steps_ele.append(step_ele.to_xml())
+            steps_ele.append(workflow_step.to_xml())
         
         return root
     

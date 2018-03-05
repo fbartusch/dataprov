@@ -175,12 +175,36 @@ class CWLCommandLineTool(GenericElement):
                 cwl_path = urlparse(step['run']).path
                 cwl_file = File(cwl_path)
                 self.data['cwlFile'] = cwl_file
-                print(cwl_file)
-                input("Press Enter to continue...")
                 break
         # cwlVersion
         cwl_tool = cwltool.load_tool.load_tool(cwl_path, cwltool.workflow.defaultMakeTool)
         self.data['cwlVersion'] = cwl_tool.tool['cwlVersion']
+
+        # CWL perfomrs computations in a temporary directory. The command string would countain these temporary directories.
+        # Compute a map of path in cwltool temporary environment to real path
+        file_mapping = dict()
+        for binding in step_job.builder.bindings:
+            value = binding.get("datum")
+            if isinstance(value, dict) and value.get("class") in ("File", "Directory"):
+                real_path = urlparse(value['location']).path
+                file_mapping[value['path']] = real_path
+                print(file_mapping)
+
+        # Command
+        # Build command line
+        command_line_list = cwltool.flatten.flatten(list(map(step_job.builder.generate_arg, step_job.builder.bindings)))
+        
+        # Iterate over command line and swap the temporary CWL paths with the real paths
+        new_command_line_list = []      
+        for value in command_line_list:
+            if value in file_mapping:
+                new_command_line_list.append(file_mapping[value])
+            else:
+                new_command_line_list.append(value)
+                
+        # Command
+        command = ' '.join(new_command_line_list)
+        self.data['command'] = command
         # Docker Requirement
         job_hints = step_job.builder.hints
         job_requirements = step_job.builder.requirements
