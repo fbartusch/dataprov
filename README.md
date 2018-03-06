@@ -19,6 +19,21 @@ cd dataprov
 pip install .
 ```
 
+Install additonal packages.
+
+To support CWL command line tools and workflows:
+
+```
+pip install cwltool==1.0.20180302231433
+```
+
+To support the use of Docker images. This is only used to get information of Docker containers via the Python API, this does not replace your Docker installation on the machine.
+
+```
+pip install docker
+```
+
+
 ## First steps
 
 A important part of the recorded metadata is **who** computed something.
