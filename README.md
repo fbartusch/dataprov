@@ -19,7 +19,13 @@ cd dataprov
 pip install .
 ```
 
-Install additonal packages.
+### Install additonal packages.
+
+To try the 'First steps' examples without the Docker containe without the Docker container:
+
+```
+conda install bwa
+```
 
 To support CWL command line tools and workflows:
 
@@ -34,7 +40,7 @@ pip install docker
 ```
 
 
-## First steps
+# First steps
 
 A important part of the recorded metadata is **who** computed something.
 This information is stored at `~/.dataprov/executor.conf`. If you start dataprov for the first time, the file will be created for you. You hjust have to fill in the information. 
