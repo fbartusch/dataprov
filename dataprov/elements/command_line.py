@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.file_list import FileList
 from lxml import etree
 from dataprov.definitions import XML_DIR
 
@@ -18,6 +19,8 @@ class CommandLine(GenericElement):
     def __init__(self, remaining=None):
         # Empty data attribute
         self.data = defaultdict()
+        self.data['inputFiles'] = None
+        self.data['outputFiles'] = None
         
         self.input_files = []
         self.output_files = []        
@@ -46,8 +49,7 @@ class CommandLine(GenericElement):
             else:
                 self.data['toolVersion'] = 'unknown'
             # Input files and output files cannot be determined from a general command line command
-            self.data['inputFiles'] = None
-            self.data['outputFiles'] = None
+
 
     
     def to_xml(self):
@@ -90,6 +92,42 @@ class CommandLine(GenericElement):
             self.data['outputFiles'] = None
 
 
+    def set_command(self, command):
+        '''
+        Set a command as well as toolPath and toolVersion
+        '''
+        self.data['command'] = command
+        tool = command.split()[0]
+        toolPath = shutil.which(tool)
+        self.data['toolPath'] = toolPath
+        # Tool Version
+        FNULL = open(os.devnull, 'w')
+        try:
+            toolVersion1 = subprocess.check_output([tool,  '--version'], stderr=FNULL)
+        except:
+            toolVersion1 = None
+        try:
+            toolVersion2 = subprocess.check_output([tool,  '-v'], stderr=FNULL)
+        except:
+            toolVersion2 = None
+        if toolVersion1 is not None:
+            self.data['toolVersion'] = toolVersion1
+        elif toolVersion2 is not None:
+            self.data['toolVersion'] = toolVersion2
+        else:
+            self.data['toolVersion'] = 'unknown'
+
+    
+    def post_processing(self):
+        '''
+        Perform necessary post processing steps
+        '''
+        # Generate file elements for input files
+        self.data['inputFiles'] = FileList(self.input_files)
+        # Generate file elements for output files
+        self.data['outputFiles'] = FileList(self.output_files)
+
+        
     def get_input_files(self):
         '''
         Get input files specified by the wrapped command

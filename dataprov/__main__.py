@@ -67,18 +67,6 @@ def main():
     run = subparsers.add_parser("run",
                                  help="Run a command line command and create provenance metadata")
 
-    # Singularity
-    # This subcommand will wrap Singularity commmands. The Metadata will
-    # contain a special element describing the container.
-    #singularity = subparsers.add_parser("singularity",
-    #                                    help="Run a Singularity command and create provenance metadata")
-
-    #Docker
-    #This subcommand will wrap Docker commmands. The Metadata will
-    #contain a special element describing the container.
-    docker = subparsers.add_parser("docker",
-                                   help="Run a Docker command and create provenance metadata")
-
     # Parse command line arguments
     args, remaining = parser.parse_known_args()
     debug = args.debug
@@ -151,10 +139,11 @@ def main():
       
     # Record Host
     new_operation.record_host()
-    #TODO Introduce an environment element: PATH, LIBRARY_PATH, glibc, ... Check for loaded modules / conda environments and update schema/code
+
     # Record executor
     new_operation.record_executor(executor)
   
+    # Record more details about operation (commandLine, snakemake, ...)
     new_operation.record_op_class(op_class)
     
     # Record input files
@@ -168,19 +157,13 @@ def main():
       
     # Execute the wrapped command
     return_code = subprocess.call(' '.join(remaining), shell=True)  
-    #command_string = ' '.join(remaining)
-    #commands = command_string.split('&&')
-    #for command in commands:
-    #    command_list = command.split()
-    #    return_code = subprocess.call(command_list)
-    #    continue
     
     # Record end time
     new_operation.record_end_time()
-    
-    #TODO Add output files that were not specified on command line with -o, but 
-    # specified in workflow files (e.g. cwlfiles)
-    # command_output_files.append(opClass.get_output_files())
+
+    # Perform post processing
+    # e.g. for workflows to annotate intermediate files that were generated during workflow execution
+    new_operation.post_processing()
     
     # Record target files
     new_operation.record_target_files(output_files)
@@ -206,10 +189,6 @@ def main():
             print("Resulting dataprov object is valid!")
             output_xml_file = dataprov_object.get_xml_file_path()
             write_xml(dataprov_xml, output_xml_file)
-
-    exit(0)
-    
-    print(return_code)
 
 if __name__ == '__main__':
     main()

@@ -104,6 +104,13 @@ class Operation(GenericElement):
         return root
     
     
+    def post_processing(self):
+        '''
+        Perform necessary post processing steps
+        '''
+        self.data['opClass'].post_processing()
+    
+    
     def record_input_files(self, input_provenance_data):
         '''
         Record the input files.

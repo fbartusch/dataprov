@@ -27,6 +27,13 @@ To try the 'First steps' examples without the Docker containe without the Docker
 conda install bwa
 ```
 
+For the snakemake example workflow:
+
+```
+conda install samtools==1.6
+pip install docutils
+```
+
 To support CWL command line tools and workflows:
 
 ```

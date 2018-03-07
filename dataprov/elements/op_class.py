@@ -4,8 +4,8 @@ from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
 from dataprov.elements.docker import Docker
 from dataprov.elements.cwltool import CWLTool
+from dataprov.elements.snakemake import Snakemake
 from dataprov.definitions import XML_DIR
-from lxml import etree
 
 
 class OpClass(GenericElement):
@@ -35,6 +35,8 @@ class OpClass(GenericElement):
                 #self.data['opClass'] = Singularity(remaining)
             elif executable == 'cwltool':
                 self.data['opClass'] = CWLTool(remaining)
+            elif executable == 'snakemake':
+                self.data['opClass'] = Snakemake(remaining)
             else:
                 #Generic command line tool
                 self.data['opClass'] = CommandLine(remaining)
@@ -71,6 +73,13 @@ class OpClass(GenericElement):
         '''
         root = self.data['opClass'].to_xml()
         return root
+
+
+    def post_processing(self):
+        '''
+        Perform necessary post processing steps
+        '''
+        self.data['opClass'].post_processing()
     
     
     def get_input_files(self):

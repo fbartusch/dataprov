@@ -25,8 +25,11 @@ class FileList(GenericElement):
         self.data = defaultdict(list)
         if files:
             for file in files:
-                new_file = File(file)
-                self.data['file'].append(new_file)
+                try:
+                    new_file = File(file)
+                    self.data['file'].append(new_file)
+                except IOError:
+                    print("Output file does not exist: ", file)
             
 
     def from_xml(self, root, validate=True):

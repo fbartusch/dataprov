@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="file.xsd"/>
+  <xs:include schemaLocation="commandLine.xsd"/>
+  
+  <xs:complexType name="snakemake">
+    <xs:sequence>
+      <xs:element name="command" type="xs:string"/>
+      <xs:element name="snakemakePath" type="xs:anyURI"/>
+      <xs:element name="snakemakeVersion" type="xs:string"/>
+      <xs:element name="snakefile" type="file"/>
+      <xs:element name="configFile" type="file" minOccurs="0"/>
+      <xs:element name="steps" type="commandLine" maxOccurs="unbounded"/>
+    </xs:sequence> 
+  </xs:complexType>
+</xs:schema>
