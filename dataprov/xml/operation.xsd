@@ -6,6 +6,7 @@
   <xs:include schemaLocation="commandLine.xsd"/>
   <xs:include schemaLocation="docker.xsd"/>
   <xs:include schemaLocation="cwl/cwltool.xsd"/>
+  <xs:include schemaLocation="snakemake.xsd"/>
 
   <xs:complexType name="opClass">
     <xs:choice>
@@ -13,6 +14,7 @@
       <xs:element name="docker" type="docker"/>
       <xs:element name="singularity" type="singularity"/>
       <xs:element name="cwltool" type="cwltool"/>
+      <xs:element name="snakemake" type="snakemake"/>
     </xs:choice>
   </xs:complexType>
 

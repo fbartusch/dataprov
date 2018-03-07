@@ -110,7 +110,7 @@ class Operation(GenericElement):
         '''
         input_files = FileList()
         if input_provenance_data is not None:
-            for input_file,provenance_object in input_provenance_data.items():
+            for input_file, provenance_object in input_provenance_data.items():
                 # Check if there is provenance data available
                 if provenance_object is not None:
                     input_files.add_file(provenance_object.data['target'])

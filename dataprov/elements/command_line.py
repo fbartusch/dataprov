@@ -19,8 +19,11 @@ class CommandLine(GenericElement):
         # Empty data attribute
         self.data = defaultdict()
         
+        self.input_files = []
+        self.output_files = []        
+        
         if remaining is not None:
-            # Wrapped command
+            # Command
             self.data['command'] = ' '.join(remaining)
             # Tool Path
             tool = remaining[0].split()[0]
@@ -52,14 +55,14 @@ class CommandLine(GenericElement):
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, 'wrappedCommand').text = self.data['wrappedCommand']
+        etree.SubElement(root, 'command').text = self.data['command']
         etree.SubElement(root, 'toolPath').text = self.data['toolPath']
         etree.SubElement(root, 'toolVersion').text = self.data['toolVersion']
         if self.data['inputFiles'] is not None:
-            input_files_ele = self.data['inputFiles'].to_xml()
+            input_files_ele = self.data['inputFiles'].to_xml("inputFiles")
             root.append(input_files_ele)
         if self.data['outputFiles'] is not None:
-            output_files_ele = self.data['outputFiles'].to_xml()    
+            output_files_ele = self.data['outputFiles'].to_xml("outputFiles")    
             root.append(output_files_ele)
         return root
 
@@ -79,5 +82,25 @@ class CommandLine(GenericElement):
         output_files_ele = root.find('outputFiles')
         if input_files_ele is not None:
             self.data['inputFiles'] = input_files_ele.from_xml()
+        else:
+            self.data['inputFiles'] = None
         if output_files_ele is not None:
             self.data['outputFiles'] = output_files_ele.from_xml()
+        else:
+            self.data['outputFiles'] = None
+
+
+    def get_input_files(self):
+        '''
+        Get input files specified by the wrapped command
+        (e.g. from CWL input bindings)
+        '''
+        return self.input_files
+
+
+    def get_output_files(self):
+        '''
+        Get output files specified by the wrapped command
+        (e.g. from outputs specified by CWL files)
+        '''
+        return self.output_files

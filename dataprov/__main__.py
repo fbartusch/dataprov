@@ -138,11 +138,13 @@ def main():
         input_prov_file = input_file + '.prov'
         if not os.path.exists(input_prov_file):
             print("Metadata for input file specified by -i does not exist: ", input_file)
-            input_provenance_data[abs_path] = None
-            continue   
+            input_provenance_data[input_file] = None
+            continue
+        print("Metadata for input file specified by -i does exist: ", input_file)
         #Parse XML and store in dictionary
         new_provenance_object = Dataprov(input_prov_file)
-        input_provenance_data[abs_path] = new_provenance_object
+        input_provenance_data[input_file] = new_provenance_object
+    print(input_provenance_data)
             
     # Create a new provenance object
     new_operation = Operation()
@@ -187,6 +189,7 @@ def main():
     #TODO Implement checks if output file exists and handle exception 
     result_dataprov_objects = []
     print(output_files)
+    print(input_provenance_data)
     for output_file in output_files:
         new_dataprov = Dataprov()
         new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
