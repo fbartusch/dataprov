@@ -63,9 +63,9 @@ class CWLTool(GenericElement):
             if cwl_tool_class == "CommandLineTool":
                 self.data['cwlCommandLineTool'] = CWLCommandLineTool(remaining[1:])
                 self.data['cwlWorkflow'] = None
-            elif cwl_tool_class == "Workflow":
-                self.data['cwlWorkflow'] = CWLWorkflow(remaining[1:])
-                self.data['cwlCommandLineTool'] = None
+            #elif cwl_tool_class == "Workflow":
+            #    self.data['cwlWorkflow'] = CWLWorkflow(remaining[1:])
+            #    self.data['cwlCommandLineTool'] = None
             else:
                 print("Unknown cwl tool class: ", cwl_tool_class)
                 exit(1)

@@ -21,7 +21,7 @@ class CommandLine(GenericElement):
         
         if remaining is not None:
             # Wrapped command
-            self.data['wrappedCommand'] = ' '.join(remaining)
+            self.data['command'] = ' '.join(remaining)
             # Tool Path
             tool = remaining[0].split()[0]
             toolPath = shutil.which(tool)
@@ -42,6 +42,9 @@ class CommandLine(GenericElement):
                 self.data['toolVersion'] = toolVersion2
             else:
                 self.data['toolVersion'] = 'unknown'
+            # Input files and output files cannot be determined from a general command line command
+            self.data['inputFiles'] = None
+            self.data['outputFiles'] = None
 
     
     def to_xml(self):
@@ -52,5 +55,29 @@ class CommandLine(GenericElement):
         etree.SubElement(root, 'wrappedCommand').text = self.data['wrappedCommand']
         etree.SubElement(root, 'toolPath').text = self.data['toolPath']
         etree.SubElement(root, 'toolVersion').text = self.data['toolVersion']
+        if self.data['inputFiles'] is not None:
+            input_files_ele = self.data['inputFiles'].to_xml()
+            root.append(input_files_ele)
+        if self.data['outputFiles'] is not None:
+            output_files_ele = self.data['outputFiles'].to_xml()    
+            root.append(output_files_ele)
         return root
-        
+
+
+    def from_xml(self, root, validate=True):
+        '''
+        Populate data attribute from the root of a xml ElementTree object.
+        '''
+        self.data = defaultdict()
+        if validate and not self.validate_xml(root):
+            print("XML document does not match XML-schema")
+            return
+        self.data['command'] = root.find('command').text
+        self.data['toolPath'] = root.find('toolPath').text
+        self.data['toolVersion'] = root.find('toolVersion').text
+        input_files_ele = root.find('inputFiles')
+        output_files_ele = root.find('outputFiles')
+        if input_files_ele is not None:
+            self.data['inputFiles'] = input_files_ele.from_xml()
+        if output_files_ele is not None:
+            self.data['outputFiles'] = output_files_ele.from_xml()
