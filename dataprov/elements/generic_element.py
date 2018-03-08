@@ -52,7 +52,14 @@ class GenericElement:
         # Create XML schema
         xml_schema = etree.XMLSchema(xml_schema_doc)
         # Validate
-        return xml_schema.validate(root)
+        try:
+            xml_schema.assertValid(root)
+            return True
+        except etree.DocumentInvalid as e:#, xml_errors:
+            print("XML document is not valid!")
+            print(e)
+            #print "List of errors:\r\n", xml_errors.error_log
+            return False
 
 
     def __str__(self):

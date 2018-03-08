@@ -74,11 +74,9 @@ class CWLCommandLineTool(GenericElement):
                 if isinstance(value, dict) and value.get("class") in ("File", "Directory"):
                     real_path = urlparse(value['location']).path
                     file_mapping[value['path']] = real_path
-            print(file_mapping)
             
             # Build command line
             command_line_list = cwltool.flatten.flatten(list(map(job.builder.generate_arg, job.builder.bindings)))
-            print(command_line_list)
             
             # Iterate over command line and swap the temporary CWL paths with the real paths
             new_command_line_list = []      
@@ -188,7 +186,6 @@ class CWLCommandLineTool(GenericElement):
             if isinstance(value, dict) and value.get("class") in ("File", "Directory"):
                 real_path = urlparse(value['location']).path
                 file_mapping[value['path']] = real_path
-                print(file_mapping)
 
         # Command
         # Build command line

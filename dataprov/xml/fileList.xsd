@@ -3,7 +3,7 @@
   <xs:include schemaLocation="file.xsd"/> 
   <xs:complexType name="fileList">
     <xs:sequence>
-      <xs:element name="file" type="file" maxOccurs="unbounded"/>
+      <xs:element name="file" type="file" minOccurs="0" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

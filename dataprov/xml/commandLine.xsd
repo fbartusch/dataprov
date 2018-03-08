@@ -4,7 +4,7 @@
   <xs:complexType name="commandLine">
     <xs:sequence>
       <xs:element name="command" type="xs:string"/>
-      <xs:element name="toolPath" type="xs:anyURI"/>
+      <xs:element name="toolPath" type="xs:string"/>
       <xs:element name="toolVersion" type="xs:string"/>
       <xs:element name="inputFiles" type="fileList" minOccurs="0"/>
       <xs:element name="outputFiles" type="fileList" minOccurs="0"/>

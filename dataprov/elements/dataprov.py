@@ -20,7 +20,7 @@ class Dataprov(GenericElement):
     element_name = "dataprov"
     schema_file = os.path.join(XML_DIR, 'dataprov_element.xsd')
     
-    def __init__(self, file=None):
+    def __init__(self, file=None, validate=True):
         '''
         Initialize an empty object or read directly from file
         '''
@@ -29,15 +29,17 @@ class Dataprov(GenericElement):
             with open(file, 'r') as xml_file:
                 parser = etree.XMLParser()
                 tree = etree.parse(xml_file, parser)
-                self.from_xml(tree.getroot())
+                try:
+                    self.from_xml(tree.getroot(), validate=validate)
+                except IOError as e:
+                    print(e)
     
     
     def from_xml(self, root, validate=True):        
         self.data = defaultdict()
         # Validate XML against schema
         if validate and not self.validate_xml(root):
-            print("XML document does not match XML-schema")
-            exit(1)
+            raise IOError("XML document does not match XML-schema")
         
         # Get the target from the xml
         target_ele = root.find('target')
@@ -50,7 +52,6 @@ class Dataprov(GenericElement):
         history = History()
         history.from_xml(history_ele, validate=False)
         self.data['history'] = history
-        
 
     def to_xml(self):
         '''

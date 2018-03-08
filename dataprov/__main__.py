@@ -66,130 +66,149 @@ def main():
     # This subcommand will run arbitrary command line commands                      
     run = subparsers.add_parser("run",
                                  help="Run a command line command and create provenance metadata")
-
+                                 
+                                 
+    # This subcommand will validate a xml-file                      
+    validate = subparsers.add_parser("validate",
+                                     help="Validate a xml-file")
+    validate.add_argument('xml',
+                          help="xml-file to validate")
+                        
     # Parse command line arguments
     args, remaining = parser.parse_known_args()
     debug = args.debug
-    executor_config_file = args.executor
-    message = args.message
-    if args.output is not None:
-        command_output_files = args.output
-    else:
-        command_output_files = []
-    if args.input is not None:
-        command_input_files = args.input
-    else:
-        command_input_files = []
     
-    if debug:
-        print("Arguments: " + str(args))
-        print("Remaining: " + str(remaining))
-        print("Personal information: " + executor_config_file)
-        print("Command outputs: " + str(command_output_files))
-        print("Input metadata files: " + str(command_input_files))
-        print("Message: ", message)
-
-    # Check if executor information are available
-    executor = Executor(executor_config_file)
-
-    # Create the object describing this operation
-    op_class = OpClass(remaining)  
-
-
-    # Combine output files specified on commmand line and the files specified
-    # in the wrapped command (e.g. from CWL file's output binding)
-    output_files_tmp = command_output_files + op_class.get_output_files()
-    output_files = []
-    for output_file in output_files_tmp:
-        abs_path = os.path.abspath(output_file)
-        if abs_path not in output_files:
-            output_files.append(abs_path)
-
-
-    # Combine input files specified on command line and the files specified in
-    # the wrapped command (e.g. from CWL file's input binding)
-    input_files_tmp = command_input_files + op_class.get_input_files()
-    input_files = []
-    for input_file in input_files_tmp:
-        # Check if input file and the corresponding provenance metadata exists
-        if not os.path.exists(input_file):
-            print("Input file specified by -i does not exist: ", input_file)
-            print("No provenance information will be considered for this file.")
-            continue
-        abs_path = os.path.abspath(input_file)
-        if abs_path not in input_files:
-            input_files.append(abs_path)
-        
-     # Read provenance data   
-    input_provenance_data = defaultdict()
-    for input_file in input_files:
-        input_prov_file = input_file + '.prov'
-        if not os.path.exists(input_prov_file):
-            print("Metadata for input file specified by -i does not exist: ", input_file)
-            input_provenance_data[input_file] = None
-            continue
-        print("Metadata for input file specified by -i does exist: ", input_file)
-        #Parse XML and store in dictionary
-        new_provenance_object = Dataprov(input_prov_file)
-        input_provenance_data[input_file] = new_provenance_object
-    print(input_provenance_data)
-            
-    # Create a new provenance object
-    new_operation = Operation()
-      
-    # Record Host
-    new_operation.record_host()
-
-    # Record executor
-    new_operation.record_executor(executor)
-  
-    # Record more details about operation (commandLine, snakemake, ...)
-    new_operation.record_op_class(op_class)
-    
-    # Record input files
-    new_operation.record_input_files(input_provenance_data)
-    
-    # Record message
-    new_operation.record_message(message)
-    
-    # Record start time
-    new_operation.record_start_time()  
-      
-    # Execute the wrapped command
-    #TODO let opClass decide how to execute the job
-    op_class.run() 
-    
-    # Record end time
-    new_operation.record_end_time()
-
-    # Perform post processing
-    # e.g. for workflows to annotate intermediate files that were generated during workflow execution
-    new_operation.post_processing()
-    
-    # Record target files
-    new_operation.record_target_files(output_files)
-
-    # Create the final dataprov object for each output file
-    #TODO Implement checks if output file exists and handle exception 
-    result_dataprov_objects = []
-    print(output_files)
-    print(input_provenance_data)
-    for output_file in output_files:
-        new_dataprov = Dataprov()
-        new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
-        result_dataprov_objects.append(new_dataprov)
-
-    # Check if the create xml is valid, then write to file
-    for dataprov_object in result_dataprov_objects:
-        dataprov_xml = dataprov_object.to_xml()
-        write_xml(dataprov_xml, "test.prov")
-        if not dataprov_object.validate_xml(dataprov_xml):
-            # TODO do this with an Error type
-            print("Resulting dataprov object is not valid!")
+    if args.command == "validate":
+        #TODO implement
+        abs_path = os.path.abspath(args.xml)
+        # Read provenance data   
+        if not os.path.exists(abs_path):
+            print("Specified XML file does not exist: ", abs_path)
+            exit(1)
         else:
-            print("Resulting dataprov object is valid!")
-            output_xml_file = dataprov_object.get_xml_file_path()
-            write_xml(dataprov_xml, output_xml_file)
+            try:
+                Dataprov(file=abs_path)
+                print("XML is valid!")
+                exit(0)
+            except IOError:
+                print("XML is not valid!")             
+                exit(1)
+    elif args.command == "run":
+        executor_config_file = args.executor
+        message = args.message
+        if args.output is not None:
+            command_output_files = args.output
+        else:
+            command_output_files = []
+        if args.input is not None:
+            command_input_files = args.input
+        else:
+            command_input_files = []
+        
+        if debug:
+            print("Arguments: " + str(args))
+            print("Remaining: " + str(remaining))
+            print("Personal information: " + executor_config_file)
+            print("Command outputs: " + str(command_output_files))
+            print("Input metadata files: " + str(command_input_files))
+            print("Message: ", message)
+    
+        # Check if executor information are available
+        executor = Executor(executor_config_file)
+    
+        # Create the object describing this operation
+        op_class = OpClass(remaining)  
+    
+    
+        # Combine output files specified on commmand line and the files specified
+        # in the wrapped command (e.g. from CWL file's output binding)
+        output_files_tmp = command_output_files + op_class.get_output_files()
+        output_files = []
+        for output_file in output_files_tmp:
+            abs_path = os.path.abspath(output_file)
+            if abs_path not in output_files:
+                output_files.append(abs_path)
+    
+    
+        # Combine input files specified on command line and the files specified in
+        # the wrapped command (e.g. from CWL file's input binding)
+        input_files_tmp = command_input_files + op_class.get_input_files()
+        input_files = []
+        for input_file in input_files_tmp:
+            # Check if input file and the corresponding provenance metadata exists
+            if not os.path.exists(input_file):
+                print("Input file specified by -i does not exist: ", input_file)
+                print("No provenance information will be considered for this file.")
+                continue
+            abs_path = os.path.abspath(input_file)
+            if abs_path not in input_files:
+                input_files.append(abs_path)
+            
+         # Read provenance data   
+        input_provenance_data = defaultdict()
+        for input_file in input_files:
+            input_prov_file = input_file + '.prov'
+            if not os.path.exists(input_prov_file):
+                print("Metadata for input file specified by -i does not exist: ", input_file)
+                input_provenance_data[input_file] = None
+                continue
+            print("Metadata for input file specified by -i does exist: ", input_file)
+            #Parse XML and store in dictionary
+            new_provenance_object = Dataprov(input_prov_file)
+            input_provenance_data[input_file] = new_provenance_object
+                
+        # Create a new provenance object
+        new_operation = Operation()
+          
+        # Record Host
+        new_operation.record_host()
+    
+        # Record executor
+        new_operation.record_executor(executor)
+      
+        # Record more details about operation (commandLine, snakemake, ...)
+        new_operation.record_op_class(op_class)
+        
+        # Record input files
+        new_operation.record_input_files(input_provenance_data)
+        
+        # Record message
+        new_operation.record_message(message)
+        
+        # Record start time
+        new_operation.record_start_time()  
+          
+        # Execute the wrapped command
+        op_class.run() 
+        
+        # Record end time
+        new_operation.record_end_time()
+    
+        # Perform post processing
+        # e.g. for workflows to annotate intermediate files that were generated during workflow execution
+        new_operation.post_processing()
+        
+        # Record target files
+        new_operation.record_target_files(output_files)
+    
+        # Create the final dataprov object for each output file
+        #TODO Implement checks if output file exists and handle exception 
+        result_dataprov_objects = []
+        for output_file in output_files:
+            new_dataprov = Dataprov()
+            new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
+            result_dataprov_objects.append(new_dataprov)
+        # Check if the create xml is valid, then write to file
+        for dataprov_object in result_dataprov_objects:
+            dataprov_xml = dataprov_object.to_xml()
+            write_xml(dataprov_xml, "test.prov")
+            if not dataprov_object.validate_xml(dataprov_xml):
+                # TODO do this with an Error type
+                print("Resulting dataprov object is not valid!")
+            else:
+                output_xml_file = dataprov_object.get_xml_file_path()
+                print("Write resulting xml file to: ", output_xml_file)
+                write_xml(dataprov_xml, output_xml_file)
 
 if __name__ == '__main__':
     main()

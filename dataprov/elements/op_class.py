@@ -35,10 +35,11 @@ class OpClass(GenericElement):
         Initialize this file element.
         '''
         super().__init__()
-        self.remaining = list(remaining)
+        self.remaining = None
         self.input_files = []
         self.output_files = []
         if remaining is not None:
+            self.remaining = list(remaining)
             # Try to determine the correct opClass
             # (e.g. docker, singularity, commandLine, ...)
             self.executable = remaining[0].split()[0]
@@ -66,7 +67,6 @@ class OpClass(GenericElement):
             return
         # Discriminate from child tag which class to use
         child_tag = root[0].tag
-        print(child_tag)
         if child_tag == 'docker':
             #TODO implement
             op_class = Docker()
@@ -74,10 +74,16 @@ class OpClass(GenericElement):
             op_class.from_xml(docker_ele, validate)
         #elif root_tag =='singularity':
             #TODO implement
-        else:
+        elif child_tag == 'snakemake':
+            op_class = Snakemake()
+            snakemake_ele = root.find('snakemake')
+            op_class.from_xml(snakemake_ele, validate)
+        elif child_tag == 'commandLine':
             op_class = CommandLine()
             command_line_ele = root.find('commandLine')
             op_class.from_xml(command_line_ele, validate)
+        else:
+            print("Unknown root tag: ", child_tag)
         self.data['opClass'] = op_class
         
         
@@ -119,14 +125,12 @@ class OpClass(GenericElement):
         # Snakemake starts a child process for the workflow and therefore
         # subprocess would return immediately. So use the snakemake Python API.
         if self.executable == "snakemake":
-            print("Before Snakemake main")
             #parser = snakemake.get_argument_parser()
             #args = parser.parse_args(self.remaining[1:])
             try:
                 snakemake.main(self.remaining[1:])
             except SystemExit as e:
                 # snakemake main wants to exit ... but we want to write the xml files 
-                print("After Snakemake main")
                 return            
         else:
             subprocess.run(' '.join(self.remaining), shell=True) 

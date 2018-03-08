@@ -71,7 +71,6 @@ class Snakemake(GenericElement):
                 s = line.decode('ascii').strip()
                 if s.startswith('rule'):
                     rule_name = s.split()[1][:-1]
-                    print(rule_name)
                     if rule_name is not "all":
                         new_step = CommandLine()
                         rule_ended = False
@@ -81,13 +80,11 @@ class Snakemake(GenericElement):
                 elif s.startswith('input: '):
                     input_list = s[7:].split(',')
                     input_list = [os.path.abspath(i.strip()) for i in input_list]
-                    print("input_list: ", input_list)
                     new_step.input_files = input_list
                     self.input_files += input_list
                 elif s.startswith('output: '):
                     output_list = s[8:].split(',')
                     output_list = [os.path.abspath(o.strip()) for o in output_list]
-                    print("output_list: ", output_list)
                     new_step.output_files = output_list
                     self.output_files += output_list
                 elif len(s) == 0 and not rule_ended:
@@ -98,13 +95,10 @@ class Snakemake(GenericElement):
                     if len(command) == 0:
                         print("command empty, do not track this step")
                     else:
-                        print("command: ", command)
                         new_step.set_command(command)
-                        print(new_step)
                         self.data['step'].append(new_step)
                     command_next = False
                     rule_ended = True
-                print(self.data['step'])
 
 
     def from_xml(self, root, validate=True):
@@ -120,12 +114,12 @@ class Snakemake(GenericElement):
         self.data['snakemakeVersion'] = root.find('snakemakeVersion').text
         # Snakefile
         snakefile = File()
-        snakefile.from_xml(root.find('snakefile'))
+        snakefile.from_xml(root.find('snakefile'), validate)
         self.data['snakefile'] = snakefile
         # Configfile
-        if root.find('configFile') is not none:
+        if root.find('configFile') is not None:
             config_file = File()
-            config_file.from_xml(root.find('configFile'))
+            config_file.from_xml(root.find('configFile'), validate)
             self.data['configFile'] = config_file
         else:
             self.data['configFile'] = None
@@ -133,7 +127,7 @@ class Snakemake(GenericElement):
         self.data['step'] = []
         for step in root.findall('step'):
             command_line = CommandLine()
-            command_line.from_xml(step)
+            command_line.from_xml(step, validate)
             self.data['step'].append(step)
 
 
@@ -144,7 +138,7 @@ class Snakemake(GenericElement):
         root = etree.Element(self.element_name)
         etree.SubElement(root, 'command').text = self.data['command']
         etree.SubElement(root, 'snakemakePath').text = self.data['snakemakePath']
-        etree.SubElement(root, 'snakemakelVersion').text = self.data['snakemakeVersion']
+        etree.SubElement(root, 'snakemakeVersion').text = self.data['snakemakeVersion']
         # Snakefile
         snakefile_ele = self.data['snakefile'].to_xml("snakefile")
         root.append(snakefile_ele)
@@ -158,8 +152,7 @@ class Snakemake(GenericElement):
             root.append(step_ele)
         return root
         
-    
-    
+        
     def validate_xml(self, root):
         '''
         Validate an lxml object against a the XSD schema of this dataprov element.
@@ -171,7 +164,8 @@ class Snakemake(GenericElement):
         xml_schema = etree.XMLSchema(xml_schema_doc)
         # Validate
         return xml_schema.validate(root)
-    
+        
+        
     def get_input_files(self):
         '''
         Get input files specified by the wrapped command

@@ -20,6 +20,9 @@ class Docker(GenericElement):
         # Empty data attribute
         self.data = defaultdict()
         
+        self.input_files = []
+        self.output_files = []    
+        
         if remaining is not None:
             # Wrapped command
             self.data['wrappedCommand'] = ' '.join(remaining)
@@ -108,3 +111,19 @@ class Docker(GenericElement):
                     return image_dict                    
                 except docker.errors.ImageNotFound:
                     continue
+    
+    
+    def get_input_files(self):
+        '''
+        Get input files specified by the wrapped command
+        (e.g. from CWL input bindings)
+        '''
+        return self.input_files
+
+
+    def get_output_files(self):
+        '''
+        Get output files specified by the wrapped command
+        (e.g. from outputs specified by CWL files)
+        '''
+        return self.output_files

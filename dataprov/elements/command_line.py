@@ -85,11 +85,15 @@ class CommandLine(GenericElement):
         input_files_ele = root.find('inputFiles')
         output_files_ele = root.find('outputFiles')
         if input_files_ele is not None:
-            self.data['inputFiles'] = input_files_ele.from_xml()
+            input_files = FileList()
+            input_files.from_xml(input_files_ele, validate)
+            self.data['inputFiles'] = input_files
         else:
             self.data['inputFiles'] = None
         if output_files_ele is not None:
-            self.data['outputFiles'] = output_files_ele.from_xml()
+            output_files = FileList()
+            output_files.from_xml(output_files_ele, validate)
+            self.data['outputFiles'] = output_files
         else:
             self.data['outputFiles'] = None
 
