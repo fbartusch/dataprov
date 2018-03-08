@@ -1,11 +1,24 @@
 import os
+import subprocess
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
-from dataprov.elements.docker import Docker
-from dataprov.elements.cwltool import CWLTool
-from dataprov.elements.snakemake import Snakemake
 from dataprov.definitions import XML_DIR
+# Conditional imports. If the docker, cwltool or snakemake is not installed throw no error
+try:
+    from dataprov.elements.docker import Docker
+except ImportError as e:
+    print(str(e))
+try:
+    from dataprov.elements.cwltool import CWLTool
+except ImportError as e:
+    print(str(e))
+try:
+    import snakemake
+    from dataprov.elements.snakemake import Snakemake
+except ImportError as e:
+    print(str(e))
+
 
 
 class OpClass(GenericElement):
@@ -22,20 +35,21 @@ class OpClass(GenericElement):
         Initialize this file element.
         '''
         super().__init__()
+        self.remaining = list(remaining)
         self.input_files = []
         self.output_files = []
         if remaining is not None:
             # Try to determine the correct opClass
             # (e.g. docker, singularity, commandLine, ...)
-            executable = remaining[0].split()[0]
-            if executable == "docker":
+            self.executable = remaining[0].split()[0]
+            if self.executable == "docker":
                 self.data['opClass'] = Docker(remaining)
             #elif executable == "singularity"
                 #TODO implement
                 #self.data['opClass'] = Singularity(remaining)
-            elif executable == 'cwltool':
+            elif self.executable == 'cwltool':
                 self.data['opClass'] = CWLTool(remaining)
-            elif executable == 'snakemake':
+            elif self.executable == 'snakemake':
                 self.data['opClass'] = Snakemake(remaining)
             else:
                 #Generic command line tool
@@ -96,3 +110,23 @@ class OpClass(GenericElement):
         (e.g. from outputs specified by CWL files)
         '''
         return self.data['opClass'].get_output_files()
+
+
+    def run(self):
+        '''
+        Run the wrapped command or workflow.
+        '''
+        # Snakemake starts a child process for the workflow and therefore
+        # subprocess would return immediately. So use the snakemake Python API.
+        if self.executable == "snakemake":
+            print("Before Snakemake main")
+            #parser = snakemake.get_argument_parser()
+            #args = parser.parse_args(self.remaining[1:])
+            try:
+                snakemake.main(self.remaining[1:])
+            except SystemExit as e:
+                # snakemake main wants to exit ... but we want to write the xml files 
+                print("After Snakemake main")
+                return            
+        else:
+            subprocess.run(' '.join(self.remaining), shell=True) 

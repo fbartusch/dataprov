@@ -30,8 +30,12 @@ conda install bwa
 For the snakemake example workflow:
 
 ```
-conda install samtools==1.6
+pip install snakemake
 pip install docutils
+
+# Install samtools and bcftools
+conda install samtools
+conda install bcftools
 ```
 
 To support CWL command line tools and workflows:

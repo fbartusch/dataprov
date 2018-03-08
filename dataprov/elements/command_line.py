@@ -52,11 +52,13 @@ class CommandLine(GenericElement):
 
 
     
-    def to_xml(self):
+    def to_xml(self, root_tag=None):
         '''
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
+        if root_tag is not None:
+            root.tag = root_tag
         etree.SubElement(root, 'command').text = self.data['command']
         etree.SubElement(root, 'toolPath').text = self.data['toolPath']
         etree.SubElement(root, 'toolVersion').text = self.data['toolVersion']

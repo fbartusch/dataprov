@@ -7,7 +7,7 @@
       <xs:element name="toolPath" type="xs:anyURI"/>
       <xs:element name="toolVersion" type="xs:string"/>
       <xs:element name="inputFiles" type="fileList" minOccurs="0"/>
-      <xs:element name="targetFiles" type="fileList" minOccurs="0"/>
+      <xs:element name="outputFiles" type="fileList" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

@@ -156,7 +156,8 @@ def main():
     new_operation.record_start_time()  
       
     # Execute the wrapped command
-    return_code = subprocess.call(' '.join(remaining), shell=True)  
+    #TODO let opClass decide how to execute the job
+    op_class.run() 
     
     # Record end time
     new_operation.record_end_time()

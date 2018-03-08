@@ -53,6 +53,8 @@ class Snakemake(GenericElement):
             # Config file (optional)
             if args.configfile is not None:
                 self.data['configFile'] = File(os.path.abspath(args.configfile))
+            else:
+                self.data['configFile'] = None
             # Workflow steps
             # Perform a dry run on that workflow using the configfile if provided
             dryrun_command = remaining
@@ -62,71 +64,100 @@ class Snakemake(GenericElement):
             dryrun = subprocess.check_output(dryrun_command).splitlines()
             
             # Iterate over the lines, create a command line element for each rule
-            self.data['steps'] = []
+            self.data['step'] = []
             rule_ended = True
             command_next = False
             for line in dryrun:
-                 s = line.decode('ascii').strip()
-                 if s.startswith('rule'):
-                     rule_name = s.split()[1][:-1]
-                     print(rule_name)
-                     if rule_name is not "all":
-                         new_step = CommandLine()
-                         rule_ended = False
-                     else:
-                         # 'all' ist last rule
-                         break
-                 elif s.startswith('input: '):
-                     input_list = s[7:].split(',')
-                     input_list = [os.path.abspath(i.strip()) for i in input_list]
-                     print("input_list: ", input_list)
-                     new_step.input_files = input_list
-                     self.input_files += input_list
-                 elif s.startswith('output: '):
-                     output_list = s[8:].split(',')
-                     output_list = [os.path.abspath(o.strip()) for o in output_list]
-                     print("output_list: ", output_list)
-                     new_step.output_files = output_list
-                     self.output_files += output_list
-                 elif len(s) == 0 and not rule_ended:
-                     command_next = True
-                     rule_ended = True
-                 elif command_next:
-                     command = s.strip()
-                     if len(command) == 0:
-                         print("command empty, do not track this step")
-                     else:
-                         print("command: ", command)
-                         new_step.set_command(command)
-                         print(new_step)
-                         self.data['steps'].append(new_step)
-                     command_next = False
-                     rule_ended = True
-            print(self.data['steps'])         
+                s = line.decode('ascii').strip()
+                if s.startswith('rule'):
+                    rule_name = s.split()[1][:-1]
+                    print(rule_name)
+                    if rule_name is not "all":
+                        new_step = CommandLine()
+                        rule_ended = False
+                    else:
+                        # 'all' ist last rule
+                        break
+                elif s.startswith('input: '):
+                    input_list = s[7:].split(',')
+                    input_list = [os.path.abspath(i.strip()) for i in input_list]
+                    print("input_list: ", input_list)
+                    new_step.input_files = input_list
+                    self.input_files += input_list
+                elif s.startswith('output: '):
+                    output_list = s[8:].split(',')
+                    output_list = [os.path.abspath(o.strip()) for o in output_list]
+                    print("output_list: ", output_list)
+                    new_step.output_files = output_list
+                    self.output_files += output_list
+                elif len(s) == 0 and not rule_ended:
+                    command_next = True
+                    rule_ended = True
+                elif command_next:
+                    command = s.strip()
+                    if len(command) == 0:
+                        print("command empty, do not track this step")
+                    else:
+                        print("command: ", command)
+                        new_step.set_command(command)
+                        print(new_step)
+                        self.data['step'].append(new_step)
+                    command_next = False
+                    rule_ended = True
+                print(self.data['step'])
 
 
     def from_xml(self, root, validate=True):
         '''
         Populate data attribute from the root of a xml ElementTree object.
-        This only works for simple elements like Host.
-        Validity is not checked if not validate. This can be the case if validity
-        is already checked by a superior element (e.g. dataprov vs. history)
         '''
         self.data = defaultdict()
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        for child in root:
-            self.data[child.tag] = child.text    
-    
-    
+        self.data['command'] = root.find('command').text
+        self.data['snakemakePath'] = root.find('snakemakePath').text
+        self.data['snakemakeVersion'] = root.find('snakemakeVersion').text
+        # Snakefile
+        snakefile = File()
+        snakefile.from_xml(root.find('snakefile'))
+        self.data['snakefile'] = snakefile
+        # Configfile
+        if root.find('configFile') is not none:
+            config_file = File()
+            config_file.from_xml(root.find('configFile'))
+            self.data['configFile'] = config_file
+        else:
+            self.data['configFile'] = None
+        # Steps
+        self.data['step'] = []
+        for step in root.findall('step'):
+            command_line = CommandLine()
+            command_line.from_xml(step)
+            self.data['step'].append(step)
+
+
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute.
-        Each subclass has to implement itself, because data (defaultdict) elements
-        are not ordered.
         '''
-        return ""
+        root = etree.Element(self.element_name)
+        etree.SubElement(root, 'command').text = self.data['command']
+        etree.SubElement(root, 'snakemakePath').text = self.data['snakemakePath']
+        etree.SubElement(root, 'snakemakelVersion').text = self.data['snakemakeVersion']
+        # Snakefile
+        snakefile_ele = self.data['snakefile'].to_xml("snakefile")
+        root.append(snakefile_ele)
+        # Configfile
+        if self.data['configFile'] is not None:
+            config_file_ele = self.data['configFile'].to_xml("configFile")
+            root.append(config_file_ele)
+        # Steps
+        for step in self.data['step']:
+            step_ele = step.to_xml("step")
+            root.append(step_ele)
+        return root
+        
     
     
     def validate_xml(self, root):
@@ -161,5 +192,5 @@ class Snakemake(GenericElement):
         '''
         Perform necessary post processing steps
         '''
-        for step in self.data['steps']:
+        for step in self.data['step']:
             step.post_processing()

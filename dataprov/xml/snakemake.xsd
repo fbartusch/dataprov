@@ -10,7 +10,7 @@
       <xs:element name="snakemakeVersion" type="xs:string"/>
       <xs:element name="snakefile" type="file"/>
       <xs:element name="configFile" type="file" minOccurs="0"/>
-      <xs:element name="steps" type="commandLine" maxOccurs="unbounded"/>
+      <xs:element name="step" type="commandLine" maxOccurs="unbounded"/>
     </xs:sequence> 
   </xs:complexType>
 </xs:schema>
