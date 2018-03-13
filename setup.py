@@ -15,7 +15,8 @@ setup(name='dataprov',
           'argparse',
           'lxml',
           'docker',
-          'html5lib'
+          'html5lib',
+          'graphviz'
       ],
       include_package_data=True,
       zip_safe=False)

@@ -1,4 +1,5 @@
 import os
+import graphviz as gv
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
@@ -87,3 +88,36 @@ class Dataprov(GenericElement):
         Return the path to the corresponding xml file.
         '''
         return self.data['target'].get_uri() + '.prov'
+    
+    def to_dag(self):
+        '''
+        Create a graphical representation of the provenance metadata.
+        Input and output/target files are nodes. These nodes are connected by the tracket operations/workflow steps.
+        '''
+        # Create the empty graph        
+        dag = gv.Digraph(format='svg')
+        
+        # Dictionary of file objects with hash as key, name (not path!) as value
+        # These will be file nodes
+        file_dict = {}
+        # Iterate over the operations and collect the stored information
+        for operation in self.data['history'].data['operation']:
+            # Input files
+            if operation.data['inputFiles']:
+                input_files = operation.data['inputFiles']
+                for input_file in input_files.data['file']:
+                    file_dict[input_file.data['sha1']] = input_file.data['name']
+            # Output files
+            output_files = operation.data['targetFiles']
+            for output_file in output_files.data['file']:
+                file_dict[output_file.data['sha1']] = output_file.data['name']
+        
+        print(file_dict)
+        for key,value in file_dict.items():
+            # Name of file node is <name>:<sha1>
+            node_name = value + ":" + key
+            print(node_name)
+            dag.node(node_name)
+        
+        dag.render("test")
+                    

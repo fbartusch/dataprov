@@ -73,13 +73,20 @@ def main():
                                      help="Validate a xml-file")
     validate.add_argument('xml',
                           help="xml-file to validate")
+
+    # This subcommand create DAG graph from an xml-file                  
+    dag = subparsers.add_parser("dag",
+                                     help="Create DAG from XML file")
+    dag.add_argument('xml',
+                     help="xml-file visualize")
+    dag.add_argument('dag',
+                     help="Resulting file in svg format.")
                         
     # Parse command line arguments
     args, remaining = parser.parse_known_args()
     debug = args.debug
     
     if args.command == "validate":
-        #TODO implement
         abs_path = os.path.abspath(args.xml)
         # Read provenance data   
         if not os.path.exists(abs_path):
@@ -93,6 +100,25 @@ def main():
             except IOError:
                 print("XML is not valid!")             
                 exit(1)
+    elif args.command == "dag":
+        abs_path = os.path.abspath(args.xml)
+        # Read provenance data   
+        #TODO check if graphviz is in PATH
+        if not os.path.exists(abs_path):
+            print("Specified XML file does not exist: ", abs_path)
+            exit(1)
+        else:
+            try:
+                dataprov = Dataprov(file=abs_path)
+                dag = dataprov.to_dag()
+                #TODO Implement and save to output file
+                dag.render(filename=args.dag)
+            except Exception as inst:
+                print(type(inst))    # the exception instance
+                print(inst.args)     # arguments stored in .args
+                print(inst)          # __str__ allows args to be printed directly,
+                exit(1)
+        exit(0)
     elif args.command == "run":
         executor_config_file = args.executor
         message = args.message
