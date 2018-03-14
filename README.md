@@ -122,7 +122,7 @@ dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o exampl
 
 # bwa not installed
 dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \
-    run 'docker run -v $PWD/examples/:/tmp/:z  docker.io/biocontainers/bwa:latest bwa mem /tmp/bwa/genome.fa /tmp/bwa/samples/A.fastq > data/bwa/mapped_reads/A.bam'
+    run 'docker run -v $PWD/examples/:/tmp/:z  docker.io/biocontainers/bwa:latest bwa mem /tmp/bwa/genome.fa /tmp/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
 ```
 
 The resulting metadata file inherits the metadata of the index file: `examples/bwa/mapped_reads/A.bam.prov`:

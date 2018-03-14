@@ -95,33 +95,6 @@ class CWLCommandLineTool(GenericElement):
             job_requirements = job.builder.requirements
             
             self.record_docker_requirement(wf_requirements, job_requirements, job_hints)
-            # Search for Docker requirements
-            # Docker requirement provided by workflow?
-            #docker_requirement = None
-            #if wf_requirements is not None and wf_requirements['DockerRequirement'] is not None:
-            #    docker_requirement = wf_requirements['DockerRequirement']
-            #if docker_requirement is None and job_requirements is not None:
-            #    for requirement in job_requirements:
-            #        if requirement['class'] == "DockerRequirement":
-            #            docker_requirement = requirement
-            #            break
-            #if docker_requirement is None and job_hints is not None:
-            #    for hint in job_hints:
-            #        if hint['class'] == "DockerRequirement":
-            #            docker_requirement = hint
-            #            break
-           # 
-           # if docker_requirement is not None:
-           #     cwl_docker_methods = ["dockerPull", "dockerLoad", "dockerFile", "dockerImport"] 
-          #      docker_req_dict = dict(docker_requirement)
-          #      for key, value in docker_req_dict.items():
-          #          if key in cwl_docker_methods:
-          #              method = key
-          #              source = value
-          #      docker_container_object = DockerContainer(method, source)
-          #      self.data['dockerRequirement'] = docker_container_object
-          #  else:
-          #      self.data['dockerRequirement'] = None
 
 
     def record_docker_requirement(self, job_requirements, job_hints, wf_requirements=None):

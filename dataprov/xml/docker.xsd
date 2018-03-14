@@ -1,16 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:include schemaLocation="dict.xsd"/>
+  <xs:include schemaLocation="docker/dockerContainer.xsd"/>
   <xs:complexType name="docker">
     <xs:sequence>
-      <xs:element name="wrappedCommand" type="xs:string"/>
-      <xs:element name="dockerPath" type="xs:anyURI"/>
-      <xs:element name="dockerVersion" type="xs:string"/>
-      <xs:element name="id" type="xs:string"/>
-      <xs:element name="repoTag" type="xs:string"/>
-      <xs:element name="repoDigest" type="xs:string"/>
-      <xs:element name="created" type="xs:dateTime"/>
-      <xs:element name="labels" type="dict"/>
+      <xs:element name="command" type="xs:string"/>
+      <xs:element name="dockerContainer" type="dockerContainer"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
