@@ -118,7 +118,7 @@ We can also incorporate existing metadata into the metadata of new computations.
 mkdir data/mapped_reads
 
 # bwa installed
-dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/A.fastq -o examples/bwa/mapped_reads/A.bam run 'bwa mem examples/bwa/genome.fa examples/bwa/A.fastq > examples/bwa/mapped_reads/A.bam'
+dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam run 'bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
 
 # bwa not installed
 dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \

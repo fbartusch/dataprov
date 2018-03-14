@@ -101,7 +101,9 @@ class Dataprov(GenericElement):
         # These will be file nodes
         file_dict = {}
         # Iterate over the operations and collect the stored information
+        op_num = 0
         for operation in self.data['history'].data['operation']:
+            op_num += 1
             # Input files
             if operation.data['inputFiles']:
                 input_files = operation.data['inputFiles']
@@ -111,13 +113,23 @@ class Dataprov(GenericElement):
             output_files = operation.data['targetFiles']
             for output_file in output_files.data['file']:
                 file_dict[output_file.data['sha1']] = output_file.data['name']
-        
-        print(file_dict)
-        for key,value in file_dict.items():
-            # Name of file node is <name>:<sha1>
-            node_name = value + ":" + key
-            print(node_name)
-            dag.node(node_name)
-        
-        dag.render("test")
-                    
+
+            print(file_dict)
+            for key, value in file_dict.items():
+                # Name of file node is <name>:<sha1>
+                node_name = value + ":" + key
+                #dag.node(node_name)
+                
+            # Edges
+            # For commandLine, connect each input node with the corresponding output node
+            # Label is the command?
+            command = operation.data['opClass'].data['opClass'].data['command']
+            if operation.data['inputFiles']:
+                for input_file in input_files.data['file']:
+                    for output_file in output_files.data['file']:
+                        in_node = input_file.data['name'] + ":" + input_file.data['sha1']
+                        out_node = output_file.data['name'] + ":" + output_file.data['sha1']
+                        label = "Op " + str(op_num)
+                        dag.edge(in_node, out_node, label=label)
+        dag.render("test.svg")
+        return

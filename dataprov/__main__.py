@@ -154,6 +154,9 @@ def main():
             abs_path = os.path.abspath(output_file)
             if abs_path not in output_files:
                 output_files.append(abs_path)
+        
+        if debug:
+            print("Output files: ", output_files)    
     
     
         # Combine input files specified on command line and the files specified in
@@ -169,6 +172,9 @@ def main():
             abs_path = os.path.abspath(input_file)
             if abs_path not in input_files:
                 input_files.append(abs_path)
+                
+        if debug:
+            print("Input files: ", input_files)
             
          # Read provenance data   
         input_provenance_data = defaultdict()
@@ -182,6 +188,9 @@ def main():
             #Parse XML and store in dictionary
             new_provenance_object = Dataprov(input_prov_file)
             input_provenance_data[input_file] = new_provenance_object
+        
+        if debug:
+            print("Input Provenance Data: ", input_provenance_data)
                 
         # Create a new provenance object
         new_operation = Operation()
@@ -225,7 +234,7 @@ def main():
             new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
             result_dataprov_objects.append(new_dataprov)
         # Check if the create xml is valid, then write to file
-        for dataprov_object in result_dataprov_objects:
+        for dataprov_object in result_dataprov_objects:            
             dataprov_xml = dataprov_object.to_xml()
             write_xml(dataprov_xml, "test.prov")
             if not dataprov_object.validate_xml(dataprov_xml):
