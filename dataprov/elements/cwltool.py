@@ -155,3 +155,9 @@ class CWLTool(GenericElement):
             return self.data['cwlCommandLineTool'].get_output_files()
         elif self.data['cwlWorkflow'] is not None:
             return self.data['cwlWorkflow'].get_output_files()
+    
+    def post_processing(self):
+        '''
+        Perform necessary post processing steps
+        '''
+        return

@@ -15,7 +15,7 @@ source activate dataprov
 Install dataprov
 
 ```
-git clone git clone https://github.com/fbartusch/dataprov.git
+git clone https://github.com/fbartusch/dataprov.git
 cd dataprov
 pip install .
 ```
@@ -139,27 +139,27 @@ If you look into this file you will see that the history of `A.bam.prov` contain
 
 ## Running Snakemake workflows
 
-Under construction
+The directory `examples/snakemake` contains the snakemake tutorial workflow and example data.
+
+```
+cd examples/snakemake
+dataprov run snakemake all
+```
+
+This will run the workflow and creates a provenance file for each of the eight output files.
 
 ## Running CWL CommandLineTools
 
-Under construction!
-
-Tool example. Needs input output because they are not parsed from CWL files yet.
+This is one example from the CWL user guide. It just untars a tar archive that contains just one file.
 
 ```
 dataprov -i hello.tar -o hello.txt run cwltool tar.cwl tar-job.yml
 ```
 
-CWLTool example that uses docker container
+The Docker example is under construction and does not work in the moment.
+
+CWLTool example that uses docker container to build a Java application. It could be the case that you have to disable SELinux to run the Docker container (more precise: allow writing in mounted volumes).
 
 ```
-dataprov run cwltool data/cwl/user_guide/arguments.cwl data/cwl/user_guide/arguments-job.yml
-```
-
-Workflow example:
-
-```
-cd data/cwl/tutorial
-cwl-runner 1st-workflow.cwl 1st-workflow-job.yml
+dataprov run cwltool arguments.cwl arguments-job.yml
 ```

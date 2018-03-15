@@ -94,7 +94,7 @@ class CWLCommandLineTool(GenericElement):
             job_hints = job.builder.hints
             job_requirements = job.builder.requirements
             
-            self.record_docker_requirement(wf_requirements, job_requirements, job_hints)
+            self.record_docker_requirement(job_requirements, job_hints, wf_requirements)
 
 
     def record_docker_requirement(self, job_requirements, job_hints, wf_requirements=None):
@@ -107,7 +107,8 @@ class CWLCommandLineTool(GenericElement):
         # Search for Docker requirements
         # Docker requirement provided by workflow?
         docker_requirement = None
-        if wf_requirements is not None and wf_requirements['DockerRequirement'] is not None:
+        print ("wf_requirements: ", wf_requirements)
+        if wf_requirements is not None and len(wf_requirements) > 0 and wf_requirements['DockerRequirement'] is not None:
             docker_requirement = wf_requirements['DockerRequirement']
         if docker_requirement is None and job_requirements is not None:
             for requirement in job_requirements:
@@ -241,6 +242,12 @@ class CWLCommandLineTool(GenericElement):
         (e.g. from outputs specified by CWL files)
         '''
         return self.output_files
+
+    def post_processing(self):
+        '''
+        Perform necessary post processing steps
+        '''
+        return
     
     def do_nothing():
         return
