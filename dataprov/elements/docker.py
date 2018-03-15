@@ -30,8 +30,6 @@ class Docker(GenericElement):
             # Get the output of docker inspect on the container
             image_dict = self.get_container_image(remaining)
 
-            print(image_dict)
-
             # Create the docker container object
             docker_container = DockerContainer("dockerLocal", image_dict['RepoTags'][0])
             self.data['dockerContainer'] = docker_container
@@ -78,7 +76,6 @@ class Docker(GenericElement):
             else:
                 # Check if this is the image to run
                 try:
-                    print("Current s: ", s)
                     image_dict = client.inspect_image(s)
                     return image_dict
                 except docker.errors.ImageNotFound:
