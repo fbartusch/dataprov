@@ -133,4 +133,6 @@ class OpClass(GenericElement):
                 # snakemake main wants to exit ... but we want to write the xml files 
                 return            
         else:
-            subprocess.run(' '.join(self.remaining), shell=True) 
+            output = subprocess.check_output(' '.join(self.remaining), shell=True)
+            self.output = output
+            print("Output: ", output)

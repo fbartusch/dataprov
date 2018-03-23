@@ -5,12 +5,12 @@ import cwltool.flatten
 from collections import defaultdict
 from lxml import etree
 from urllib.parse import urlparse
-from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from dataprov.elements.file import File
 from dataprov.definitions import XML_DIR
 
-class CWLCommandLineTool(GenericElement):
+class CWLCommandLineTool(GenericOp):
     '''
     This class describes a CWLCommandLineTool element.
     '''
@@ -247,6 +247,11 @@ class CWLCommandLineTool(GenericElement):
         '''
         Perform necessary post processing steps
         '''
+        # Parse output files from the captured output
+        # This is especially important if wildcards were used in the cwl-file
+        # Replace the wildcards with the actual filenames
+        # so we now for which file a prov-file should be written
+        print(self.output)
         return
     
     def do_nothing():
