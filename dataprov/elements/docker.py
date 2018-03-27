@@ -2,13 +2,13 @@ import os
 import docker
 from collections import defaultdict
 from docker.errors import ImageNotFound
-from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from lxml import etree
 from dataprov.definitions import XML_DIR
 
 
-class Docker(GenericElement):
+class Docker(GenericOp):
     '''
     This class describes a command executed in a Docker container.
     '''
@@ -19,6 +19,7 @@ class Docker(GenericElement):
     def __init__(self, remaining=None):
         # Empty data attribute
         self.data = defaultdict()
+        self.remaining = remaining
 
         self.input_files = []
         self.output_files = []
@@ -82,23 +83,3 @@ class Docker(GenericElement):
                     continue
                 except docker.errors.APIError:
                     continue
-
-    def get_input_files(self):
-        '''
-        Get input files specified by the wrapped command
-        (e.g. from CWL input bindings)
-        '''
-        return self.input_files
-
-    def get_output_files(self):
-        '''
-        Get output files specified by the wrapped command
-        (e.g. from outputs specified by CWL files)
-        '''
-        return self.output_files
-
-    def post_processing(self):
-        '''
-        Perform necessary post processing steps
-        '''
-        return

@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import subprocess
+import glob
 import cwltool
 import cwltool.main
 import cwltool.stdfsaccess
@@ -9,13 +10,13 @@ from collections import defaultdict
 from lxml import etree
 from urllib.parse import urlparse
 from ruamel.yaml.comments import CommentedMap
-from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
 from dataprov.elements.cwl_workflow import CWLWorkflow
 from dataprov.definitions import XML_DIR
 
-class CWLTool(GenericElement):
+class CWLTool(GenericOp):
     '''
     This class describes an operation using CWLCommandLineTool or CWLWorkflow.
     '''
@@ -26,6 +27,7 @@ class CWLTool(GenericElement):
     def __init__(self, remaining=None) :
         # Empty data attribute
         self.data = defaultdict()
+        self.remaining = remaining[:]
         
         if remaining is not None:
             # Wrapped command
@@ -160,4 +162,36 @@ class CWLTool(GenericElement):
         '''
         Perform necessary post processing steps
         '''
+        # If the output files contain wildcards, use the output of the cwltool command
+        # to replace the output with the correct path to the output file.
+        
+        # New list of output files
+        output_files = []        
+        
+        # Get the known output files
+        tmp_output_files = self.get_output_files()
+        # Get the known output files that containe a wildcard.
+        # The other output files have no wildcards and won't be changed
+        output_files_wildcards = []
+        for output_file in tmp_output_files:
+            if '*' in output_file:
+                output_files_wildcards.append(output_file)
+            else:
+                output_files.append(output_file)
+         
+        # Iterate over the wildcards and use glob to list all matching files.
+        # Check for each listed file, if it's contained in the output of the cwltool run.
+        # If yes, add it to the list of output files
+        cwltool_stdout_lines = self.output.decode('ascii').splitlines()
+        for wildcard in output_files_wildcards:
+            wildcard_matches = glob.glob(wildcard)
+            for wildcard_match in wildcard_matches:
+                if sum([True for l in cwltool_stdout_lines if wildcard_match in l]) > 0:
+                    output_files.append(wildcard_match)
+         
+        # Set the new list of output files
+        if self.data['cwlCommandLineTool'] is not None:
+            self.data['cwlCommandLineTool'].output_files = output_files
+        elif self.data['cwlWorkflow'] is not None:
+            self.data['cwlWorkflow'].output_files = output_files
         return
