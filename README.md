@@ -156,9 +156,9 @@ This is one example from the CWL user guide. It just untars a tar archive that c
 dataprov -i hello.tar -o hello.txt run cwltool tar.cwl tar-job.yml
 ```
 
-The Docker example is under construction and does not work in the moment.
-
-CWLTool example that uses docker container to build a Java application. It could be the case that you have to disable SELinux to run the Docker container (more precise: allow writing in mounted volumes).
+This example used Java installed in a Docker container to create a class file from Java source code.
+The example shows that dataprov can infer the name of the resulting class file from the information provided by the .cwl and .yml file.
+It could be the case that you have to disable SELinux to run the Docker container (more precise: allow writing in mounted volumes).
 
 ```
 dataprov run cwltool arguments.cwl arguments-job.yml

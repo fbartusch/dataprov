@@ -95,6 +95,13 @@ class OpClass(GenericElement):
         return root
 
 
+    def pre_processing(self):
+        '''
+        Perform necessary pre processing steps
+        '''
+        self.data['opClass'].pre_processing()
+
+
     def post_processing(self):
         '''
         Perform necessary post processing steps
@@ -122,17 +129,7 @@ class OpClass(GenericElement):
         '''
         Run the wrapped command or workflow.
         '''
-        # Snakemake starts a child process for the workflow and therefore
-        # subprocess would return immediately. So use the snakemake Python API.
-        if self.executable == "snakemake":
-            #parser = snakemake.get_argument_parser()
-            #args = parser.parse_args(self.remaining[1:])
-            try:
-                snakemake.main(self.remaining[1:])
-            except SystemExit as e:
-                # snakemake main wants to exit ... but we want to write the xml files 
-                return            
-        else:
-            output = subprocess.check_output(' '.join(self.remaining), shell=True)
-            self.output = output
-            print("Output: ", output)
+        # Run the wrapped command
+        # The GenericOp will use subprocess, but the actual operation can
+        # overwrite this.
+        self.data['opClass'].run()

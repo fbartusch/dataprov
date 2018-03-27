@@ -1,0 +1,77 @@
+<dataprov>
+  <target>
+    <name>genome.fa.bwt</name>
+    <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
+    <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
+  </target>
+  <history>
+    <operation>
+      <inputFiles>
+        <file>
+          <name>genome.fa</name>
+          <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa</uri>
+          <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
+        </file>
+      </inputFiles>
+      <targetFiles>
+        <file>
+          <name>genome.fa.bwt</name>
+          <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
+          <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
+        </file>
+      </targetFiles>
+      <startTime>2018-03-15T11:03:45</startTime>
+      <endTime>2018-03-15T11:03:47</endTime>
+      <executor>
+        <title>M.Sc</title>
+        <firstName>Felix</firstName>
+        <middleName></middleName>
+        <surname>Bartusch</surname>
+        <suffix></suffix>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <host>
+        <system>Linux</system>
+        <dist>CentOS Linux</dist>
+        <version>7.3.1611</version>
+        <codename>Core</codename>
+        <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+        <machine>x86_64</machine>
+        <processor>x86_64</processor>
+        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+      </host>
+      <opClass>
+        <docker>
+          <command>docker run -v /home/fbartusch/github/dataprov/examples/:/tmp/:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/bwa/genome.fa</command>
+          <dockerContainer>
+            <imageSource>
+              <dockerLocal>docker.io/biocontainers/bwa:latest</dockerLocal>
+            </imageSource>
+            <imageDetails>
+              <imageID>sha256:0b01483496a86a72430f2df6fa9a1ce5d2570730961431a7ec924f9d095e4f52</imageID>
+              <repoTag>docker.io/biocontainers/bwa:latest</repoTag>
+              <repoDigest>docker.io/biocontainers/bwa@sha256:1e945d18031eaccb476fcff17858611903b11cae1a7fc1e90a24cd3dfe2a4320</repoDigest>
+              <created>2018-02-08T11:04:56.756250089Z</created>
+              <labels>
+                <item key="base.image" value="biocontainers:latest"/>
+                <item key="description" value="Burrow-Wheeler Aligner for pairwise alignment between DNA sequences"/>
+                <item key="documentation" value="http://bio-bwa.sourceforge.net/"/>
+                <item key="license" value="http://bio-bwa.sourceforge.net/"/>
+                <item key="software" value="bwa"/>
+                <item key="software.version" value="0.7.15"/>
+                <item key="tags" value="Genomics"/>
+                <item key="version" value="2"/>
+                <item key="website" value="http://bio-bwa.sourceforge.net/"/>
+              </labels>
+            </imageDetails>
+            <dockerPath>/usr/bin/docker</dockerPath>
+            <dockerVersion>Docker version 1.12.6, build 88a4867/1.12.6
+</dockerVersion>
+          </dockerContainer>
+        </docker>
+      </opClass>
+      <message></message>
+    </operation>
+  </history>
+</dataprov>

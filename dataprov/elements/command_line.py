@@ -2,15 +2,14 @@ import os
 import shutil
 import subprocess
 from collections import defaultdict
-from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file_list import FileList
 from lxml import etree
 from dataprov.definitions import XML_DIR
 
-class CommandLine(GenericElement):
+class CommandLine(GenericOp):
     '''
     This class describes a command line tool. .
-    This class provides basic functionalities to read/write the dataprov element.
     '''
     
     element_name = "commandLine"
@@ -19,6 +18,7 @@ class CommandLine(GenericElement):
     def __init__(self, remaining=None):
         # Empty data attribute
         self.data = defaultdict()
+        self.remaining = remaining
         self.data['inputFiles'] = None
         self.data['outputFiles'] = None
         
@@ -48,9 +48,6 @@ class CommandLine(GenericElement):
                 self.data['toolVersion'] = toolVersion2
             else:
                 self.data['toolVersion'] = 'unknown'
-            # Input files and output files cannot be determined from a general command line command
-
-
     
     def to_xml(self, root_tag=None):
         '''
@@ -69,7 +66,6 @@ class CommandLine(GenericElement):
             output_files_ele = self.data['outputFiles'].to_xml("outputFiles")    
             root.append(output_files_ele)
         return root
-
 
     def from_xml(self, root, validate=True):
         '''
@@ -97,7 +93,6 @@ class CommandLine(GenericElement):
         else:
             self.data['outputFiles'] = None
 
-
     def set_command(self, command):
         '''
         Set a command as well as toolPath and toolVersion
@@ -122,29 +117,3 @@ class CommandLine(GenericElement):
             self.data['toolVersion'] = toolVersion2
         else:
             self.data['toolVersion'] = 'unknown'
-
-    
-    def post_processing(self):
-        '''
-        Perform necessary post processing steps
-        '''
-        # Generate file elements for input files
-        self.data['inputFiles'] = FileList(self.input_files)
-        # Generate file elements for output files
-        self.data['outputFiles'] = FileList(self.output_files)
-
-        
-    def get_input_files(self):
-        '''
-        Get input files specified by the wrapped command
-        (e.g. from CWL input bindings)
-        '''
-        return self.input_files
-
-
-    def get_output_files(self):
-        '''
-        Get output files specified by the wrapped command
-        (e.g. from outputs specified by CWL files)
-        '''
-        return self.output_files

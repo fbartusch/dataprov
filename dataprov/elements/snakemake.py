@@ -8,12 +8,12 @@ import subprocess
 import snakemake
 from collections import defaultdict
 from lxml import etree
-from dataprov.elements.generic_element import GenericElement
+from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.command_line import CommandLine
 from dataprov.elements.file import File
 from dataprov.definitions import XML_DIR
 
-class Snakemake(GenericElement):
+class Snakemake(GenericOp):
     '''
     This class describes a snakemake element.
     '''
@@ -24,6 +24,7 @@ class Snakemake(GenericElement):
     def __init__(self, remaining=None):
         # Empty data attribute
         self.data = defaultdict()
+        self.remaining = remaining[:]
         
         self.input_files = []
         self.output_files = []
@@ -165,26 +166,21 @@ class Snakemake(GenericElement):
         # Validate
         return xml_schema.validate(root)
         
-        
-    def get_input_files(self):
+    def run(self):
         '''
-        Get input files specified by the wrapped command
-        (e.g. from CWL input bindings)
+        Run the wrapped command or workflow.
         '''
-        return self.input_files
-
-
-    def get_output_files(self):
-        '''
-        Get output files specified by the wrapped command
-        (e.g. from outputs specified by CWL files)
-        '''
-        return self.output_files
-    
+        # Overwrite the generic method, because we have to use the snakemake API
+        try:
+            snakemake.main(self.remaining[1:])
+        except SystemExit:
+            # snakemake main wants to exit ... but we want to write the xml files first
+            return                
     
     def post_processing(self):
         '''
         Perform necessary post processing steps
         '''
+        # Call post_processing for each step.
         for step in self.data['step']:
             step.post_processing()

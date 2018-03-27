@@ -139,25 +139,23 @@ def main():
             print("Input metadata files: " + str(command_input_files))
             print("Message: ", message)
     
-        # Check if executor information are available
+    
+        # Create a new provenance object
+        new_operation = Operation()
+    
+        # Record executor
         executor = Executor(executor_config_file)
-    
-        # Create the object describing this operation
-        op_class = OpClass(remaining)  
-    
-    
-        # Combine output files specified on commmand line and the files specified
-        # in the wrapped command (e.g. from CWL file's output binding)
-        output_files_tmp = command_output_files + op_class.get_output_files()
-        output_files = []
-        for output_file in output_files_tmp:
-            abs_path = os.path.abspath(output_file)
-            if abs_path not in output_files:
-                output_files.append(abs_path)
+        new_operation.record_executor(executor)
+        # Record Host
+        new_operation.record_host()
         
-        if debug:
-            print("Output files: ", output_files)    
-    
+        # Create the object describing this operation
+        op_class = OpClass(remaining)
+        # Record more details about operation (commandLine, snakemake, ...)
+        new_operation.record_op_class(op_class)
+        
+        # Perform some pre-processing if needed
+        op_class.pre_processing()    
     
         # Combine input files specified on command line and the files specified in
         # the wrapped command (e.g. from CWL file's input binding)
@@ -191,19 +189,7 @@ def main():
         
         if debug:
             print("Input Provenance Data: ", input_provenance_data)
-                
-        # Create a new provenance object
-        new_operation = Operation()
           
-        # Record Host
-        new_operation.record_host()
-    
-        # Record executor
-        new_operation.record_executor(executor)
-      
-        # Record more details about operation (commandLine, snakemake, ...)
-        new_operation.record_op_class(op_class)
-        
         # Record input files
         new_operation.record_input_files(input_provenance_data)
         
@@ -223,6 +209,19 @@ def main():
         # e.g. for workflows to annotate intermediate files that were generated during workflow execution
         new_operation.post_processing()
         
+        # Combine output files specified on commmand line and the files specified
+        # in the wrapped command (e.g. from CWL file's output binding)
+        output_files_tmp = command_output_files + op_class.get_output_files()
+        output_files = []
+        for output_file in output_files_tmp:
+            abs_path = os.path.abspath(output_file)
+            if abs_path not in output_files:
+                output_files.append(abs_path)
+        if debug:
+            print("Output files: ", output_files)           
+        
+        #TODO somehow handle input/output files that are specified durint run/post processing
+        # This has to be done directly before recording input/output files
         # Record target files
         new_operation.record_target_files(output_files)
     

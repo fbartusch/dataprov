@@ -1,0 +1,69 @@
+<dataprov>
+  <target>
+    <name>hello.txt</name>
+    <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/hello.txt</uri>
+    <sha1>da39a3ee5e6b4b0d3255bfef95601890afd80709</sha1>
+  </target>
+  <history>
+    <operation>
+      <inputFiles>
+        <file>
+          <name>hello.tar</name>
+          <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/hello.tar</uri>
+          <sha1>79cace8ab10e25e35a2f3b6d77d8cb4052b4363e</sha1>
+        </file>
+      </inputFiles>
+      <targetFiles>
+        <file>
+          <name>hello.txt</name>
+          <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/hello.txt</uri>
+          <sha1>da39a3ee5e6b4b0d3255bfef95601890afd80709</sha1>
+        </file>
+      </targetFiles>
+      <startTime>2018-03-23T12:03:00</startTime>
+      <endTime>2018-03-23T12:03:01</endTime>
+      <executor>
+        <title>M.Sc</title>
+        <firstName>Felix</firstName>
+        <middleName></middleName>
+        <surname>Bartusch</surname>
+        <suffix></suffix>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <host>
+        <system>Linux</system>
+        <dist>CentOS Linux</dist>
+        <version>7.3.1611</version>
+        <codename>Core</codename>
+        <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+        <machine>x86_64</machine>
+        <processor>x86_64</processor>
+        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+      </host>
+      <opClass>
+        <cwltool>
+          <wrappedCommand>cwltool tar.cwl tar-job.yml</wrappedCommand>
+          <cwltoolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/cwltool</cwltoolPath>
+          <cwltoolVersion>/home/fbartusch/miniconda2/envs/wfprovenance/bin/cwltool 1.0.20180302231433
+</cwltoolVersion>
+          <cwlJobOrder>
+            <name>tar-job.yml</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/tar-job.yml</uri>
+            <sha1>69f3f651ad36a9af7355b35d840e5dfcc8c008cb</sha1>
+          </cwlJobOrder>
+          <cwlCommandLineTool>
+            <cwlFile>
+              <name>tar.cwl</name>
+              <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/tar.cwl</uri>
+              <sha1>3d3912ed885119cf00a6a4afc1c1a461285ec55b</sha1>
+            </cwlFile>
+            <cwlVersion>v1.0</cwlVersion>
+            <command>tar xf /home/fbartusch/github/dataprov/examples/cwl_command_line/hello.tar</command>
+          </cwlCommandLineTool>
+        </cwltool>
+      </opClass>
+      <message></message>
+    </operation>
+  </history>
+</dataprov>
