@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="../dict.xsd"/>
+  <xs:include schemaLocation="../file.xsd"/>
+
+  <xs:complexType name="singularityImageDetails">
+    <xs:sequence>
+      <xs:element name="singularityVersion" type="xs:string"/>
+      <xs:element name="labels" type="dict"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="singularityContainer">
+    <xs:sequence>
+      <xs:element name="containerPath" type="file"/>
+      <xs:element name="imageDetails" type="singularityImageDetails" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
