@@ -34,14 +34,14 @@ class DockerContainer(GenericElement):
             # ImageDetails
             # Only possible for images that are already pulled
             if method == "dockerLocal":
-                self.data['dockerImageDetails'] = defaultdict()
+                self.data['imageDetails'] = defaultdict()
                 image_dict = self.get_image_details(source)
-                self.data['dockerImageDetails']['imageID'] = image_dict['Id']
-                self.data['dockerImageDetails']['repoTag'] = image_dict['RepoTags'][0]
-                self.data['dockerImageDetails']['repoDigest'] = image_dict['RepoDigests'][0]
-                self.data['dockerImageDetails']['created'] = image_dict['Created']
-                self.data['dockerImageDetails']['dockerVersion'] = image_dict['DockerVersion']
-                self.data['dockerImageDetails']['labels'] = image_dict['ContainerConfig']['Labels']
+                self.data['imageDetails']['imageID'] = image_dict['Id']
+                self.data['imageDetails']['repoTag'] = image_dict['RepoTags'][0]
+                self.data['imageDetails']['repoDigest'] = image_dict['RepoDigests'][0]
+                self.data['imageDetails']['created'] = image_dict['Created']
+                self.data['imageDetails']['dockerVersion'] = image_dict['DockerVersion']
+                self.data['imageDetails']['labels'] = image_dict['ContainerConfig']['Labels']
 
     def from_xml(self, root, validate=True):
         '''
@@ -56,7 +56,7 @@ class DockerContainer(GenericElement):
             return
 
         # ImageSource
-        image_source_ele = root.find('dockerImageSource')
+        image_source_ele = root.find('imageSource')
         children = list(image_source_ele)
         self.data['method'] = children[0].tag
         if self.data['method'] == "dockerPull":
@@ -72,18 +72,18 @@ class DockerContainer(GenericElement):
 
         # Image Details
         if self.data['method'] == "dockerLocal":
-            image_detail_ele = root.find('dockerImageDetails')
-            self.data['dockerImageDetails'] = defaultdict()
-            self.data['dockerImageDetails']['imageID'] = image_detail_ele.find('imageID').text
-            self.data['dockerImageDetails']['repoTag'] = image_detail_ele.find('repoTag').text
-            self.data['dockerImageDetails']['repoDigest'] = image_detail_ele.find('repoDigest').text
-            self.data['dockerImageDetails']['created'] = image_detail_ele.find('created').text
-            self.data['dockerImageDetails']['dockerVersion'] = image_detail_ele.find('dockerVersion').text
+            image_detail_ele = root.find('imageDetails')
+            self.data['imageDetails'] = defaultdict()
+            self.data['imageDetails']['imageID'] = image_detail_ele.find('imageID').text
+            self.data['imageDetails']['repoTag'] = image_detail_ele.find('repoTag').text
+            self.data['imageDetails']['repoDigest'] = image_detail_ele.find('repoDigest').text
+            self.data['imageDetails']['created'] = image_detail_ele.find('created').text
+            self.data['imageDetails']['dockerVersion'] = image_detail_ele.find('dockerVersion').text
             labels = defaultdict()
             for item in image_detail_ele.find('labels').findall('item'):
                 attributes = item.attrib
                 labels[attributes['key']] = attributes['value']
-            self.data['dockerImageDetails']['labels'] = labels
+            self.data['imageDetails']['labels'] = labels
 
 
     def to_xml(self):
@@ -93,7 +93,7 @@ class DockerContainer(GenericElement):
         root = etree.Element(self.element_name)
 
         # ImageSource
-        image_source_ele = etree.SubElement(root, 'dockerImageSource')
+        image_source_ele = etree.SubElement(root, 'imageSource')
 
         if self.data['method'] == "dockerPull":
             etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
@@ -113,13 +113,13 @@ class DockerContainer(GenericElement):
         # Image details
         if self.data['method'] == "dockerLocal":
             image_detail_ele = etree.SubElement(root, "imageDetails")
-            etree.SubElement(image_detail_ele, 'imageID').text = self.data['dockerImageDetails']['imageID']
-            etree.SubElement(image_detail_ele, 'repoTag').text = self.data['dockerImageDetails']['repoTag']
-            etree.SubElement(image_detail_ele, 'repoDigest').text = self.data['dockerImageDetails']['repoDigest']
-            etree.SubElement(image_detail_ele, 'created').text = self.data['dockerImageDetails']['created']
-            etree.SubElement(image_detail_ele, 'dockerVersion').text = self.data['dockerImageDetails']['dockerVersion']
+            etree.SubElement(image_detail_ele, 'imageID').text = self.data['imageDetails']['imageID']
+            etree.SubElement(image_detail_ele, 'repoTag').text = self.data['imageDetails']['repoTag']
+            etree.SubElement(image_detail_ele, 'repoDigest').text = self.data['imageDetails']['repoDigest']
+            etree.SubElement(image_detail_ele, 'created').text = self.data['imageDetails']['created']
+            etree.SubElement(image_detail_ele, 'dockerVersion').text = self.data['imageDetails']['dockerVersion']
             labels = etree.SubElement(image_detail_ele, 'labels')
-            for key,value in self.data['dockerImageDetails']['labels'].items():
+            for key,value in self.data['imageDetails']['labels'].items():
                 etree.SubElement(labels, 'item', attrib={'key':key, 'value':value})
         return root
 

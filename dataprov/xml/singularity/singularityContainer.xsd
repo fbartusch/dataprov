@@ -3,6 +3,24 @@
   <xs:include schemaLocation="../dict.xsd"/>
   <xs:include schemaLocation="../file.xsd"/>
 
+  <!--
+  A singularity container can have various formats
+  http://singularity.lbl.gov/docs-build-container)
+  Each format should be described in a meaningful way:
+   - squashfs image (a file)
+   - ext3 (a file)
+   - sandbox (a directory)
+  -->
+  <xs:complexType name="dockerImageSource">
+    <xs:choice>
+      <xs:element name="dockerPull" type="xs:string"/>
+      <xs:element name="dockerLoad" type="file"/>
+      <xs:element name="dockerFile" type="file"/>
+      <xs:element name="dockerImport" type="xs:anyURI"/>
+      <xs:element name="dockerLocal" type="xs:string"/>
+    </xs:choice>
+  </xs:complexType>
+
   <xs:complexType name="singularityImageDetails">
     <xs:sequence>
       <xs:element name="singularityVersion" type="xs:string"/>
@@ -12,7 +30,7 @@
 
   <xs:complexType name="singularityContainer">
     <xs:sequence>
-      <xs:element name="containerPath" type="file"/>
+      <xs:element name="imageSource" type="file"/>
       <xs:element name="imageDetails" type="singularityImageDetails" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>

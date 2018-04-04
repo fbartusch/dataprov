@@ -153,6 +153,7 @@ This will run the workflow and creates a provenance file for each of the eight o
 This is one example from the CWL user guide. It just untars a tar archive that contains just one file.
 
 ```
+cd examples/cwl_command_line
 dataprov -i hello.tar -o hello.txt run cwltool tar.cwl tar-job.yml
 ```
 
@@ -161,5 +162,6 @@ The example shows that dataprov can infer the name of the resulting class file f
 It could be the case that you have to disable SELinux to run the Docker container (more precise: allow writing in mounted volumes).
 
 ```
+cd examples/cwl_command_line
 dataprov run cwltool arguments.cwl arguments-job.yml
 ```

@@ -2,7 +2,7 @@ import os
 import graphviz as gv
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file import File
+from dataprov.elements.data_object import DataObject
 from dataprov.elements.history import History
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -34,8 +34,7 @@ class Dataprov(GenericElement):
                     self.from_xml(tree.getroot(), validate=validate)
                 except IOError as e:
                     print(e)
-    
-    
+        
     def from_xml(self, root, validate=True):        
         self.data = defaultdict()
         # Validate XML against schema
@@ -44,7 +43,7 @@ class Dataprov(GenericElement):
         
         # Get the target from the xml
         target_ele = root.find('target')
-        target = File()
+        target = DataObject()
         target.from_xml(target_ele, validate=False)
         self.data['target'] = target
         
@@ -66,8 +65,7 @@ class Dataprov(GenericElement):
         # History
         root.append(self.data['history'].to_xml())
         return root
-    
-    
+       
     def create_provenance(self, target_file, input_prov_data, applied_operation):
         '''
         Create the final provenance object from the path to an output file,
@@ -81,8 +79,7 @@ class Dataprov(GenericElement):
         new_history = History()
         new_history.combine_histories(input_prov_data, applied_operation)
         self.data['history'] = new_history
-    
-    
+        
     def get_xml_file_path(self):
         '''
         Return the path to the corresponding xml file.
