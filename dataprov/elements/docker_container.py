@@ -21,8 +21,8 @@ class DockerContainer(GenericElement):
     docker_methods = ["dockerPull", "dockerLoad", "dockerFile", "dockerImport", "dockerLocal"]    
 
     def __init__(self, method=None, source=None):
-        # Empty data attribute
-        self.data = defaultdict()
+        super().__init__()
+        
         if method is not None and source is not None:
             if method not in self.docker_methods:
                 print("Unknown docker image source method: ", method)

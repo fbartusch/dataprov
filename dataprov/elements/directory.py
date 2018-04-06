@@ -11,10 +11,9 @@ class Directory(GenericElement):
     Class describing the a directory element.
     '''
     
-    element_name = "file"
+    element_name = "directory"
     schema_file = os.path.join(XML_DIR, 'directory_element.xsd')
-         
-    
+             
     def __init__(self, uri=None):
         '''
         Initialize this directory element.
@@ -25,7 +24,7 @@ class Directory(GenericElement):
             # Check if file exists
             if not os.path.exists(uri):
                 raise IOError("Directory not found: ", uri)
-            basename = os.path.basename(file)
+            basename = os.path.basename(uri)
             self.data['name'] = basename
             self.data['uri'] = uri
             # Compute the shasum of each file in the directory.
@@ -44,7 +43,7 @@ class Directory(GenericElement):
             file_hash_list.sort()
             # Write list to file (directory name with '.shalist' suffix)
             shalist_file = os.path.join(uri, ".shalist")
-            with os.open(shalist_file, 'w') as shafile:
+            with open(shalist_file, "w") as shafile:
                 for file, hash in file_hash_list:
                     shafile.write(file + ", " + hash)
             self.data['shafile'] = File(shalist_file)
@@ -91,7 +90,7 @@ class Directory(GenericElement):
         root.set("type", "directory")
         etree.SubElement(root, "name").text = self.data["name"]
         etree.SubElement(root, "uri").text = self.data["uri"]
-        shafile_ele = self.data['shafile'].to_xml()
+        shafile_ele = self.data['shafile'].to_xml("sha1file")
         root.append(shafile_ele)
         return root    
     

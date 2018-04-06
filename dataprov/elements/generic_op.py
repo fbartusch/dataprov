@@ -11,12 +11,13 @@ class GenericOp(GenericElement):
     def __init__(self):
         # Empty data attribute
         self.data = defaultdict()
+        self.remaining = None
         self.output = None
         self.executed = False
-        # Input/Output files that aren't provided via dataprov command line options
+        # Input/Output data objects that aren't provided via dataprov command line options
         # and have to be infered from the actual operation
-        self.input_files = []
-        self.output_files = []
+        self.input_data_objects = []
+        self.output_data_objects = []
     
     def pre_processing(self):
         '''
@@ -40,18 +41,18 @@ class GenericOp(GenericElement):
         '''
         return
     
-    def get_input_files(self):
+    def get_input_data_objects(self):
         '''
-        Get input files specified by the wrapped command
+        Get input data objects specified by the wrapped command
         (e.g. from CWL input bindings)
         '''
-        return self.input_files
+        return self.input_data_objects
 
-    def get_output_files(self):
+    def get_output_data_objects(self):
         '''
-        Get output files specified by the wrapped command
+        Get output data objects specified by the wrapped command
         (e.g. from outputs specified by CWL files)
         '''
-        return self.output_files
+        return self.output_data_objects
 
 

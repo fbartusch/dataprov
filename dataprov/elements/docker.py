@@ -19,12 +19,9 @@ class Docker(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'docker_element.xsd')
 
     def __init__(self, remaining=None):
-        # Empty data attribute
-        self.data = defaultdict()
+        super().__init__()
+        
         self.remaining = remaining
-
-        self.input_files = []
-        self.output_files = []
 
         if remaining is not None:
             # Command

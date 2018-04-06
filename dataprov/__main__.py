@@ -32,25 +32,23 @@ def main():
                         help="personal information about executor added to recorded metadata.",
                         default=executor_default_config_file)
 
-    # Path to output file
-    # This is the path to the output file of the wrapped command
+    # Path to output data object
+    # This is the URI of the output data object of the wrapped command
     # If the user uses a workflow manager / workflow engine supported by this tool,
-    # The output will be detected automatically
-    cwd = os.getcwd()
-    #command_output_files = [os.path.join(cwd, "dataprov_output")]
-    command_output_files = []
+    # The output data objects will be detected automatically
+    command_output_data_objects = []
     parser.add_argument('-o', '--output', action='append',
-                        help="path to output files of the wrapped command. The provenance files with the same name + .prov suffix will be created beside the output files",
-                        default=command_output_files)
+                        help="URI to output data objects (file, directory). The provenance files with the same name + .prov suffix will be created beside the output data objects",
+                        default=command_output_data_objects)
                         
-    # If the used command line tool used one or more input files, the user
-    # Can specifiy the paths to the files.
-    # If there are dataprov metadata files for the input files,
+    # If the used command line tool used one or more input data objects, the user
+    # Can specifiy the paths to these objects.
+    # If there are dataprov metadata files for the input data objects,
     # it will be incorporated into the resulting provenance metadata
     # If the user uses a workflow manager / workflow engine supported by this tool,
     # The output will be handled automatically     
     parser.add_argument('-i','--input', action='append',
-                        help='path to input files used by the wrapped command',
+                        help='path to input data objects (file, directory) used by the wrapped command',
                         default=None)    
 
     # Message incorporated into metadata
@@ -123,20 +121,20 @@ def main():
         executor_config_file = args.executor
         message = args.message
         if args.output is not None:
-            command_output_files = args.output
+            command_output_data_objects = args.output
         else:
-            command_output_files = []
+            command_output_data_objects = []
         if args.input is not None:
-            command_input_files = args.input
+            command_input_data_objects = args.input
         else:
-            command_input_files = []
+            command_input_data_objects = []
         
         if debug:
             print("Arguments: " + str(args))
             print("Remaining: " + str(remaining))
             print("Personal information: " + executor_config_file)
-            print("Command outputs: " + str(command_output_files))
-            print("Input metadata files: " + str(command_input_files))
+            print("Command outputs: " + str(command_output_data_objects))
+            print("Input metadata files: " + str(command_input_data_objects))
             print("Message: ", message)
     
     
@@ -157,41 +155,41 @@ def main():
         # Perform some pre-processing if needed
         op_class.pre_processing()    
     
-        # Combine input files specified on command line and the files specified in
+        # Combine input data objects specified on command line and data objects specified by
         # the wrapped command (e.g. from CWL file's input binding)
-        input_files_tmp = command_input_files + op_class.get_input_files()
-        input_files = []
-        for input_file in input_files_tmp:
-            # Check if input file and the corresponding provenance metadata exists
-            if not os.path.exists(input_file):
-                print("Input file specified by -i does not exist: ", input_file)
+        input_data_objects_tmp = command_input_data_objects + op_class.get_input_data_objects()
+        input_data_objects = []
+        for input_data_object in input_data_objects_tmp:
+            # Check if input data objects and the corresponding provenance metadata exists
+            if not os.path.exists(input_data_objects):
+                print("Input file specified by -i does not exist: ", input_data_object)
                 print("No provenance information will be considered for this file.")
                 continue
-            abs_path = os.path.abspath(input_file)
-            if abs_path not in input_files:
-                input_files.append(abs_path)
+            abs_path = os.path.abspath(input_data_object)
+            if abs_path not in input_data_objects:
+                input_data_objects.append(abs_path)
                 
         if debug:
-            print("Input files: ", input_files)
+            print("Input files: ", input_data_objects)
             
          # Read provenance data   
         input_provenance_data = defaultdict()
-        for input_file in input_files:
-            input_prov_file = input_file + '.prov'
+        for input_data_object in input_data_objects:
+            input_prov_file = input_data_object + '.prov'
             if not os.path.exists(input_prov_file):
-                print("Metadata for input file specified by -i does not exist: ", input_file)
-                input_provenance_data[input_file] = None
+                print("Metadata for input file specified by -i does not exist: ", input_data_object)
+                input_provenance_data[input_data_object] = None
                 continue
-            print("Metadata for input file specified by -i does exist: ", input_file)
+            print("Metadata for input file specified by -i does exist: ", input_data_object)
             #Parse XML and store in dictionary
             new_provenance_object = Dataprov(input_prov_file)
-            input_provenance_data[input_file] = new_provenance_object
+            input_provenance_data[input_data_object] = new_provenance_object
         
         if debug:
             print("Input Provenance Data: ", input_provenance_data)
           
         # Record input files
-        new_operation.record_input_files(input_provenance_data)
+        new_operation.record_input_data_objects(input_provenance_data)
         
         # Record message
         new_operation.record_message(message)
@@ -209,28 +207,27 @@ def main():
         # e.g. for workflows to annotate intermediate files that were generated during workflow execution
         new_operation.post_processing()
         
-        # Combine output files specified on commmand line and the files specified
-        # in the wrapped command (e.g. from CWL file's output binding)
-        output_files_tmp = command_output_files + op_class.get_output_files()
-        output_files = []
-        for output_file in output_files_tmp:
-            abs_path = os.path.abspath(output_file)
-            if abs_path not in output_files:
-                output_files.append(abs_path)
+        # Combine output data objects specified on commmand line and data objects specified
+        # by the wrapped command (e.g. from CWL file's output binding)
+        output_data_objects_tmp = command_output_data_objects + op_class.get_output_data_objects()
+        output_data_objects = []
+        for output_data_object in output_data_objects_tmp:
+            abs_path = os.path.abspath(output_data_object)
+            if abs_path not in output_data_objects:
+                output_data_objects.append(abs_path)
         if debug:
-            print("Output files: ", output_files)           
+            print("Output files: ", output_data_objects)           
         
-        #TODO somehow handle input/output files that are specified durint run/post processing
         # This has to be done directly before recording input/output files
         # Record target files
-        new_operation.record_target_files(output_files)
+        new_operation.record_target_data_objects(output_data_objects)
     
         # Create the final dataprov object for each output file
         #TODO Implement checks if output file exists and handle exception 
         result_dataprov_objects = []
-        for output_file in output_files:
+        for output_data_object in output_data_objects:
             new_dataprov = Dataprov()
-            new_dataprov.create_provenance(output_file, input_provenance_data, new_operation)
+            new_dataprov.create_provenance(output_data_object, input_provenance_data, new_operation)
             result_dataprov_objects.append(new_dataprov)
         # Check if the create xml is valid, then write to file
         for dataprov_object in result_dataprov_objects:            

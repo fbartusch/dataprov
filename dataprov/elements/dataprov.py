@@ -3,6 +3,7 @@ import graphviz as gv
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.data_object import DataObject
+from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.history import History
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -68,13 +69,13 @@ class Dataprov(GenericElement):
        
     def create_provenance(self, target_file, input_prov_data, applied_operation):
         '''
-        Create the final provenance object from the path to an output file,
+        Create the final provenance object from the path to an output data object,
         A dictionary of input provenance data and the object describing the
         applied operation
         '''
         self.data = defaultdict()
         # Target: Get this from the applied operation object
-        self.data['target'] = applied_operation.get_target_file(target_file)
+        self.data['target'] = applied_operation.get_target_data_object(target_file)
         # History: Combine the history of all input files with the applied operation
         new_history = History()
         new_history.combine_histories(input_prov_data, applied_operation)

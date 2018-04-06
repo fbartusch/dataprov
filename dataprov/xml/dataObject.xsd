@@ -10,10 +10,10 @@
   -->
 
   <xs:complexType name="dataObject">
-    <xs:attribute name="type" type="xs:string"/> 
     <xs:choice>
       <xs:element name="directory" type="directory"/>
       <xs:element name="file" type="file"/>
     </xs:choice>
+    <xs:attribute name="type" type="xs:string"/> 
   </xs:complexType>
 </xs:schema>

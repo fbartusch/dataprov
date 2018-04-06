@@ -1,4 +1,5 @@
 import os
+import lxml
 from collections import defaultdict
 from lxml import etree
 from dataprov.utils.io import prettify
@@ -50,7 +51,12 @@ class GenericElement:
         with open(self.schema_file, 'r') as schema_file_handler:
             xml_schema_doc = etree.parse(schema_file_handler)
         # Create XML schema
-        xml_schema = etree.XMLSchema(xml_schema_doc)
+        try:
+            xml_schema = etree.XMLSchema(xml_schema_doc)
+        except lxml.etree.XMLSchemaParseError as e:
+            print("Cannot parse XML schema: ", self.schema_file)
+            print(e)
+            exit(1)
         # Validate
         try:
             xml_schema.assertValid(root)

@@ -4,6 +4,8 @@ import subprocess
 from collections import defaultdict
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file_list import FileList
+from dataprov.elements.data_object import DataObject
+from dataprov.elements.data_object_list import DataObjectList
 from lxml import etree
 from dataprov.definitions import XML_DIR
 
@@ -16,14 +18,11 @@ class CommandLine(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'commandLine_element.xsd')
     
     def __init__(self, remaining=None):
-        # Empty data attribute
-        self.data = defaultdict()
-        self.remaining = remaining
-        self.data['inputFiles'] = None
-        self.data['outputFiles'] = None
+        super().__init__()
         
-        self.input_files = []
-        self.output_files = []        
+        self.remaining = remaining
+        self.data['inputDataObjects'] = None
+        self.data['outputDataObjects'] = None    
         
         if remaining is not None:
             # Command
@@ -59,12 +58,12 @@ class CommandLine(GenericOp):
         etree.SubElement(root, 'command').text = self.data['command']
         etree.SubElement(root, 'toolPath').text = self.data['toolPath']
         etree.SubElement(root, 'toolVersion').text = self.data['toolVersion']
-        if self.data['inputFiles'] is not None:
-            input_files_ele = self.data['inputFiles'].to_xml("inputFiles")
-            root.append(input_files_ele)
-        if self.data['outputFiles'] is not None:
-            output_files_ele = self.data['outputFiles'].to_xml("outputFiles")    
-            root.append(output_files_ele)
+        if self.data['inputDataObjects'] is not None:
+            input_data_objects_ele = self.data['inputDataObjects'].to_xml("inputDataObjects")
+            root.append(input_data_objects_ele)
+        if self.data['outputDataObjects'] is not None:
+            output_data_objects_ele = self.data['outputDataObjects'].to_xml("outputDataObjects")    
+            root.append(output_data_objects_ele)
         return root
 
     def from_xml(self, root, validate=True):
@@ -78,20 +77,20 @@ class CommandLine(GenericOp):
         self.data['command'] = root.find('command').text
         self.data['toolPath'] = root.find('toolPath').text
         self.data['toolVersion'] = root.find('toolVersion').text
-        input_files_ele = root.find('inputFiles')
-        output_files_ele = root.find('outputFiles')
-        if input_files_ele is not None:
-            input_files = FileList()
-            input_files.from_xml(input_files_ele, validate)
-            self.data['inputFiles'] = input_files
+        input_data_objects_ele = root.find('inputDataObjects')
+        output_data_objects_ele = root.find('outputDataObjects')
+        if input_data_objects_ele is not None:
+            input_data_objects = DataObjectList()
+            input_data_objects.from_xml(input_data_objects_ele, validate)
+            self.data['inputDataObjects'] = input_data_objects
         else:
-            self.data['inputFiles'] = None
-        if output_files_ele is not None:
-            output_files = FileList()
-            output_files.from_xml(output_files_ele, validate)
-            self.data['outputFiles'] = output_files
+            self.data['inputDataObjects'] = None
+        if output_data_objects_ele is not None:
+            output_data_objects = DataObjectList()
+            output_data_objects.from_xml(output_data_objects_ele, validate)
+            self.data['outputDataObjects'] = output_data_objects
         else:
-            self.data['outputFiles'] = None
+            self.data['outputDataObjects'] = None
 
     def set_command(self, command):
         '''

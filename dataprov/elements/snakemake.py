@@ -22,14 +22,10 @@ class Snakemake(GenericOp):
     schema_file = os.path.join(XML_DIR, 'snakemake_element.xsd')
     
     def __init__(self, remaining=None):
-        # Empty data attribute
-        self.data = defaultdict()
-        self.remaining = remaining[:]
-        
-        self.input_files = []
-        self.output_files = []
+        super().__init__()
         
         if remaining is not None:
+            self.remaining = remaining[:]
             # Command
             self.data['command'] = ' '.join(remaining)
             # Snakemake Path

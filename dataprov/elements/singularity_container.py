@@ -7,6 +7,8 @@ from collections import defaultdict
 from lxml import etree
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
+from dataprov.elements.data_object import DataObject
+from dataprov.elements.data_object_list import DataObjectList
 from dataprov.definitions import XML_DIR
 
 
@@ -19,12 +21,11 @@ class SingularityContainer(GenericElement):
     schema_file = os.path.join(XML_DIR, 'singularity/singularityContainer_element.xsd') 
 
     def __init__(self, containerPath=None):
-        # Empty data attribute
-        self.data = defaultdict()
-        if container is not None:
+        super().__init__()
 
+        if containerPath is not None:
             # ImageSource
-            self.data['containerPath'] = File(containerPath)
+            self.data['containerPath'] = DataObject(containerPath)
 
             # ImageDetails
             self.data['imageDetails'] = defaultdict()

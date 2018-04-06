@@ -2,8 +2,9 @@ import os
 import datetime
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file import File
 from dataprov.elements.file_list import FileList
+from dataprov.elements.data_object import DataObject
+from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
 from dataprov.elements.op_class import OpClass
@@ -18,13 +19,8 @@ class Operation(GenericElement):
     element_name = "operation"
     schema_file = os.path.join(XML_DIR, 'operation_element.xsd')
     
-    # Known operation classes
-    op_classes = ['CommandLine']
-    
     def __init__(self):
-        # Empty data attribute
-        self.data = defaultdict()
-        
+        super().__init__()      
         
     def from_xml(self, root, validate=True):
         '''
@@ -80,11 +76,11 @@ class Operation(GenericElement):
         '''
         root = etree.Element(self.element_name)
         # Input Files
-        if self.data['inputFiles']:
-            input_files_ele = self.data['inputFiles'].to_xml(root_tag='inputFiles')
-            root.append(input_files_ele)
+        if self.data['inputDataObjects']:
+            input_data_objects_ele = self.data['inputDataObjects'].to_xml(root_tag='inputDataObjects')
+            root.append(input_data_objects_ele)
         # Target Files
-        root.append(self.data['targetFiles'].to_xml(root_tag='targetFiles'))
+        root.append(self.data['targetDataObjects'].to_xml(root_tag='targetDataObjects'))
         # Start Time
         start_time_ele = etree.SubElement(root, 'startTime')
         start_time_ele.text = self.data['startTime']
@@ -102,49 +98,46 @@ class Operation(GenericElement):
         message_ele = etree.SubElement(root, 'message')
         message_ele.text = self.data['message']
         return root
-    
-    
+        
     def post_processing(self):
         '''
         Perform necessary post processing steps
         '''
         self.data['opClass'].post_processing()
-    
-    
-    def record_input_files(self, input_provenance_data):
+       
+    def record_input_data_objects(self, input_provenance_data):
         '''
-        Record the input files.
+        Record the input data objects.
         '''
-        input_files = FileList()
+        input_data_objects = DataObjectList()
         if input_provenance_data is not None:
-            for input_file, provenance_object in input_provenance_data.items():
+            for input_data_object, provenance_object in input_provenance_data.items():
                 # Check if there is provenance data available
                 if provenance_object is not None:
-                    input_files.add_file(provenance_object.data['target'])
+                    input_data_objects.add_object(provenance_object.data['target'])
                 else:
-                    new_file = File(input_file)
-                    input_files.add_file(new_file)
-            self.data['inputFiles'] = input_files
+                    new_object = DataObject(input_data_object)
+                    input_data_objects.add_object(new_object)
+            self.data['inputDataObjects'] = input_data_objects
         else:
-            self.data['inputFiles'] = None
-        
-    
-    def record_target_files(self, files):
+            self.data['inputDataObjects'] = None
+            
+    def record_target_data_objects(self, uris):
         '''
-        Record target files
+        Record target data objects
         '''
         # Check which of the specified target files are present
-        target_files = FileList()
-        for file in files:
+        target_data_objects = DataObjectList()
+        for uri in uris:
             try:
-                new_file = File(os.path.abspath(file))
-                target_files.add_file(new_file)
+                new_object = DataObject(os.path.abspath(uri))
+                target_data_objects.add_object(new_object)
+                print(new_object)
             except IOError:
-                print("Target file not found: ", file)
+                print("Target data object not found: ", file)
                 continue
-        self.data['targetFiles'] = target_files
-            
-    
+        self.data['targetDataObjects'] = target_data_objects
+               
     def record_start_time(self):
         '''
         Record start time in the format:
@@ -152,8 +145,7 @@ class Operation(GenericElement):
         '''
         start_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
         self.data['startTime'] = start_time
-    
-    
+        
     def record_end_time(self):
         '''
         Record end time in the format:
@@ -161,22 +153,19 @@ class Operation(GenericElement):
         '''
         end_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
         self.data['endTime'] = end_time
-    
-    
+        
     def record_op_class(self, op_class):
         '''
         Record op class.
         '''  
         self.data['opClass'] = op_class
-        
-        
+                
     def record_wrapped_command(self, wrapped_command):
         '''
         Record wrapped command
         '''
         self.data['wrappedCommand'] = wrapped_command
-        
-    
+           
     def record_host(self):
         '''
         Record host system
@@ -184,24 +173,21 @@ class Operation(GenericElement):
         host = Host()
         self.data['host'] = host
 
-
     def record_executor(self, executor):
         '''
         Record executor
         '''
         self.data['executor'] = executor
-    
-    
+       
     def record_message(self, message):
         '''
         Record message
         '''
         self.data['message'] = message
-    
-    
-    def get_target_file(self, target_file):
+        
+    def get_target_data_object(self, target_data_object):
         '''
         Get the File object for a specific target_file.
         '''
-        return self.data['targetFiles'].get_file(target_file)
+        return self.data['targetDataObjects'].get_object(target_data_object)
         

@@ -7,7 +7,7 @@ from lxml import etree
 from urllib.parse import urlparse
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
-from dataprov.elements.file import File
+from dataprov.elements.data_object import DataObject
 from dataprov.definitions import XML_DIR
 
 class CWLCommandLineTool(GenericOp):
@@ -19,11 +19,7 @@ class CWLCommandLineTool(GenericOp):
     schema_file = os.path.join(XML_DIR, 'cwl/cwlCommandLineTool_element.xsd')
     
     def __init__(self, argsl=None, wf_requirements=None):
-        # Empty data attribute
-        self.data = defaultdict()
-
-        self.input_files = []
-        self.output_files = []
+        super().__init__()
         
         if argsl is not None:
             # Get information from the CWL file and the job order (e.g. input bindings)
@@ -39,7 +35,7 @@ class CWLCommandLineTool(GenericOp):
             cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)          
             
             # cwlFile
-            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)
+            self.data['cwlFile'] = DataObject(urlparse(tool_file_uri).path)
             # cwlVersion
             self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']            
             
@@ -50,14 +46,11 @@ class CWLCommandLineTool(GenericOp):
                     self.input_files.append(path)
                     
             # Additional output files
-            #TODO does not work if outputBinding uses '*'
-            #TODO Try to determine output files after execution of tool?
-            #This should be possible because the output file path is printed after execution of the command
             for output in cwl_tool.tool['outputs']:
                 if output != 'id' and output['type'] == 'File':
                     name = output['outputBinding']['glob']
                     path = os.path.join(outdir, name)
-                    self.output_files.append(path)
+                    self.output_data_objects.append(path)
                     
             # Get job object
             job_order_object = cwltool.main.init_job_order(job_order_object, args, cwl_tool, print_input_deps=args.print_input_deps, relative_deps=args.relative_deps, stdout=sys.stdout, make_fs_access=cwltool.stdfsaccess.StdFsAccess, loader=jobloader, input_basedir=input_basedir)
@@ -96,7 +89,6 @@ class CWLCommandLineTool(GenericOp):
             
             self.record_docker_requirement(job_requirements, job_hints, wf_requirements)
 
-
     def record_docker_requirement(self, job_requirements, job_hints, wf_requirements=None):
         '''
         Get the Docker Requirement from the cwl information
@@ -133,7 +125,6 @@ class CWLCommandLineTool(GenericOp):
         else:
             self.data['dockerRequirement'] = None
 
-
     def from_job(self, workflow_job, step_job, wf_requirements=None):
         '''
         Record information from a cwltool.job.CommandLineJob object
@@ -145,7 +136,7 @@ class CWLCommandLineTool(GenericOp):
         for step in workflow_job.tool['steps']:
             if step['id'].split('#')[1] == step_name:
                 cwl_path = urlparse(step['run']).path
-                cwl_file = File(cwl_path)
+                cwl_file = DataObject(cwl_path)
                 self.data['cwlFile'] = cwl_file
                 break
         # cwlVersion
@@ -180,7 +171,6 @@ class CWLCommandLineTool(GenericOp):
         job_hints = step_job.builder.hints
         job_requirements = step_job.builder.requirements
         self.record_docker_requirement(job_requirements, job_hints, wf_requirements)
-
        
     def from_xml(self, root, validate=True):
         '''
@@ -191,7 +181,7 @@ class CWLCommandLineTool(GenericOp):
             print("XML document does not match XML-schema")
             return
         # CWL File
-        cwl_file = File()
+        cwl_file = DataObject()
         cwl_file.from_xml(root.find('cwlFile'))
         self.data['cwlFile'] = cwl_file
         # CWL Version
@@ -204,8 +194,7 @@ class CWLCommandLineTool(GenericOp):
             docker_req = DockerContainer()
             docker_req.from_xml(root.find('dockerRequirement'))
             self.data['dockerRequirement'].append(docker_req)
-            
-    
+                
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute.
@@ -226,33 +215,6 @@ class CWLCommandLineTool(GenericOp):
             docker_req_ele.tag = "dockerRequirement"
             root.append(docker_req_ele)
         return root
-        
-            
-    def get_input_files(self):
-        '''
-        Get input files specified by the wrapped command
-        (e.g. from CWL input bindings)
-        '''
-        return self.input_files
 
-
-    def get_output_files(self):
-        '''
-        Get output files specified by the wrapped command
-        (e.g. from outputs specified by CWL files)
-        '''
-        return self.output_files
-
-    def post_processing(self):
-        '''
-        Perform necessary post processing steps
-        '''
-        # Parse output files from the captured output
-        # This is especially important if wildcards were used in the cwl-file
-        # Replace the wildcards with the actual filenames
-        # so we now for which file a prov-file should be written
-        print(self.output)
-        return
-    
     def do_nothing():
         return

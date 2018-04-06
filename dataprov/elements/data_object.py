@@ -65,3 +65,9 @@ class DataObject(GenericElement):
         Create a xml ElementTree object from the data attribute. 
         '''
         return self.data['dataObject'].to_xml(root_tag)
+        
+    def get_uri(self):
+        '''
+        Return the URI of the data object.
+        '''
+        return self.data['dataObject'].data['uri']
