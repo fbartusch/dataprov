@@ -7,7 +7,7 @@ from lxml import etree
 from urllib.parse import urlparse
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
-from dataprov.elements.data_object import DataObject
+from dataprov.elements.file import File
 from dataprov.definitions import XML_DIR
 
 class CWLCommandLineTool(GenericOp):
@@ -35,17 +35,17 @@ class CWLCommandLineTool(GenericOp):
             cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)          
             
             # cwlFile
-            self.data['cwlFile'] = DataObject(urlparse(tool_file_uri).path)
+            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)
             # cwlVersion
             self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']            
             
-            # Additional input files
+            # Additional input data objects
             for input in job_order_object:
                 if input != 'id' and job_order_object[input]['class'] == 'File':
                     path = urlparse(job_order_object[input]['path']).path
-                    self.input_files.append(path)
+                    self.input_data_objects.append(path)
                     
-            # Additional output files
+            # Additional output data objects
             for output in cwl_tool.tool['outputs']:
                 if output != 'id' and output['type'] == 'File':
                     name = output['outputBinding']['glob']
@@ -136,7 +136,7 @@ class CWLCommandLineTool(GenericOp):
         for step in workflow_job.tool['steps']:
             if step['id'].split('#')[1] == step_name:
                 cwl_path = urlparse(step['run']).path
-                cwl_file = DataObject(cwl_path)
+                cwl_file = File(cwl_path)
                 self.data['cwlFile'] = cwl_file
                 break
         # cwlVersion
@@ -181,7 +181,7 @@ class CWLCommandLineTool(GenericOp):
             print("XML document does not match XML-schema")
             return
         # CWL File
-        cwl_file = DataObject()
+        cwl_file = File()
         cwl_file.from_xml(root.find('cwlFile'))
         self.data['cwlFile'] = cwl_file
         # CWL Version

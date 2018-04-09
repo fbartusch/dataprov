@@ -12,8 +12,6 @@ from urllib.parse import urlparse
 from ruamel.yaml.comments import CommentedMap
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file import File
-from dataprov.elements.data_object import DataObject
-from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
 from dataprov.elements.cwl_workflow import CWLWorkflow
 from dataprov.definitions import XML_DIR
@@ -58,8 +56,8 @@ class CWLTool(GenericOp):
             # Parse CWL file and create a CWL tool
             cwl_tool = cwltool.load_tool.load_tool(args.workflow, cwltool.workflow.defaultMakeTool)       
             self.data['cwlVersion'] = cwl_tool.metadata['cwlVersion']  # record it, but isn't part of schema
-            self.data['cwlFile'] = DataObject(urlparse(tool_file_uri).path)  # record it, but isn't part of schema
-            self.data['cwlJobOrder'] = DataObject(urlparse(job_order_object['id']).path)
+            self.data['cwlFile'] = File(urlparse(tool_file_uri).path)  # record it, but isn't part of schema
+            self.data['cwlJobOrder'] = File(urlparse(job_order_object['id']).path)
             
             # Is the a CommandLineTool or a Workflow?
             cwl_tool_class = cwl_tool.tool['class']
@@ -91,7 +89,7 @@ class CWLTool(GenericOp):
         
         # CWL job order
         cwl_job_order_ele = root.find('cwlJobOrder')
-        cwl_job_order = DataObject()
+        cwl_job_order = File()
         cwl_job_order.from_xml(cwl_job_order_ele)
         self.data['cwlJobOrder'] = cwl_job_order
         # CommandLineTool or Workflow?

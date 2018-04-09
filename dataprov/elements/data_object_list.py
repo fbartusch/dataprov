@@ -23,6 +23,7 @@ class DataObjectList(GenericElement):
         '''
         super().__init__()
         self.data = defaultdict(list)
+        
         if uris:
             for uri in uris:
                 try:
@@ -33,6 +34,7 @@ class DataObjectList(GenericElement):
             
     def from_xml(self, root, validate=True):
         self.data = defaultdict(list)
+        print("DataObjectList from_xml")
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             exit(1)
@@ -49,9 +51,11 @@ class DataObjectList(GenericElement):
             root = etree.Element(self.element_name)
         else:
             root = etree.Element(root_tag)
-        for object in self.data['objects']:
-            object_ele = object.to_xml()
-            root.append(object_ele)
+        print("Data objects: ", self.data['objects'])
+        for data_object in self.data['objects']:
+            print(data_object.data)
+            data_object_ele = data_object.to_xml()
+            root.append(data_object_ele)
         return root       
     
     def validate_xml(self, root):

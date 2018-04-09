@@ -77,13 +77,13 @@ class Snakemake(GenericOp):
                 elif s.startswith('input: '):
                     input_list = s[7:].split(',')
                     input_list = [os.path.abspath(i.strip()) for i in input_list]
-                    new_step.input_files = input_list
-                    self.input_files += input_list
+                    new_step.input_data_objects = input_list
+                    self.input_data_objects += input_list
                 elif s.startswith('output: '):
                     output_list = s[8:].split(',')
                     output_list = [os.path.abspath(o.strip()) for o in output_list]
-                    new_step.output_files = output_list
-                    self.output_files += output_list
+                    new_step.output_data_objects = output_list
+                    self.output_data_objects += output_list
                 elif len(s) == 0 and not rule_ended:
                     command_next = True
                     rule_ended = True

@@ -10,6 +10,7 @@ from dataprov.elements.host import Host
 from dataprov.elements.op_class import OpClass
 from dataprov.definitions import XML_DIR
 from lxml import etree
+from dataprov.utils.io import prettify
 
 class Operation(GenericElement):
     '''
@@ -26,23 +27,27 @@ class Operation(GenericElement):
         '''
         Populate data attribute from the root of a xml ElementTree object.
         '''
-        self.data = defaultdict()
+        self.__init__()
+        print("Operation from_xml")
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
         # Input Files (minOccurs=0)
-        input_files_ele = root.find('inputFiles')
-        if input_files_ele is not None:
-            input_files = FileList()
-            input_files.from_xml(input_files_ele, validate)
-            self.data['inputFiles'] = input_files
+        input_data_objects_ele = root.find('inputDataObjects')
+        if input_data_objects_ele is not None:
+            print("Input data object not None")
+            input_data_objects = DataObjectList()
+            input_data_objects.from_xml(input_data_objects_ele, validate)
+            self.data['inputDataObjects'] = input_data_objects
         else:
-            self.data['inputFiles'] = None
+            print("Input Data Objects is None")
+            self.data['inputDataObjects'] = None
         # Target Files
-        target_files_ele = root.find('targetFiles')
-        target_files = FileList()
-        target_files.from_xml(target_files_ele, validate)
-        self.data['targetFiles'] = target_files
+        target_data_objects_ele = root.find('targetDataObjects')
+        print("Output data object not None")
+        target_data_objects = DataObjectList()
+        target_data_objects.from_xml(target_data_objects_ele, validate)
+        self.data['targetDataObjects'] = target_data_objects
         # Start time
         start_time_ele = root.find('startTime')
         self.data['startTime'] = start_time_ele.text
@@ -67,15 +72,13 @@ class Operation(GenericElement):
         # Message
         message_ele = root.find('message')
         self.data['message'] = message_ele.text
-        
-    
-    
+
     def to_xml(self):
         '''
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        # Input Files
+        # Input Data Objects
         if self.data['inputDataObjects']:
             input_data_objects_ele = self.data['inputDataObjects'].to_xml(root_tag='inputDataObjects')
             root.append(input_data_objects_ele)
@@ -132,7 +135,6 @@ class Operation(GenericElement):
             try:
                 new_object = DataObject(os.path.abspath(uri))
                 target_data_objects.add_object(new_object)
-                print(new_object)
             except IOError:
                 print("Target data object not found: ", file)
                 continue
@@ -143,7 +145,7 @@ class Operation(GenericElement):
         Record start time in the format:
         YYYY-MM-DDThh:mm:ss
         '''
-        start_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
+        start_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         self.data['startTime'] = start_time
         
     def record_end_time(self):
@@ -151,7 +153,7 @@ class Operation(GenericElement):
         Record end time in the format:
         YYYY-MM-DDThh:mm:ss
         '''
-        end_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%m:%S")
+        end_time = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
         self.data['endTime'] = end_time
         
     def record_op_class(self, op_class):

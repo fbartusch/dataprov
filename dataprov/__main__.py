@@ -161,7 +161,7 @@ def main():
         input_data_objects = []
         for input_data_object in input_data_objects_tmp:
             # Check if input data objects and the corresponding provenance metadata exists
-            if not os.path.exists(input_data_objects):
+            if not os.path.exists(input_data_object):
                 print("Input file specified by -i does not exist: ", input_data_object)
                 print("No provenance information will be considered for this file.")
                 continue

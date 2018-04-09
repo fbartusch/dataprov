@@ -60,7 +60,6 @@ class File(GenericElement):
         root = etree.Element(self.element_name)
         if root_tag is not None:
             root.tag = root_tag
-        root.set("type", "file")
         etree.SubElement(root, "name").text = self.data["name"]
         etree.SubElement(root, "uri").text = self.data["uri"]
         etree.SubElement(root, "sha1").text = self.data["sha1"]

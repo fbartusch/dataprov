@@ -32,11 +32,13 @@ class Dataprov(GenericElement):
                 parser = etree.XMLParser()
                 tree = etree.parse(xml_file, parser)
                 try:
+                    print("Dataprov __init__")
                     self.from_xml(tree.getroot(), validate=validate)
                 except IOError as e:
                     print(e)
         
-    def from_xml(self, root, validate=True):        
+    def from_xml(self, root, validate=True): 
+        print("Dataprov from_xml")
         self.data = defaultdict()
         # Validate XML against schema
         if validate and not self.validate_xml(root):
@@ -60,8 +62,8 @@ class Dataprov(GenericElement):
         '''
         root = etree.Element(self.element_name)
         # Target
-        target_ele = self.data['target'].to_xml()
-        target_ele.tag = "target"
+        target_ele = self.data['target'].to_xml("target")
+        #target_ele.tag = "target"
         root.append(target_ele)
         # History
         root.append(self.data['history'].to_xml())

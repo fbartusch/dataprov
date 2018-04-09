@@ -3,6 +3,8 @@ from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.directory import Directory
 from dataprov.elements.file import File
 from dataprov.definitions import XML_DIR
+from lxml import etree
+from dataprov.utils.io import prettify
 
 class DataObject(GenericElement):
     '''
@@ -23,6 +25,8 @@ class DataObject(GenericElement):
         file or directory.
         '''
         super().__init__()
+        self.type = None
+        
         if uri:
             # Compute absolute path
             if os.path.exists(uri):
@@ -33,9 +37,11 @@ class DataObject(GenericElement):
             # Check if its a directory
             if os.path.isdir(uri):
                 data_object = Directory(abs_uri)
+                self.type = "directory"
             # Check if its a file
             elif os.path.isfile(uri):
                 data_object = File(abs_uri)
+                self.type = "file"
             # Check if its an object in a S3 bucket (TODO)
             else:
                 print("Uri is not a file nor a directory")
@@ -51,20 +57,33 @@ class DataObject(GenericElement):
         '''
         # The attribute 'type' of the root element
         # tells us the type of the data object
-        object_type = root.get('type')
-        if object_type == "file":
-            self.data['dataObject'] = File().from_xml(root, validate)
-        elif object_type == "directory":
-            self.data['dataObject'] = Directory().from_xml(root, validate)
+        print("DataObject from_xml")
+        self.type = root.get('type')
+        if self.type == "file":
+            data_object = File()
+            data_object.from_xml(root[0], validate)
+            self.data['dataObject'] = data_object
+        elif self.type == "directory":
+            data_object = Directory()
+            data_object.from_xml(root[0], validate)
+            self.data['dataObject'] = data_object
         else:
-            print("Unknown data object type: ", object_type)
+            print("Unknown data object type: ", self.type)
             exit(1)
         
     def to_xml(self, root_tag=None):
         '''
         Create a xml ElementTree object from the data attribute. 
         '''
-        return self.data['dataObject'].to_xml(root_tag)
+        # Create root element with approbiate type
+        root = etree.Element(self.element_name)
+        if root_tag is not None:
+            root.tag = root_tag
+        root.set("type", self.type)
+        # Create child element
+        object_ele = self.data['dataObject'].to_xml()
+        root.append(object_ele)
+        return root
         
     def get_uri(self):
         '''

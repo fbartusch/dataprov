@@ -4,6 +4,7 @@ from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
 from dataprov.definitions import XML_DIR
 from lxml import etree
+from dataprov.utils.io import prettify
 
 
 class Directory(GenericElement):
@@ -30,7 +31,7 @@ class Directory(GenericElement):
             # Compute the shasum of each file in the directory.
             # Sort the resulting shasums according to the filename.
             filelist = []
-            for root, directories, filenames in os.walk('/home/fbartusch/github/dataprov'):
+            for root, directories, filenames in os.walk(uri):
                 for filename in filenames: 
                     filelist.append(os.path.join(root, filename))
             file_hash_list = []
@@ -43,6 +44,9 @@ class Directory(GenericElement):
             file_hash_list.sort()
             # Write list to file (directory name with '.shalist' suffix)
             shalist_file = os.path.join(uri, ".shalist")
+            # Create an empty file.
+            # This ensures that there is a shafile for an empty directory
+            open(shalist_file, 'a').close()
             with open(shalist_file, "w") as shafile:
                 for file, hash in file_hash_list:
                     shafile.write(file + ", " + hash)
@@ -75,9 +79,11 @@ class Directory(GenericElement):
         Validity is not checked if not validate. This can be the case if validity
         is already checked by a superior element (e.g. dataprov vs. history)
         '''
+        super().__init__()
+        self.__init__()
         self.data['name'] = root.find('name').text
         self.data['uri'] = root.find('uri').text
-        self.data['shafile'] = File(root.find('shafile').text)
+        self.data['shafile'] = File(root.find('sha1file').find('uri').text)
         return
     
     def to_xml(self, root_tag=None):
@@ -87,7 +93,6 @@ class Directory(GenericElement):
         root = etree.Element(self.element_name)
         if root_tag is not None:
             root.tag = root_tag
-        root.set("type", "directory")
         etree.SubElement(root, "name").text = self.data["name"]
         etree.SubElement(root, "uri").text = self.data["uri"]
         shafile_ele = self.data['shafile'].to_xml("sha1file")
