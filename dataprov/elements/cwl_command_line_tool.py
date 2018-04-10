@@ -99,7 +99,6 @@ class CWLCommandLineTool(GenericOp):
         # Search for Docker requirements
         # Docker requirement provided by workflow?
         docker_requirement = None
-        print ("wf_requirements: ", wf_requirements)
         if wf_requirements is not None and len(wf_requirements) > 0 and wf_requirements['DockerRequirement'] is not None:
             docker_requirement = wf_requirements['DockerRequirement']
         if docker_requirement is None and job_requirements is not None:

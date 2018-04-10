@@ -5,6 +5,7 @@
   <xs:include schemaLocation="host.xsd"/>
   <xs:include schemaLocation="commandLine.xsd"/>
   <xs:include schemaLocation="docker.xsd"/>
+  <xs:include schemaLocation="singularity.xsd"/>
   <xs:include schemaLocation="cwl/cwltool.xsd"/>
   <xs:include schemaLocation="snakemake.xsd"/>
 
@@ -16,13 +17,6 @@
       <xs:element name="cwltool" type="cwltool"/>
       <xs:element name="snakemake" type="snakemake"/>
     </xs:choice>
-  </xs:complexType>
-
-  <xs:complexType name="singularity">
-    <xs:sequence>
-      <xs:element name="version" type="xs:string"/>
-      <xs:element name="wrappedCommand" type="xs:string"/>
-    </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="operation">

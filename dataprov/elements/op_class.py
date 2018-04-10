@@ -4,6 +4,7 @@ from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
 from dataprov.definitions import XML_DIR
+from dataprov.elements.singularity import Singularity
 # Conditional imports. If the docker, cwltool or snakemake is not installed throw no error
 try:
     from dataprov.elements.docker import Docker
@@ -44,9 +45,8 @@ class OpClass(GenericElement):
             self.executable = remaining[0].split()[0]
             if self.executable == "docker":
                 self.data['opClass'] = Docker(remaining)
-            #elif executable == "singularity"
-                #TODO implement
-                #self.data['opClass'] = Singularity(remaining)
+            elif self.executable == "singularity":
+                self.data['opClass'] = Singularity(remaining)
             elif self.executable == 'cwltool':
                 self.data['opClass'] = CWLTool(remaining)
             elif self.executable == 'snakemake':
@@ -67,12 +67,13 @@ class OpClass(GenericElement):
         # Discriminate from child tag which class to use
         child_tag = root[0].tag
         if child_tag == 'docker':
-            #TODO implement
             op_class = Docker()
             docker_ele = root.find('docker')
             op_class.from_xml(docker_ele, validate)
-        #elif root_tag =='singularity':
-            #TODO implement
+        elif child_tag =='singularity':
+            op_class = Singularity()
+            singularity_ele = root.find('singularity')
+            op_class.from_xml(singularity_ele, validate)
         elif child_tag == 'snakemake':
             op_class = Snakemake()
             snakemake_ele = root.find('snakemake')

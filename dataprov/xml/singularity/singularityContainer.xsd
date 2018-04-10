@@ -2,6 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="../dict.xsd"/>
   <xs:include schemaLocation="../file.xsd"/>
+  <xs:include schemaLocation="../dataObject.xsd"/>
 
   <!--
   A singularity container can have various formats
@@ -11,13 +12,10 @@
    - ext3 (a file)
    - sandbox (a directory)
   -->
-  <xs:complexType name="dockerImageSource">
+  <xs:complexType name="singularityImageSource">
     <xs:choice>
-      <xs:element name="dockerPull" type="xs:string"/>
-      <xs:element name="dockerLoad" type="file"/>
-      <xs:element name="dockerFile" type="file"/>
-      <xs:element name="dockerImport" type="xs:anyURI"/>
-      <xs:element name="dockerLocal" type="xs:string"/>
+      <xs:element name="singularityPull" type="xs:string"/>
+      <xs:element name="singularityLocal" type="dataObject"/>
     </xs:choice>
   </xs:complexType>
 
@@ -30,7 +28,7 @@
 
   <xs:complexType name="singularityContainer">
     <xs:sequence>
-      <xs:element name="imageSource" type="file"/>
+      <xs:element name="imageSource" type="singularityImageSource"/>
       <xs:element name="imageDetails" type="singularityImageDetails" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>

@@ -28,23 +28,19 @@ class Operation(GenericElement):
         Populate data attribute from the root of a xml ElementTree object.
         '''
         self.__init__()
-        print("Operation from_xml")
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
         # Input Files (minOccurs=0)
         input_data_objects_ele = root.find('inputDataObjects')
         if input_data_objects_ele is not None:
-            print("Input data object not None")
             input_data_objects = DataObjectList()
             input_data_objects.from_xml(input_data_objects_ele, validate)
             self.data['inputDataObjects'] = input_data_objects
         else:
-            print("Input Data Objects is None")
             self.data['inputDataObjects'] = None
         # Target Files
         target_data_objects_ele = root.find('targetDataObjects')
-        print("Output data object not None")
         target_data_objects = DataObjectList()
         target_data_objects.from_xml(target_data_objects_ele, validate)
         self.data['targetDataObjects'] = target_data_objects

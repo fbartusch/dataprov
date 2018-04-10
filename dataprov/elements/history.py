@@ -24,7 +24,6 @@ class History(GenericElement):
         Populate data attribute from the root of a xml ElementTree object.
         '''
         self.data = defaultdict(list)
-        print("History from_xml")
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return

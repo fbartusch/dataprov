@@ -2,7 +2,7 @@ import sys
 import os
 import shutil
 import subprocess
-import docker
+import json
 from collections import defaultdict
 from lxml import etree
 from dataprov.elements.generic_element import GenericElement
@@ -20,18 +20,30 @@ class SingularityContainer(GenericElement):
     element_name = "singularityContainer"
     schema_file = os.path.join(XML_DIR, 'singularity/singularityContainer_element.xsd') 
 
-    def __init__(self, containerPath=None):
+    singularity_methods = ["singularityPull", "singularityLocal"]
+
+    def __init__(self, method=None, source=None):
         super().__init__()
 
-        if containerPath is not None:
+        if method is not None and source is not None:
+            if method not in self.singularity_methods:
+                print("Unknown singularity image source method: ", method)
+                
             # ImageSource
-            self.data['containerPath'] = DataObject(containerPath)
+            self.data['method'] = method
+            self.data['source'] = source
 
             # ImageDetails
-            self.data['imageDetails'] = defaultdict()
-            image_dict = self.get_image_details(containerPath)
-            self.data['imageDetails']['singularityVersion'] = image_dict['DockerVersion']
-            self.data['imageDetails']['labels'] = image_dict['ContainerConfig']['Labels']
+            #TODO Can you get metadata of container from SingularityHub/DockerHub?
+            if method == "singularityLocal":
+                source_abs = os.path.abspath(source)
+                source_data_object = DataObject(source_abs)
+                self.data['source'] = source_data_object
+                
+                self.data['imageDetails'] = defaultdict()
+                image_dict = self.get_image_details(source)
+                self.data['imageDetails']['labels'] = image_dict
+                self.data['imageDetails']['singularityVersion'] = "unknown"
 
     def from_xml(self, root, validate=True):
         '''
@@ -46,35 +58,27 @@ class SingularityContainer(GenericElement):
             return
 
         # ImageSource
-        image_source_ele = root.find('dockerImageSource')
+        image_source_ele = root.find('imageSource')
         children = list(image_source_ele)
         self.data['method'] = children[0].tag
-        if self.data['method'] == "dockerPull":
-            self.data['source'] = image_source_ele.find('dockerPull').text
-        elif self.data['method'] == "dockerLoad":
-            self.data['source'] = image_source_ele.find('dockerLoad').find('uri').text
-        elif self.data['method'] == "dockerFile":
-            self.data['source'] = image_source_ele.find('dockerFile').find('uri').text
-        elif self.data['method'] == "dockerImport":
-            self.data['source'] = image_source_ele.find('dockerImport').text
-        elif self.data['method'] == "dockerLocal":
-            self.data['source'] = image_source_ele.find('dockerLocal').text
+        if self.data['method'] == "singularityPull":
+            self.data['source'] = image_source_ele.find('singularityPull').text
+        elif self.data['method'] == "singularityLocal":
+            source_ele = image_source_ele.find('singularityLocal')
+            source = DataObject()
+            source.from_xml(source_ele)
+            self.data['source'] = source
 
         # Image Details
-        if self.data['method'] == "dockerLocal":
+        if self.data['method'] == "singularityLocal":
             image_detail_ele = root.find('imageDetails')
             self.data['imageDetails'] = defaultdict()
-            self.data['imageDetails']['imageID'] = image_detail_ele.find('imageID').text
-            self.data['imageDetails']['repoTag'] = image_detail_ele.find('repoTag').text
-            self.data['imageDetails']['repoDigest'] = image_detail_ele.find('repoDigest').text
-            self.data['imageDetails']['created'] = image_detail_ele.find('created').text
-            self.data['imageDetails']['dockerVersion'] = image_detail_ele.find('dockerVersion').text
+            self.data['imageDetails']['singularityVersion'] = image_detail_ele.find('singularityVersion').text
             labels = defaultdict()
             for item in image_detail_ele.find('labels').findall('item'):
                 attributes = item.attrib
                 labels[attributes['key']] = attributes['value']
             self.data['imageDetails']['labels'] = labels
-
 
     def to_xml(self):
         '''
@@ -83,31 +87,22 @@ class SingularityContainer(GenericElement):
         root = etree.Element(self.element_name)
 
         # ImageSource
-        image_source_ele = etree.SubElement(root, 'dockerImageSource')
+        image_source_ele = etree.SubElement(root, 'imageSource')
 
-        if self.data['method'] == "dockerPull":
+        if self.data['method'] == "singularityPull":
             etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
-        elif self.data['method'] == "dockerLoad":
-            docker_file_ele = File(self.data['source']).to_xml("dockerLoad")
-            image_source_ele.append(docker_file_ele)
-        elif self.data['method'] == "dockerFile":
-            docker_file_ele = File(self.data['source']).to_xml("dockerFile")
-            image_source_ele.append(docker_file_ele)
-        elif self.data['method'] == "dockerImport":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
-        elif self.data['method'] == "dockerLocal":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
+        elif self.data['method'] == "singularityLocal":
+            source_ele = self.data['source'].to_xml(self.data['method'])
+            image_source_ele.append(source_ele)
+            #sub_ele = etree.SubElement(image_source_ele, self.data['method'])
+            #sub_ele.append(source_ele)
         else:
             print("Unknown method; ", self.data['method'])
 
         # Image details
-        if self.data['method'] == "dockerLocal":
+        if self.data['method'] == "singularityLocal":
             image_detail_ele = etree.SubElement(root, "imageDetails")
-            etree.SubElement(image_detail_ele, 'imageID').text = self.data['imageDetails']['imageID']
-            etree.SubElement(image_detail_ele, 'repoTag').text = self.data['imageDetails']['repoTag']
-            etree.SubElement(image_detail_ele, 'repoDigest').text = self.data['imageDetails']['repoDigest']
-            etree.SubElement(image_detail_ele, 'created').text = self.data['imageDetails']['created']
-            etree.SubElement(image_detail_ele, 'dockerVersion').text = self.data['imageDetails']['dockerVersion']
+            etree.SubElement(image_detail_ele, 'singularityVersion').text = self.data['imageDetails']['singularityVersion']
             labels = etree.SubElement(image_detail_ele, 'labels')
             for key,value in self.data['imageDetails']['labels'].items():
                 etree.SubElement(labels, 'item', attrib={'key':key, 'value':value})
@@ -117,9 +112,8 @@ class SingularityContainer(GenericElement):
         '''
         Get details of a singularity image.
         '''
-        client = docker.APIClient(version='auto')
-        try:
-            image_dict = client.inspect_image(image)
-            return image_dict
-        except docker.errors.ImageNotFound:
-            print("Docker image not found: ", image)
+        command = "singularity inspect " + image
+        op_output = subprocess.check_output(command, shell=True)
+        print("op_output: ", op_output)    
+        image_dict = json.loads(op_output)
+        return image_dict

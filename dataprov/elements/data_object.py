@@ -57,7 +57,6 @@ class DataObject(GenericElement):
         '''
         # The attribute 'type' of the root element
         # tells us the type of the data object
-        print("DataObject from_xml")
         self.type = root.get('type')
         if self.type == "file":
             data_object = File()
