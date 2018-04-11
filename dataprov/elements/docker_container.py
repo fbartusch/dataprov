@@ -21,8 +21,8 @@ class DockerContainer(GenericElement):
     docker_methods = ["dockerPull", "dockerLoad", "dockerFile", "dockerImport", "dockerLocal"]    
 
     def __init__(self, method=None, source=None):
-        # Empty data attribute
-        self.data = defaultdict()
+        super().__init__()
+        
         if method is not None and source is not None:
             if method not in self.docker_methods:
                 print("Unknown docker image source method: ", method)
@@ -40,22 +40,8 @@ class DockerContainer(GenericElement):
                 self.data['imageDetails']['repoTag'] = image_dict['RepoTags'][0]
                 self.data['imageDetails']['repoDigest'] = image_dict['RepoDigests'][0]
                 self.data['imageDetails']['created'] = image_dict['Created']
+                self.data['imageDetails']['dockerVersion'] = image_dict['DockerVersion']
                 self.data['imageDetails']['labels'] = image_dict['ContainerConfig']['Labels']
-
-            # DockerPath
-            tool = 'docker'
-            toolPath = shutil.which(tool)
-            self.data['dockerPath'] = toolPath
-
-            # DockerVersion
-            try:
-                dockerVersion = subprocess.check_output([tool,  '--version'])
-            except:
-                dockerVersion = None
-            if dockerVersion is not None:
-                self.data['dockerVersion'] = dockerVersion
-            else:
-                self.data['dockerVersion'] = 'unknown'
 
     def from_xml(self, root, validate=True):
         '''
@@ -92,14 +78,13 @@ class DockerContainer(GenericElement):
             self.data['imageDetails']['repoTag'] = image_detail_ele.find('repoTag').text
             self.data['imageDetails']['repoDigest'] = image_detail_ele.find('repoDigest').text
             self.data['imageDetails']['created'] = image_detail_ele.find('created').text
+            self.data['imageDetails']['dockerVersion'] = image_detail_ele.find('dockerVersion').text
             labels = defaultdict()
             for item in image_detail_ele.find('labels').findall('item'):
                 attributes = item.attrib
                 labels[attributes['key']] = attributes['value']
             self.data['imageDetails']['labels'] = labels
 
-        self.data['dockerPath'] = root.find('dockerPath').text
-        self.data['dockerVersion'] = root.find('dockerVersion').text
 
     def to_xml(self):
         '''
@@ -132,13 +117,10 @@ class DockerContainer(GenericElement):
             etree.SubElement(image_detail_ele, 'repoTag').text = self.data['imageDetails']['repoTag']
             etree.SubElement(image_detail_ele, 'repoDigest').text = self.data['imageDetails']['repoDigest']
             etree.SubElement(image_detail_ele, 'created').text = self.data['imageDetails']['created']
+            etree.SubElement(image_detail_ele, 'dockerVersion').text = self.data['imageDetails']['dockerVersion']
             labels = etree.SubElement(image_detail_ele, 'labels')
             for key,value in self.data['imageDetails']['labels'].items():
                 etree.SubElement(labels, 'item', attrib={'key':key, 'value':value})
-
-        # DockerPath and DockerVersion
-        etree.SubElement(root, 'dockerPath').text = self.data['dockerPath']
-        etree.SubElement(root, 'dockerVersion').text = self.data['dockerVersion']
         return root
 
     def get_image_details(self, image):

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:include schemaLocation="fileList.xsd"/>
+  <xs:include schemaLocation="dataObjectList.xsd"/>
   <xs:complexType name="commandLine">
     <xs:sequence>
       <xs:element name="command" type="xs:string"/>
       <xs:element name="toolPath" type="xs:string"/>
       <xs:element name="toolVersion" type="xs:string"/>
-      <xs:element name="inputFiles" type="fileList" minOccurs="0"/>
-      <xs:element name="outputFiles" type="fileList" minOccurs="0"/>
+      <xs:element name="inputDataObjects" type="dataObjectList" minOccurs="0"/>
+      <xs:element name="outputDataObjects" type="dataObjectList" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

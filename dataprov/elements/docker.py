@@ -1,5 +1,7 @@
 import os
 import docker
+import shutil
+import subprocess
 from collections import defaultdict
 from docker.errors import ImageNotFound
 from dataprov.elements.generic_op import GenericOp
@@ -17,12 +19,9 @@ class Docker(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'docker_element.xsd')
 
     def __init__(self, remaining=None):
-        # Empty data attribute
-        self.data = defaultdict()
+        super().__init__()
+        
         self.remaining = remaining
-
-        self.input_files = []
-        self.output_files = []
 
         if remaining is not None:
             # Command
@@ -34,6 +33,21 @@ class Docker(GenericOp):
             # Create the docker container object
             docker_container = DockerContainer("dockerLocal", image_dict['RepoTags'][0])
             self.data['dockerContainer'] = docker_container
+            
+            # DockerPath
+            tool = 'docker'
+            toolPath = shutil.which(tool)
+            self.data['dockerPath'] = toolPath
+
+            # DockerVersion
+            try:
+                dockerVersion = subprocess.check_output([tool,  '--version'])
+            except:
+                dockerVersion = None
+            if dockerVersion is not None:
+                self.data['dockerVersion'] = dockerVersion
+            else:
+                self.data['dockerVersion'] = 'unknown'
 
     def from_xml(self, root, validate=True):
         '''
@@ -44,6 +58,8 @@ class Docker(GenericOp):
             print("XML document does not match XML-schema")
             return
         self.data['command'] = root.find('command').text
+        self.data['dockerPath'] = root.find('dockerPath').text
+        self.data['dockerVersion'] = root.find('dockerVersion').text
         # Docker Container
         docker_container_ele = root.find('dockerContainer')
         docker_container = DockerContainer()
@@ -56,6 +72,8 @@ class Docker(GenericOp):
         '''
         root = etree.Element(self.element_name)
         etree.SubElement(root, 'command').text = self.data['command']
+        etree.SubElement(root, 'dockerPath').text = self.data['dockerPath']
+        etree.SubElement(root, 'dockerVersion').text = self.data['dockerVersion']
         docker_container_ele = self.data['dockerContainer'].to_xml()
         root.append(docker_container_ele)
         return root

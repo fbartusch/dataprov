@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
 
-  <xs:include schemaLocation="file.xsd"/>
-  <xs:include schemaLocation="fileList.xsd"/>
-  <xs:include schemaLocation="executor.xsd"/>
-  <xs:include schemaLocation="host.xsd"/>
-  <xs:include schemaLocation="operation.xsd"/> 
+  <xs:include schemaLocation="dataObject.xsd"/>
   <xs:include schemaLocation="history.xsd"/>
 
   <xs:element name="dataprov">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="target"  type="file"/>
+        <xs:element name="target"  type="dataObject"/>
         <xs:element name="history" type="history"/>
       </xs:sequence>
     </xs:complexType>

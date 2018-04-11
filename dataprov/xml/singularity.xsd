@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="singularity/singularityContainer.xsd"/>
+  <xs:complexType name="singularity">
+    <xs:sequence>
+      <xs:element name="command" type="xs:string"/>
+      <xs:element name="singularityPath" type="xs:string"/>
+      <xs:element name="singularityVersion" type="xs:string"/>
+      <xs:element name="singularityContainer" type="singularityContainer"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

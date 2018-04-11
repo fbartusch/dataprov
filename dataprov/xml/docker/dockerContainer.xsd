@@ -3,7 +3,7 @@
   <xs:include schemaLocation="../dict.xsd"/>
   <xs:include schemaLocation="../file.xsd"/>
 
-  <xs:complexType name="imageSource">
+  <xs:complexType name="dockerImageSource">
     <xs:choice>
       <xs:element name="dockerPull" type="xs:string"/>
       <xs:element name="dockerLoad" type="file"/>
@@ -13,22 +13,21 @@
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="imageDetails">
+  <xs:complexType name="dockerImageDetails">
     <xs:sequence>
       <xs:element name="imageID" type="xs:string"/>
       <xs:element name="repoTag" type="xs:string"/>
       <xs:element name="repoDigest" type="xs:string"/>
       <xs:element name="created" type="xs:dateTime"/>
+      <xs:element name="dockerVersion" type="xs:string"/>
       <xs:element name="labels" type="dict"/>
     </xs:sequence>
   </xs:complexType>
 
   <xs:complexType name="dockerContainer">
     <xs:sequence>
-      <xs:element name="imageSource" type="imageSource"/>
-      <xs:element name="imageDetails" type="imageDetails" minOccurs="0"/>
-      <xs:element name="dockerPath" type="xs:anyURI"/>
-      <xs:element name="dockerVersion" type="xs:string"/>
+      <xs:element name="imageSource" type="dockerImageSource"/>
+      <xs:element name="imageDetails" type="dockerImageDetails" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

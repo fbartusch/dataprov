@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-  <xs:include schemaLocation="fileList.xsd"/> 
+  <xs:include schemaLocation="dataObjectList.xsd"/>
   <xs:include schemaLocation="executor.xsd"/>
   <xs:include schemaLocation="host.xsd"/>
   <xs:include schemaLocation="commandLine.xsd"/>
   <xs:include schemaLocation="docker.xsd"/>
+  <xs:include schemaLocation="singularity.xsd"/>
   <xs:include schemaLocation="cwl/cwltool.xsd"/>
   <xs:include schemaLocation="snakemake.xsd"/>
 
@@ -18,23 +19,16 @@
     </xs:choice>
   </xs:complexType>
 
-  <xs:complexType name="singularity">
-    <xs:sequence>
-      <xs:element name="version" type="xs:string"/>
-      <xs:element name="wrappedCommand" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-
   <xs:complexType name="operation">
     <xs:sequence>
-      <xs:element name="inputFiles"     type="fileList" minOccurs="0"/>
-      <xs:element name="targetFiles"    type="fileList"/>
-      <xs:element name="startTime"      type="xs:dateTime"/>
-      <xs:element name="endTime"        type="xs:dateTime"/> 
-      <xs:element name="executor"       type="executor"/>
-      <xs:element name="host"           type="host"/>
-      <xs:element name="opClass"        type="opClass"/>
-      <xs:element name="message"        type="xs:string" minOccurs="0"/>
+      <xs:element name="inputDataObjects"  type="dataObjectList" minOccurs="0"/>
+      <xs:element name="targetDataObjects" type="dataObjectList"/>
+      <xs:element name="startTime"         type="xs:dateTime"/>
+      <xs:element name="endTime"           type="xs:dateTime"/> 
+      <xs:element name="executor"          type="executor"/>
+      <xs:element name="host"              type="host"/>
+      <xs:element name="opClass"           type="opClass"/>
+      <xs:element name="message"           type="xs:string" minOccurs="0"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

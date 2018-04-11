@@ -4,6 +4,8 @@
   <xs:complexType name="docker">
     <xs:sequence>
       <xs:element name="command" type="xs:string"/>
+      <xs:element name="dockerPath" type="xs:string"/>
+      <xs:element name="dockerVersion" type="xs:string"/>
       <xs:element name="dockerContainer" type="dockerContainer"/>
     </xs:sequence>
   </xs:complexType>

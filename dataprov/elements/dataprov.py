@@ -2,7 +2,8 @@ import os
 import graphviz as gv
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file import File
+from dataprov.elements.data_object import DataObject
+from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.history import History
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -34,9 +35,8 @@ class Dataprov(GenericElement):
                     self.from_xml(tree.getroot(), validate=validate)
                 except IOError as e:
                     print(e)
-    
-    
-    def from_xml(self, root, validate=True):        
+        
+    def from_xml(self, root, validate=True): 
         self.data = defaultdict()
         # Validate XML against schema
         if validate and not self.validate_xml(root):
@@ -44,7 +44,7 @@ class Dataprov(GenericElement):
         
         # Get the target from the xml
         target_ele = root.find('target')
-        target = File()
+        target = DataObject()
         target.from_xml(target_ele, validate=False)
         self.data['target'] = target
         
@@ -60,29 +60,27 @@ class Dataprov(GenericElement):
         '''
         root = etree.Element(self.element_name)
         # Target
-        target_ele = self.data['target'].to_xml()
-        target_ele.tag = "target"
+        target_ele = self.data['target'].to_xml("target")
+        #target_ele.tag = "target"
         root.append(target_ele)
         # History
         root.append(self.data['history'].to_xml())
         return root
-    
-    
+       
     def create_provenance(self, target_file, input_prov_data, applied_operation):
         '''
-        Create the final provenance object from the path to an output file,
+        Create the final provenance object from the path to an output data object,
         A dictionary of input provenance data and the object describing the
         applied operation
         '''
         self.data = defaultdict()
         # Target: Get this from the applied operation object
-        self.data['target'] = applied_operation.get_target_file(target_file)
+        self.data['target'] = applied_operation.get_target_data_object(target_file)
         # History: Combine the history of all input files with the applied operation
         new_history = History()
         new_history.combine_histories(input_prov_data, applied_operation)
         self.data['history'] = new_history
-    
-    
+        
     def get_xml_file_path(self):
         '''
         Return the path to the corresponding xml file.
@@ -114,7 +112,6 @@ class Dataprov(GenericElement):
             for output_file in output_files.data['file']:
                 file_dict[output_file.data['sha1']] = output_file.data['name']
 
-            print(file_dict)
             for key, value in file_dict.items():
                 # Name of file node is <name>:<sha1>
                 node_name = value + ":" + key

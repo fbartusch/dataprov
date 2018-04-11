@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:include schemaLocation="directory.xsd"/>
+  <xs:include schemaLocation="file.xsd"/>
+
+  <!-- This type describes a dataObject, this can be a ..
+    - directory
+    - file
+    - object in a S3 bucket (is on TODO list)
+  -->
+
+  <xs:complexType name="dataObject">
+    <xs:choice>
+      <xs:element name="directory" type="directory"/>
+      <xs:element name="file" type="file"/>
+    </xs:choice>
+    <xs:attribute name="type" type="xs:string"/> 
+  </xs:complexType>
+</xs:schema>

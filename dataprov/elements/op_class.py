@@ -4,6 +4,7 @@ from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
 from dataprov.definitions import XML_DIR
+from dataprov.elements.singularity import Singularity
 # Conditional imports. If the docker, cwltool or snakemake is not installed throw no error
 try:
     from dataprov.elements.docker import Docker
@@ -14,7 +15,6 @@ try:
 except ImportError as e:
     print(str(e))
 try:
-    import snakemake
     from dataprov.elements.snakemake import Snakemake
 except ImportError as e:
     print(str(e))
@@ -32,12 +32,12 @@ class OpClass(GenericElement):
     
     def __init__(self, remaining=None):
         '''
-        Initialize this file element.
+        Initialize this OpClass element.
         '''
         super().__init__()
         self.remaining = None
-        self.input_files = []
-        self.output_files = []
+        self.input_data_objects = []
+        self.output_data_objects = []
         if remaining is not None:
             self.remaining = list(remaining)
             # Try to determine the correct opClass
@@ -45,9 +45,8 @@ class OpClass(GenericElement):
             self.executable = remaining[0].split()[0]
             if self.executable == "docker":
                 self.data['opClass'] = Docker(remaining)
-            #elif executable == "singularity"
-                #TODO implement
-                #self.data['opClass'] = Singularity(remaining)
+            elif self.executable == "singularity":
+                self.data['opClass'] = Singularity(remaining)
             elif self.executable == 'cwltool':
                 self.data['opClass'] = CWLTool(remaining)
             elif self.executable == 'snakemake':
@@ -68,12 +67,13 @@ class OpClass(GenericElement):
         # Discriminate from child tag which class to use
         child_tag = root[0].tag
         if child_tag == 'docker':
-            #TODO implement
             op_class = Docker()
             docker_ele = root.find('docker')
             op_class.from_xml(docker_ele, validate)
-        #elif root_tag =='singularity':
-            #TODO implement
+        elif child_tag =='singularity':
+            op_class = Singularity()
+            singularity_ele = root.find('singularity')
+            op_class.from_xml(singularity_ele, validate)
         elif child_tag == 'snakemake':
             op_class = Snakemake()
             snakemake_ele = root.find('snakemake')
@@ -109,20 +109,20 @@ class OpClass(GenericElement):
         self.data['opClass'].post_processing()
     
     
-    def get_input_files(self):
+    def get_input_data_objects(self):
         '''
-        Get input files specified by the wrapped command
+        Get input data objects specified by the wrapped command
         (e.g. from CWL input bindings)
         '''
-        return self.data['opClass'].get_input_files()
+        return self.data['opClass'].get_input_data_objects()
 
 
-    def get_output_files(self):
+    def get_output_data_objects(self):
         '''
-        Get output files specified by the wrapped command
+        Get output data objects specified by the wrapped command
         (e.g. from outputs specified by CWL files)
         '''
-        return self.data['opClass'].get_output_files()
+        return self.data['opClass'].get_output_data_objects()
 
 
     def run(self):
