@@ -37,6 +37,7 @@ conda install bwa
 ```
 
 To try the 'First steps' examples with the Docker container. This is just the Docker Python-API, you have to install Docker on your system, too.
+You can also use Singularity to try the 'First steps' example.
 
 ```
 pip install docker
@@ -81,8 +82,12 @@ The repository contains a very small reference genome. First we compute an index
 dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run bwa index examples/bwa/genome.fa
 
 # bwa is not installed already
+# Using Docker
 docker pull biocontainers/bwa
 dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run docker run -v $PWD/examples/:/tmp/:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/bwa/genome.fa
+
+# Using Singularity
+dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run singularity exec bwa.simg bwa index examples/bwa/genome.fa
 ```
 
 Everything after the keyword `run` is the command wrapped by dataprov. The `-i/--input` and `-o/--output` options tell dataprov the input/output files of the wrapped command.
@@ -121,11 +126,16 @@ mkdir data/mapped_reads
 dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam run 'bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
 
 # bwa not installed
+# Using Docker
 dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \
     run 'docker run -v $PWD/examples/:/tmp/:z  docker.io/biocontainers/bwa:latest bwa mem /tmp/bwa/genome.fa /tmp/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
+
+# Using Singularity
+dataprov -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \
+    run 'singularity exec bwa.simg bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
 ```
 
-The resulting metadata file inherits the metadata of the index file: `examples/bwa/mapped_reads/A.bam.prov`:
+This command produces a mapping result file and the corresponding provenance file:
 
 ```
 ls -go examples/bwa/mapped_reads/
@@ -146,7 +156,41 @@ cd examples/snakemake
 dataprov run snakemake all
 ```
 
-This will run the workflow and creates a provenance file for each of the eight output files.
+This will run the workflow and creates a provenance file for each of the eight output files:
+
+```
+ls -go . calls/ mapped_reads/ sorted_reads/
+.:
+total 104
+drwxrwxr-x. 2    41 Mar 27 16:00 calls
+drwxrwxr-x. 2    68 Mar 27 16:00 mapped_reads
+-rw-rw-r--. 1 92876 Mar 15 16:11 report.html
+-rw-rw-r--. 1 11974 Mar 27 16:00 report.html.prov
+drwxrwxr-x. 2   146 Mar 27 16:00 sorted_reads
+
+calls/:
+total 80
+-rw-rw-r--. 1 66927 Mar 15 16:11 all.vcf
+-rw-rw-r--. 1 11977 Mar 27 16:00 all.vcf.prov
+
+mapped_reads/:
+total 4436
+-rw-rw-r--. 1 2256008 Mar 15 16:11 A.bam
+-rw-rw-r--. 1   11980 Mar 27 16:00 A.bam.prov
+-rw-rw-r--. 1 2259659 Mar 15 16:11 B.bam
+-rw-rw-r--. 1   11980 Mar 27 16:00 B.bam.prov
+
+sorted_reads/:
+total 4444
+-rw-rw-r--. 1 2242429 Mar 15 16:11 A.bam
+-rw-rw-r--. 1     344 Mar 15 16:11 A.bam.bai
+-rw-rw-r--. 1   11988 Mar 27 16:00 A.bam.bai.prov
+-rw-rw-r--. 1   11980 Mar 27 16:00 A.bam.prov
+-rw-rw-r--. 1 2245385 Mar 15 16:11 B.bam
+-rw-rw-r--. 1     344 Mar 15 16:11 B.bam.bai
+-rw-rw-r--. 1   11988 Mar 27 16:00 B.bam.bai.prov
+-rw-rw-r--. 1   11980 Mar 27 16:00 B.bam.prov
+```
 
 ## Running CWL CommandLineTools
 
