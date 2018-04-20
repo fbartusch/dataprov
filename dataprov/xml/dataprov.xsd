@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:include schemaLocation="dataObject.xsd"/>
+  <xs:include schemaLocation="history.xsd"/>
+
+  <xs:complexType name="dataprov">
+    <xs:annotation>
+      <xs:documentation>
+        This type describes the provenance for one data object.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:sequence>
+      <xs:element name="target"  type="dataObject">
+        <xs:annotation>
+          <xs:documentation>
+            The data object whose provenance is described.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="history" type="history">
+        <xs:annotation>
+          <xs:documentation>
+            The provenance of the data object as list of operations that subsequently created the data object.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
