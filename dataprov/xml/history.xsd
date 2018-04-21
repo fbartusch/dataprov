@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="operation.xsd"/>
   <xs:complexType name="history">
+    <xs:annotation>
+      <xs:documentation>
+        The history type consists of a sequence of one or more operation elements.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
       <xs:element name="operation" type="operation" maxOccurs="unbounded"/>
     </xs:sequence>
