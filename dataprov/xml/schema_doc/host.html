@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <title>Documentation test</title>
+    <title>Dataprov Metadata Schema</title>
     <meta http-equiv="Content-Type" content="text/xml; charset=iso-8859-1" />
     <style type="text/css">
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
@@ -368,9 +368,9 @@ div#legend div.hint {
     <script type="text/javascript">
 <!--
 /* IDs of XML Instance Representation boxes */
-var xiBoxes = new Array('type_history_xibox');
+var xiBoxes = new Array('type_host_xibox');
 /* IDs of Schema Component Representation boxes */
-var scBoxes = new Array('schema_scbox', 'type_history_scbox');
+var scBoxes = new Array('schema_scbox', 'type_host_scbox');
 
 /**
  * Can get the ID of the button controlling
@@ -673,7 +673,7 @@ function viewDocumentation(compDesc, compName, docTextArray) {
   </head>
   <body>
     <h1>
-      <a name="top" id="top">Documentation test</a>
+      <a name="top" id="top">Dataprov Metadata Schema</a>
     </h1>
     <div style="float: right;">
       <div id="printerControls" style="display:none;"><input type="checkbox" onclick="displayMode(this.checked)" />Printer-friendly Version</div>
@@ -717,7 +717,7 @@ if (gc != null) {
         <a href="#SchemaDefinitions">Global Definitions</a>
         <ul>
           <li>
-            <a href="#type_history">Complex Type: <strong>history</strong></a>
+            <a href="#type_host">Complex Type: <strong>host</strong></a>
           </li>
         </ul>
       </li>
@@ -744,7 +744,9 @@ if (gc != null) {
         <th>
           <a title="Look up 'Target Namespace' in glossary" href="#term_TargetNS">Target Namespace</a>
         </th>
-        <td>None</td>
+        <td>
+          <span class="targetNS">Dataprov</span>
+        </td>
       </tr>
       <tr>
         <th>Element and Attribute Namespaces</th>
@@ -753,14 +755,6 @@ if (gc != null) {
             <li>Global element and attribute declarations belong to this schema's target namespace.</li>
             <li>By default, local element declarations have no namespace.</li>
             <li>By default, local attribute declarations have no namespace.</li>
-          </ul>
-        </td>
-      </tr>
-      <tr>
-        <th>Schema Composition</th>
-        <td>
-          <ul>
-            <li>This schema includes components from the following schema document(s):<ul><li>operation.xsd</li></ul></li>
           </ul>
         </td>
       </tr>
@@ -783,11 +777,19 @@ if (gc != null) {
         </td>
         <td>http://www.w3.org/2001/XMLSchema</td>
       </tr>
+      <tr>
+        <td>
+          <a name="ns_dat" id="ns_dat">dat</a>
+        </td>
+        <td>
+          <span class="targetNS">Dataprov</span>
+        </td>
+      </tr>
     </table>
     <div class="schemaComponent box">
       <div><input type="button" id="schema_scbox_button" class="control" onclick="switchState('schema_scbox'); return false;" style="display: none" /> <span class="caption">Schema Component Representation</span></div>
       <div id="schema_scbox" class="contents">
-        <div style="margin-left: 0em">&lt;<span class="scTag">xs:schema</span>&gt;<div style="margin-left: 1.5em">&lt;<span class="scTag">xs:include</span> <span class="scTag">schemaLocation</span>="<span class="scContent">operation.xsd</span>"/&gt;</div><div class="scContent" style="margin-left: 1.5em">...</div>&lt;/<span class="scTag">xs:schema</span>&gt;</div>
+        <div style="margin-left: 0em">&lt;<span class="scTag">xs:schema</span> <span class="scTag">targetNamespace</span>="<span class="scContent">Dataprov</span>"&gt;<div class="scContent" style="margin-left: 1.5em">...</div>&lt;/<span class="scTag">xs:schema</span>&gt;</div>
       </div>
       <script type="text/javascript">
 <!--
@@ -802,7 +804,7 @@ setState('schema_scbox', false);
     <h2>
       <a name="SchemaDefinitions" id="SchemaDefinitions">Global Definitions</a>
     </h2>
-    <h3>Complex Type: <a name="type_history" class="name" id="type_history">history</a></h3>
+    <h3>Complex Type: <a name="type_host" class="name" id="type_host">host</a></h3>
     <table class="hierarchy">
       <tr>
         <th>Super-types:</th>
@@ -816,7 +818,7 @@ setState('schema_scbox', false);
     <table class="properties">
       <tr>
         <th>Name</th>
-        <td>history</td>
+        <td>host</td>
       </tr>
       <tr>
         <th>
@@ -827,29 +829,29 @@ setState('schema_scbox', false);
       <tr>
         <th>Documentation</th>
         <td>
-        The history type consists of a sequence of one or more operation elements.
+      This type describes a host system on which the wrapped command is executed.
       </td>
       </tr>
     </table>
     <div class="sample box">
-      <div><input type="button" id="type_history_xibox_button" class="control" onclick="switchState('type_history_xibox'); return false;" style="display: none" /> <span class="caption">XML Instance Representation</span></div>
-      <div id="type_history_xibox" class="contents">
-        <div style="margin-left: 0em">&lt;...&gt; <br /><div style="margin-left: 1.5em">&lt;operation&gt; <span class="type"><a title="Jump to &quot;operation&quot; type definition." href="#type_operation">operation</a></span> &lt;/operation&gt; <span class="occurs">[1..*]</span></div>&lt;/...&gt;</div>
+      <div><input type="button" id="type_host_xibox_button" class="control" onclick="switchState('type_host_xibox'); return false;" style="display: none" /> <span class="caption">XML Instance Representation</span></div>
+      <div id="type_host_xibox" class="contents">
+        <div style="margin-left: 0em">&lt;...&gt; <br /><div style="margin-left: 1.5em">&lt;system&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/system&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('The OS name as returned by the Python command \'platform.system()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'system', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;dist&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/dist&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Linux distribution name (distname) as returned by the Python command \'platform.linux_distribution()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'dist', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;version&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/version&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Distribution version as returned by the Python command \'platform.linux_distribution()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'version', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;codename&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/codename&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Codename of the distribution as returned by the Python command \'platform.linux_distribution()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'codename', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;kernelVersion&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/kernelVersion&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Kernel version of the distributation as returned by the Python command \'platform.uname()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'kernelVersion', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;machine&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/machine&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Machine type of the host as returned by the Python command \'platform.machine()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'machine', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;processor&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/processor&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Processor type of the host as returned by the Python command \'platform.processor()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'processor', docArray);">?</a></div><div style="margin-left: 1.5em">&lt;hostname&gt; <span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span> &lt;/hostname&gt; <span class="occurs">[1]</span> <a href="javascript:void(0)" title="View Documentation" class="documentation" onclick="docArray = new Array('Hostname of the host as returned by the Python command \'platform.uname()\' of the built-in \'platform\' package.'); viewDocumentation('Element', 'hostname', docArray);">?</a></div>&lt;/...&gt;</div>
       </div>
       <script type="text/javascript">
 <!--
-setState('type_history_xibox', true);
+setState('type_host_xibox', true);
 // -->
 </script>
     </div>
     <div class="schemaComponent box">
-      <div><input type="button" id="type_history_scbox_button" class="control" onclick="switchState('type_history_scbox'); return false;" style="display: none" /> <span class="caption">Schema Component Representation</span></div>
-      <div id="type_history_scbox" class="contents">
-        <div style="margin-left: 0em">&lt;<span class="scTag">xs:complexType</span> <span class="scTag">name</span>="<span class="scContent">history</span>"&gt;<div style="margin-left: 1.5em">&lt;<span class="scTag">xs:sequence</span>&gt;<div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">operation</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a title="Jump to &quot;operation&quot; type definition." href="#type_operation">operation</a></span></span>" <span class="scTag">maxOccurs</span>="<span class="scContent">unbounded</span>"/&gt;</div>&lt;/<span class="scTag">xs:sequence</span>&gt;</div>&lt;/<span class="scTag">xs:complexType</span>&gt;</div>
+      <div><input type="button" id="type_host_scbox_button" class="control" onclick="switchState('type_host_scbox'); return false;" style="display: none" /> <span class="caption">Schema Component Representation</span></div>
+      <div id="type_host_scbox" class="contents">
+        <div style="margin-left: 0em">&lt;<span class="scTag">xs:complexType</span> <span class="scTag">name</span>="<span class="scContent">host</span>"&gt;<div style="margin-left: 1.5em">&lt;<span class="scTag">xs:sequence</span>&gt;<div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">system</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">dist</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">version</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">codename</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">kernelVersion</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">machine</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">processor</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div><div style="margin-left: 1.5em">&lt;<span class="scTag">xs:element</span> <span class="scTag">name</span>="<span class="scContent">hostname</span>" <span class="scTag">type</span>="<span class="scContent"><span class="type"><a href="#ns_xs" title="Find out namespace of 'xs' prefix">xs</a>:string</span></span>"/&gt;</div>&lt;/<span class="scTag">xs:sequence</span>&gt;</div>&lt;/<span class="scTag">xs:complexType</span>&gt;</div>
       </div>
       <script type="text/javascript">
 <!--
-setState('type_history_scbox', false);
+setState('type_host_scbox', false);
 // -->
 </script>
     </div>

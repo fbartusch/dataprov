@@ -1,5 +1,0 @@
-<?xml version="1.0"?>
-<links xmlns="http://titanium.dstc.edu.au/xml/xs3p">
-  <schema file-location="dataprov.xsd" docfile-location="dataprov.xsd.html"/>
-  <schema file-location="history.xsd" docfile-location="history.xsd.html"/>
-</links>

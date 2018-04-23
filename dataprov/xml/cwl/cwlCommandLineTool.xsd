@@ -1,12 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="sx3p/xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="../docker/dockerContainer.xsd"/>
   <xs:complexType name="cwlCommandLineTool">
+  <xs:annotation>
+    <xs:documentation>
+      This type describes the execution of a Common Workflow Language (CWL) command line tool.
+    </xs:documentation>
+  </xs:annotation>
     <xs:sequence>
-      <xs:element name="cwlFile" type="file"/>
-      <xs:element name="cwlVersion" type="xs:string"/>
-      <xs:element name="command" type="xs:string"/>
-      <xs:element name="dockerRequirement" type="dockerContainer" minOccurs="0"/>
+      <xs:element name="cwlFile" type="dat:file">
+        <xs:annotation>
+          <xs:documentation>
+            The .cwl file executed by cwltool.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cwlVersion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Version of the CWL standard used in the .cwl File.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element> 
+      <xs:element name="command" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The command executed after cwltool resolved input bindings. This command is not the 'real' command executed by cwltool.
+            cwltool uses temporary working directories. These are resolved by dataprov such that the paths are the same as specified in the
+            input bindings file.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dockerRequirement" type="dat:dockerContainer" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            If the .cwl file contains a DockerRequirement, details about the used Docker container will be provided.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

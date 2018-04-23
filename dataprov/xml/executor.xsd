@@ -1,14 +1,64 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:complexType name="executor">
+    <xs:annotation>
+      <xs:documentation>
+        This type describes the executor of an operation. The information about the executor are stored at ~/.dataprov/executor.conf per default and incorporated into the provenance metadata of this user executes a command that is wrapped by dataprov. 
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="title" type="xs:normalizedString" minOccurs="0"/>
-      <xs:element name="firstName" type="xs:normalizedString"/>
-      <xs:element name="middleName" type="xs:normalizedString" minOccurs="0"/>
-      <xs:element name="surname" type="xs:normalizedString"/>
-      <xs:element name="suffix" type="xs:normalizedString" minOccurs="0"/>
-      <xs:element name="mail" type="xs:normalizedString"/>
-      <xs:element name="affiliation" maxOccurs="unbounded"/>
+      <xs:element name="title" type="xs:normalizedString" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Academic title of the executor such as M.Sc., Dr.,  etc. (optional).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="firstName" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+            First name of the executor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="middleName" type="xs:normalizedString" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Middle name of the executor (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="surname" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+            Family name of the executor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="suffix" type="xs:normalizedString" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            Suffix name of the executor (optional)
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="mail" type="xs:normalizedString">
+        <xs:annotation>
+          <xs:documentation>
+            Mail address of the executor
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="affiliation" type="xs:string" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            One or more affiliation(s) of the executor.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

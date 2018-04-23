@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="singularity/singularityContainer.xsd"/>
   <xs:complexType name="singularity">
+    <xs:annotation>
+      <xs:documentation>
+        This type represents an operation that uses Singularity containers.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="command" type="xs:string"/>
-      <xs:element name="singularityPath" type="xs:string"/>
-      <xs:element name="singularityVersion" type="xs:string"/>
-      <xs:element name="singularityContainer" type="singularityContainer"/>
+      <xs:element name="command" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The command that gets executed in the Singularity container.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="singularityPath" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Path to the Singularity executable on the host. This is the output of 'which singularity'.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="singularityVersion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Version of the Singularity executable on the host. This is the output of 'singularity \-\-version'.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="singularityContainer" type="dat:singularityContainer">
+        <xs:annotation>
+          <xs:documentation>
+            Additional information about the used Singularity image.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

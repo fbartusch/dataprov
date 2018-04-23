@@ -1,12 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="docker/dockerContainer.xsd"/>
   <xs:complexType name="docker">
+    <xs:annotation>
+      <xs:documentation>
+        This type describes an operation that uses a Docker container.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="command" type="xs:string"/>
-      <xs:element name="dockerPath" type="xs:string"/>
-      <xs:element name="dockerVersion" type="xs:string"/>
-      <xs:element name="dockerContainer" type="dockerContainer"/>
+      <xs:element name="command" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The command that is executed inside the Docker container.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dockerPath" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The path to the Docker executable on the execution environment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dockerVersion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The version of the Docker executable on the execution environment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="dockerContainer" type="dat:dockerContainer">
+        <xs:annotation>
+          <xs:documentation>
+            Further information about the Docker image. At least information about the image source, depending on the source also more detailed information.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

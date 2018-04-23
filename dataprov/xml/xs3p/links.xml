@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<links xmlns="http://titanium.dstc.edu.au/xml/xs3p">
+  <schema file-location="commandLine.xsd" docfile-location="commandLine.html"/>
+  <schema file-location="cwl/cwlCommandLineTool.xsd" docfile-location="cwl/cwlCommandLineTool.html"/>
+  <schema file-location="cwl/cwltool.xsd" docfile-location="cwl/cwltool.html"/>
+  <schema file-location="dataObject.xsd" docfile-location="dataObject.html"/>
+  <schema file-location="dataObjectList.xsd" docfile-location="dataObjectList.html"/>
+  <schema file-location="dataprov.xsd" docfile-location="dataprov.html"/>
+  <schema file-location="dict.xsd" docfile-location="dict.html"/>
+  <schema file-location="directory.xsd" docfile-location="directory.html"/>
+  <schema file-location="docker/dockerContainer.xsd" docfile-location="docker/dockerContainer.html"/>
+  <schema file-location="docker.xsd" docfile-location="docker.html"/>
+  <schema file-location="executor.xsd" docfile-location="executor.html"/>
+  <schema file-location="file.xsd" docfile-location="file.html"/>
+  <schema file-location="fileList.xsd" docfile-location="fileList.html"/>
+  <schema file-location="history.xsd" docfile-location="history.html"/>
+  <schema file-location="host.xsd" docfile-location="host.html"/>
+  <schema file-location="operation.xsd" docfile-location="operation.html"/>
+  <schema file-location="singularity/singularityContainer.xsd" docfile-location="singularity/singularityContainer.html"/>
+  <schema file-location="singularity.xsd" docfile-location="singularity.html"/>
+  <schema file-location="snakemake.xsd" docfile-location="snakemake.html"/>
+</links>
