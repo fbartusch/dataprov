@@ -140,10 +140,10 @@
    <xsl:param name="printAllSubTypes">true</xsl:param>
 
    <!-- If 'true', prints out the Glossary section. -->
-   <xsl:param name="printGlossary">true</xsl:param>
+   <xsl:param name="printGlossary">false</xsl:param>
 
    <!-- If 'true', prints out the Legend section. -->
-   <xsl:param name="printLegend">true</xsl:param>
+   <xsl:param name="printLegend">false</xsl:param>
 
    <!-- If 'true', prints prefix matching namespace of schema
         components in XML Instance Representation tables. -->
