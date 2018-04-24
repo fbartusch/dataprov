@@ -1,17 +1,54 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="sx3p/xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">  
   <xs:include schemaLocation="../file.xsd"/> 
   <xs:include schemaLocation="cwlCommandLineTool.xsd"/>
   <xs:include schemaLocation="cwlWorkflow.xsd"/>
   <xs:complexType name="cwltool">
+    <xs:annotation>
+      <xs:documentation>
+        This type describes a CWL tool. This can be either a CWL command line tool or a CWL workflow.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="wrappedCommand" type="xs:string"/>
-      <xs:element name="cwltoolPath" type="xs:anyURI"/>
-      <xs:element name="cwltoolVersion" type="xs:string"/>
-      <xs:element name="cwlJobOrder" type="file"/>
+      <xs:element name="wrappedCommand" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The command wrapped by dataprov.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cwltoolPath" type="xs:anyURI">
+        <xs:annotation>
+          <xs:documentation>
+            Path to the cwltool executable in the execution environment. 
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cwltoolVersion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            Version of the cwltool executable in the execution environment.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="cwlJobOrder" type="dat:file">
+        <xs:annotation>
+          <xs:documentation>
+            Input bindings specified by the user for the executed CWL command line tool or workflow. This is usually a .yaml file.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:choice>
-        <xs:element name="cwlCommandLineTool" type="cwlCommandLineTool"/>
-        <xs:element name="cwlWorkflow" type="cwlWorkflow"/>
+        <xs:annotation>
+          <xs:documentation>
+            Based on the type of the .cwl file a CWL command line tool or a CWL workflow is executed.
+          </xs:documentation>
+        </xs:annotation>
+        <xs:element name="cwlCommandLineTool" type="dat:cwlCommandLineTool"/>
+        <xs:element name="cwlWorkflow" type="dat:cwlWorkflow"/>
       </xs:choice>
     </xs:sequence>
   </xs:complexType>

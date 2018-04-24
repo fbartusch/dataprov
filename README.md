@@ -209,3 +209,10 @@ It could be the case that you have to disable SELinux to run the Docker containe
 cd examples/cwl_command_line
 dataprov run cwltool arguments.cwl arguments-job.yml
 ```
+
+# Documentation
+
+## XML Schema
+
+The generated provenance files follow the XML schema provided with this repository. The schema documentation can be found under `xml/schema_doc`.
+The documentation was built with `xsltproc` using the [xs3p XSLT stylesheet](https://xml.fiforms.org/xs3p/) and can be viewed in a browser.

@@ -1,5 +1,27 @@
 # Provenance in XML format
 
-## Schema
+## Schema Documentation
 
-## Example File(s)
+The documentation of the XML schema is available in this repository. The documentation is built from the documentation annotation tags in the .xsd files.
+
+The documentation can be rebuild with:
+
+```
+sh generate_documentation.sh
+```
+
+This script uses `xsltproc` together with the [xs3p](https://xml.fiforms.org/xs3p/) to create a .html file for each .xsd file. You have to install `xsltproc` to rebuild the schema documentation. For CentOS this is done by:
+
+```
+yum install libxslt
+```
+
+## Update documentation
+
+If a new .xsd file was added, update the files `xs3p/links.xml` and `generate_documentation.sh`. The lines are very generic, so this shouldn't be a problem.
+
+Then recreate the new documentation:
+
+``
+sh generate_documentation.sh
+``

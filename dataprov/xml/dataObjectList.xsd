@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="sx3p/xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="dataObject.xsd"/> 
   <xs:complexType name="dataObjectList">
+    <xs:annotation>
+      <xs:documentation>
+        This type represents a list of data objects. The data objects can be of different types.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="dataObject" type="dataObject" minOccurs="0" maxOccurs="unbounded"/>
+      <xs:element name="dataObject" type="dat:dataObject" minOccurs="0" maxOccurs="unbounded">
+        <xs:annotation>
+          <xs:documentation>
+            The list of data objects. The list can be empty (example: empty list of input data objects for an operation).
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

@@ -1,15 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
-
-  <xs:include schemaLocation="dataObject.xsd"/>
-  <xs:include schemaLocation="history.xsd"/>
-
-  <xs:element name="dataprov">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element name="target"  type="dataObject"/>
-        <xs:element name="history" type="history"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
+  <xs:include schemaLocation="dataprov.xsd"/> 
+  <xs:element name="dataprov" type="dataprov"/>
 </xs:schema>

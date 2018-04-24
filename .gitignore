@@ -13,3 +13,4 @@ data/index/genome.fa.*
 data/mapped_reads/*
 *.log
 *.simg
+dataprov/xml/xsd_list.txt

@@ -1,13 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:include schemaLocation="dataObjectList.xsd"/>
   <xs:complexType name="commandLine">
+    <xs:annotation>
+      <xs:documentation>
+        This type represents a command line command.
+      </xs:documentation>
+    </xs:annotation>
     <xs:sequence>
-      <xs:element name="command" type="xs:string"/>
-      <xs:element name="toolPath" type="xs:string"/>
-      <xs:element name="toolVersion" type="xs:string"/>
-      <xs:element name="inputDataObjects" type="dataObjectList" minOccurs="0"/>
-      <xs:element name="outputDataObjects" type="dataObjectList" minOccurs="0"/>
+      <xs:element name="command" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The command wrapped by dataprov.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toolPath" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The Path to the executed tool in the execution environment. It is assumed that the executed tool is the first word of the wrapped command.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="toolVersion" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>
+            The version of the executed tool.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="inputDataObjects" type="dataObjectList" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            List of input data objects.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="outputDataObjects" type="dataObjectList" minOccurs="0">
+        <xs:annotation>
+          <xs:documentation>
+            List of input data objects.
+          </xs:documentation>
+        </xs:annotation>
+      </xs:element>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
