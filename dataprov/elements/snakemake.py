@@ -1,13 +1,10 @@
+from __future__ import absolute_import, division, print_function
 import os
 from collections import defaultdict
-from lxml import etree
-import sys
-import os
-import shutil
 import subprocess
 import snakemake
-from collections import defaultdict
 from lxml import etree
+from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.command_line import CommandLine
 from dataprov.elements.file import File
@@ -22,7 +19,7 @@ class Snakemake(GenericOp):
     schema_file = os.path.join(XML_DIR, 'snakemake_element.xsd')
     
     def __init__(self, remaining=None):
-        super().__init__()
+        super(Snakemake, self).__init__()
         
         if remaining is not None:
             self.remaining = remaining[:]
@@ -30,7 +27,7 @@ class Snakemake(GenericOp):
             self.data['command'] = ' '.join(remaining)
             # Snakemake Path
             tool = 'snakemake'
-            toolPath = shutil.which(tool)
+            toolPath = find_executable(tool)
             self.data['snakemakePath'] = toolPath
             # Snakemake Version
             try:
@@ -106,23 +103,23 @@ class Snakemake(GenericOp):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['command'] = root.find('command').text
-        self.data['snakemakePath'] = root.find('snakemakePath').text
-        self.data['snakemakeVersion'] = root.find('snakemakeVersion').text
+        self.data['command'] = root.find('{Dataprov}command').text
+        self.data['snakemakePath'] = root.find('{Dataprov}snakemakePath').text
+        self.data['snakemakeVersion'] = root.find('{Dataprov}snakemakeVersion').text
         # Snakefile
         snakefile = File()
-        snakefile.from_xml(root.find('snakefile'), validate)
+        snakefile.from_xml(root.find('{Dataprov}snakefile'), validate)
         self.data['snakefile'] = snakefile
         # Configfile
-        if root.find('configFile') is not None:
+        if root.find('{Dataprov}configFile') is not None:
             config_file = File()
-            config_file.from_xml(root.find('configFile'), validate)
+            config_file.from_xml(root.find('{Dataprov}configFile'), validate)
             self.data['configFile'] = config_file
         else:
             self.data['configFile'] = None
         # Steps
         self.data['step'] = []
-        for step in root.findall('step'):
+        for step in root.findall('{Dataprov}step'):
             command_line = CommandLine()
             command_line.from_xml(step, validate)
             self.data['step'].append(step)

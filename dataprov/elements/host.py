@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 import platform
 from dataprov.elements.generic_element import GenericElement
@@ -14,7 +15,7 @@ class Host(GenericElement):
     schema_file = os.path.join(XML_DIR, 'host_element.xsd')
     
     def __init__(self):
-        super().__init__()
+        super(Host, self).__init__()
         # Get information about host and populate the data dictionary
         dist = platform.linux_distribution()
         uname = platform.uname()

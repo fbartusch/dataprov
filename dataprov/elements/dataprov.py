@@ -1,9 +1,9 @@
+from __future__ import absolute_import, division, print_function
 import os
 import graphviz as gv
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.data_object import DataObject
-from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.history import History
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -26,7 +26,7 @@ class Dataprov(GenericElement):
         '''
         Initialize an empty object or read directly from file
         '''
-        super().__init__()
+        super(Dataprov, self).__init__()
         if file:
             with open(file, 'r') as xml_file:
                 parser = etree.XMLParser()
@@ -43,13 +43,13 @@ class Dataprov(GenericElement):
             raise IOError("XML document does not match XML-schema")
         
         # Get the target from the xml
-        target_ele = root.find('target')
+        target_ele = root.find('{Dataprov}target')
         target = DataObject()
         target.from_xml(target_ele, validate=False)
         self.data['target'] = target
         
         # Get the history from xml
-        history_ele = root.find('history')
+        history_ele = root.find('{Dataprov}history')
         history = History()
         history.from_xml(history_ele, validate=False)
         self.data['history'] = history
@@ -59,9 +59,9 @@ class Dataprov(GenericElement):
         Create a xml ElementTree object from the data attribute. 
         '''
         root = etree.Element(self.element_name)
+        root.set("xmlns", "Dataprov")
         # Target
         target_ele = self.data['target'].to_xml("target")
-        #target_ele.tag = "target"
         root.append(target_ele)
         # History
         root.append(self.data['history'].to_xml())

@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 import lxml
 from collections import defaultdict
@@ -5,7 +6,7 @@ from lxml import etree
 from dataprov.utils.io import prettify
 from dataprov.definitions import XML_DIR
 
-class GenericElement:
+class GenericElement(object):
     '''
     This class describes a generic element of a dataprov object.
     This class provides basic functionalities to read/write the dataprov element.
@@ -64,7 +65,10 @@ class GenericElement:
         except etree.DocumentInvalid as e:#, xml_errors:
             print("XML document is not valid!")
             print(e)
-            #print "List of errors:\r\n", xml_errors.error_log
+            log = xml_schema.error_log
+            error = log.last_error
+            print(error.domain_name)
+            print(error.type_name)
             return False
 
 

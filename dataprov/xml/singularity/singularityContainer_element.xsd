@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="singularityContainer.xsd"/> 
-  <xs:element name="singularityContainer" type="singularityContainer"/>
+  <xs:element name="singularityContainer" type="dat:singularityContainer"/>
 </xs:schema>

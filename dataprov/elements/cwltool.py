@@ -1,6 +1,6 @@
+from __future__ import absolute_import, division, print_function
 import os
 import sys
-import shutil
 import subprocess
 import glob
 import cwltool
@@ -9,11 +9,10 @@ import cwltool.stdfsaccess
 from collections import defaultdict
 from lxml import etree
 from urllib.parse import urlparse
-from ruamel.yaml.comments import CommentedMap
+from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
-from dataprov.elements.cwl_workflow import CWLWorkflow
 from dataprov.definitions import XML_DIR
 
 class CWLTool(GenericOp):
@@ -25,7 +24,7 @@ class CWLTool(GenericOp):
     schema_file = os.path.join(XML_DIR, 'cwl/cwltool_element.xsd')
     
     def __init__(self, remaining=None):
-        super().__init__()
+        super(CWLTool, self).__init__()
         
         if remaining is not None:
             self.remaining = remaining[:]
@@ -33,7 +32,7 @@ class CWLTool(GenericOp):
             self.data['wrappedCommand'] = ' '.join(remaining)
             # Tool Path
             tool = 'cwltool'
-            toolPath = shutil.which(tool)
+            toolPath = find_executable(tool)
             self.data['cwltoolPath'] = toolPath
             
             # Tool Version
@@ -83,18 +82,18 @@ class CWLTool(GenericOp):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['wrappedCommand'] = root.find('wrappedCommand').text
-        self.data['cwltoolPath'] = root.find('cwltoolPath').text
-        self.data['cwltoolVersion'] = root.find('cwltoolVersion').text
+        self.data['wrappedCommand'] = root.find('{Dataprov}wrappedCommand').text
+        self.data['cwltoolPath'] = root.find('{Dataprov}cwltoolPath').text
+        self.data['cwltoolVersion'] = root.find('{Dataprov}cwltoolVersion').text
         
         # CWL job order
-        cwl_job_order_ele = root.find('cwlJobOrder')
+        cwl_job_order_ele = root.find('{Dataprov}cwlJobOrder')
         cwl_job_order = File()
         cwl_job_order.from_xml(cwl_job_order_ele)
         self.data['cwlJobOrder'] = cwl_job_order
         # CommandLineTool or Workflow?
-        cwl_command_line_tool_ele = root.find('cwlCommandLineTool')
-        cwl_workflow_ele = root.find('cwlWorkflow')
+        cwl_command_line_tool_ele = root.find('{Dataprov}cwlCommandLineTool')
+        cwl_workflow_ele = root.find('{Dataprov}cwlWorkflow')
         if cwl_command_line_tool_ele is not None:
             self.data['cwlCommandLineTool'] = cwl_command_line_tool_ele.from_xml()
         elif cwl_workflow_ele is not None:

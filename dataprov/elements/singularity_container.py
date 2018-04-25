@@ -1,14 +1,11 @@
-import sys
+from __future__ import absolute_import, division, print_function
 import os
-import shutil
 import subprocess
 import json
 from collections import defaultdict
 from lxml import etree
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file import File
 from dataprov.elements.data_object import DataObject
-from dataprov.elements.data_object_list import DataObjectList
 from dataprov.definitions import XML_DIR
 
 
@@ -23,7 +20,7 @@ class SingularityContainer(GenericElement):
     singularity_methods = ["singularityPull", "singularityLocal"]
 
     def __init__(self, method=None, source=None):
-        super().__init__()
+        super(SingularityContainer, self).__init__()
 
         if method is not None and source is not None:
             if method not in self.singularity_methods:
@@ -58,24 +55,24 @@ class SingularityContainer(GenericElement):
             return
 
         # ImageSource
-        image_source_ele = root.find('imageSource')
+        image_source_ele = root.find('{Dataprov}imageSource')
         children = list(image_source_ele)
         self.data['method'] = children[0].tag
         if self.data['method'] == "singularityPull":
-            self.data['source'] = image_source_ele.find('singularityPull').text
+            self.data['source'] = image_source_ele.find('{Dataprov}singularityPull').text
         elif self.data['method'] == "singularityLocal":
-            source_ele = image_source_ele.find('singularityLocal')
+            source_ele = image_source_ele.find('{Dataprov}singularityLocal')
             source = DataObject()
             source.from_xml(source_ele)
             self.data['source'] = source
 
         # Image Details
         if self.data['method'] == "singularityLocal":
-            image_detail_ele = root.find('imageDetails')
+            image_detail_ele = root.find('{Dataprov}imageDetails')
             self.data['imageDetails'] = defaultdict()
-            self.data['imageDetails']['singularityVersion'] = image_detail_ele.find('singularityVersion').text
+            self.data['imageDetails']['singularityVersion'] = image_detail_ele.find('{Dataprov}singularityVersion').text
             labels = defaultdict()
-            for item in image_detail_ele.find('labels').findall('item'):
+            for item in image_detail_ele.find('{Dataprov}labels').findall('{Dataprov}item'):
                 attributes = item.attrib
                 labels[attributes['key']] = attributes['value']
             self.data['imageDetails']['labels'] = labels

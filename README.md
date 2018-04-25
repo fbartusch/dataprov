@@ -36,13 +36,6 @@ To try the 'First steps' examples without an the Docker container:
 conda install bwa
 ```
 
-To try the 'First steps' examples with the Docker container. This is just the Docker Python-API, you have to install Docker on your system, too.
-You can also use Singularity to try the 'First steps' example.
-
-```
-pip install docker
-```
-
 For the snakemake example workflow:
 
 ```

@@ -1,6 +1,6 @@
+from __future__ import absolute_import, division, print_function
 import os
 import argparse
-import subprocess
 from collections import defaultdict
 from dataprov.elements.dataprov import Dataprov
 from dataprov.elements.executor import Executor
@@ -92,9 +92,12 @@ def main():
             exit(1)
         else:
             try:
-                Dataprov(file=abs_path)
-                print("XML is valid!")
-                exit(0)
+                if Dataprov(file=abs_path):
+                    print("XML is valid!")
+                    exit(0)
+                else:
+                    print("XML is NOT valid!")
+                    exit(0)
             except IOError:
                 print("XML is not valid!")             
                 exit(1)

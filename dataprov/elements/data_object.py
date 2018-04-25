@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.directory import Directory
@@ -24,7 +25,7 @@ class DataObject(GenericElement):
         If an uri is given, populate the data object with information about the
         file or directory.
         '''
-        super().__init__()
+        super(DataObject, self).__init__()
         self.type = None
         
         if uri:

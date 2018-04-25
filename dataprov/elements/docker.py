@@ -1,9 +1,10 @@
+from __future__ import absolute_import, division, print_function
 import os
 import docker
-import shutil
 import subprocess
 from collections import defaultdict
 from docker.errors import ImageNotFound
+from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from lxml import etree
@@ -19,7 +20,7 @@ class Docker(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'docker_element.xsd')
 
     def __init__(self, remaining=None):
-        super().__init__()
+        super(Docker, self).__init__()
         
         self.remaining = remaining
 
@@ -36,7 +37,7 @@ class Docker(GenericOp):
             
             # DockerPath
             tool = 'docker'
-            toolPath = shutil.which(tool)
+            toolPath = find_executable(tool)
             self.data['dockerPath'] = toolPath
 
             # DockerVersion
@@ -57,11 +58,11 @@ class Docker(GenericOp):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['command'] = root.find('command').text
-        self.data['dockerPath'] = root.find('dockerPath').text
-        self.data['dockerVersion'] = root.find('dockerVersion').text
+        self.data['command'] = root.find('{Dataprov}command').text
+        self.data['dockerPath'] = root.find('{Dataprov}dockerPath').text
+        self.data['dockerVersion'] = root.find('{Dataprov}dockerVersion').text
         # Docker Container
-        docker_container_ele = root.find('dockerContainer')
+        docker_container_ele = root.find('{Dataprov}dockerContainer')
         docker_container = DockerContainer()
         docker_container.from_xml(docker_container_ele, validate)
         self.data['dockerContainer'] = docker_container

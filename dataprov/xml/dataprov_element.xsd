@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="dataprov.xsd"/> 
-  <xs:element name="dataprov" type="dataprov"/>
+  <xs:element name="dataprov" type="dat:dataprov"/>
 </xs:schema>

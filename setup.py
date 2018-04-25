@@ -12,8 +12,11 @@ setup(name='dataprov',
           'console_scripts': ['dataprov=dataprov.__main__:main']
       },
       install_requires=[
+          'future',
+          'six',
           'argparse',
           'lxml',
+          'configparser',
           'docker',
           'html5lib',
           'graphviz'

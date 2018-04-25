@@ -2,7 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:dat="Dataprov"
            targetNamespace="Dataprov"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="../dict.xsd"/>
   <xs:include schemaLocation="../file.xsd"/>
   <xs:include schemaLocation="../dataObject.xsd"/>
@@ -54,7 +55,7 @@
           </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="labels" type="dict">
+      <xs:element name="labels" type="dat:dict">
         <xs:annotation>
           <xs:documentation>
             These are labels as returned by 'singularity inspect'.

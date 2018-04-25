@@ -1,7 +1,9 @@
+from __future__ import absolute_import, division, print_function
 import os
 import shutil
 import subprocess
 from collections import defaultdict
+from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.singularity_container import SingularityContainer
 from lxml import etree
@@ -17,7 +19,7 @@ class Singularity(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'singularity_element.xsd')
 
     def __init__(self, remaining=None):
-        super().__init__()
+        super(Singularity, self).__init__()
         
         self.remaining = remaining
 
@@ -34,7 +36,7 @@ class Singularity(GenericOp):
             
             # SingularityPath
             tool = 'singularity'
-            toolPath = shutil.which(tool)
+            toolPath = find_executable(tool)
             self.data['singularityPath'] = toolPath
 
             # SingularityVersion
@@ -55,11 +57,11 @@ class Singularity(GenericOp):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['command'] = root.find('command').text
-        self.data['singularityPath'] = root.find('singularityPath').text
-        self.data['singularityVersion'] = root.find('singularityVersion').text
+        self.data['command'] = root.find('{Dataprov}command').text
+        self.data['singularityPath'] = root.find('{Dataprov}singularityPath').text
+        self.data['singularityVersion'] = root.find('{Dataprov}singularityVersion').text
         # Singularity Container
-        singularity_container_ele = root.find('singularityContainer')
+        singularity_container_ele = root.find('{Dataprov}singularityContainer')
         singularity_container = SingularityContainer()
         singularity_container.from_xml(singularity_container_ele, validate)
         self.data['singularityContainer'] = singularity_container

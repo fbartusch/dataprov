@@ -2,7 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:dat="Dataprov"
            targetNamespace="Dataprov"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="dataObjectList.xsd"/>
   <xs:complexType name="commandLine">
     <xs:annotation>
@@ -32,14 +33,14 @@
           </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="inputDataObjects" type="dataObjectList" minOccurs="0">
+      <xs:element name="inputDataObjects" type="dat:dataObjectList" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
             List of input data objects.
           </xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element name="outputDataObjects" type="dataObjectList" minOccurs="0">
+      <xs:element name="outputDataObjects" type="dat:dataObjectList" minOccurs="0">
         <xs:annotation>
           <xs:documentation>
             List of input data objects.

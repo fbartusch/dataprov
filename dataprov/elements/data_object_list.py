@@ -1,8 +1,7 @@
+from __future__ import absolute_import, division, print_function
 import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file import File
-from dataprov.elements.directory import Directory
 from dataprov.elements.data_object import DataObject
 from dataprov.definitions import XML_DIR
 from lxml import etree
@@ -21,7 +20,7 @@ class DataObjectList(GenericElement):
         Initialize this data object list element.
         If a list of URIs is given, create the list describing the data objects.
         '''
-        super().__init__()
+        super(DataObjectList, self).__init__()
         self.data = defaultdict(list)
         
         if uris:
@@ -37,7 +36,7 @@ class DataObjectList(GenericElement):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             exit(1)
-        for object_ele in root.findall('dataObject'):
+        for object_ele in root.findall('{Dataprov}dataObject'):
             new_object = DataObject()
             new_object.from_xml(object_ele, validate)
             self.data['objects'].append(new_object)

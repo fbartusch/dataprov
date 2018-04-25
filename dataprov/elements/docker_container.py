@@ -1,7 +1,5 @@
-import sys
+from __future__ import absolute_import, division, print_function
 import os
-import shutil
-import subprocess
 import docker
 from collections import defaultdict
 from lxml import etree
@@ -21,7 +19,7 @@ class DockerContainer(GenericElement):
     docker_methods = ["dockerPull", "dockerLoad", "dockerFile", "dockerImport", "dockerLocal"]    
 
     def __init__(self, method=None, source=None):
-        super().__init__()
+        super(DockerContainer, self).__init__()
         
         if method is not None and source is not None:
             if method not in self.docker_methods:
@@ -56,31 +54,31 @@ class DockerContainer(GenericElement):
             return
 
         # ImageSource
-        image_source_ele = root.find('imageSource')
+        image_source_ele = root.find('{Dataprov}imageSource')
         children = list(image_source_ele)
         self.data['method'] = children[0].tag
         if self.data['method'] == "dockerPull":
-            self.data['source'] = image_source_ele.find('dockerPull').text
+            self.data['source'] = image_source_ele.find('{Dataprov}dockerPull').text
         elif self.data['method'] == "dockerLoad":
-            self.data['source'] = image_source_ele.find('dockerLoad').find('uri').text
+            self.data['source'] = image_source_ele.find('{Dataprov}dockerLoad').find('{Dataprov}uri').text
         elif self.data['method'] == "dockerFile":
-            self.data['source'] = image_source_ele.find('dockerFile').find('uri').text
+            self.data['source'] = image_source_ele.find('{Dataprov}dockerFile').find('{Dataprov}uri').text
         elif self.data['method'] == "dockerImport":
-            self.data['source'] = image_source_ele.find('dockerImport').text
+            self.data['source'] = image_source_ele.find('{Dataprov}dockerImport').text
         elif self.data['method'] == "dockerLocal":
-            self.data['source'] = image_source_ele.find('dockerLocal').text
+            self.data['source'] = image_source_ele.find('{Dataprov}dockerLocal').text
 
         # Image Details
         if self.data['method'] == "dockerLocal":
-            image_detail_ele = root.find('imageDetails')
+            image_detail_ele = root.find('{Dataprov}imageDetails')
             self.data['imageDetails'] = defaultdict()
-            self.data['imageDetails']['imageID'] = image_detail_ele.find('imageID').text
-            self.data['imageDetails']['repoTag'] = image_detail_ele.find('repoTag').text
-            self.data['imageDetails']['repoDigest'] = image_detail_ele.find('repoDigest').text
-            self.data['imageDetails']['created'] = image_detail_ele.find('created').text
-            self.data['imageDetails']['dockerVersion'] = image_detail_ele.find('dockerVersion').text
+            self.data['imageDetails']['imageID'] = image_detail_ele.find('{Dataprov}imageID').text
+            self.data['imageDetails']['repoTag'] = image_detail_ele.find('{Dataprov}repoTag').text
+            self.data['imageDetails']['repoDigest'] = image_detail_ele.find('{Dataprov}repoDigest').text
+            self.data['imageDetails']['created'] = image_detail_ele.find('{Dataprov}created').text
+            self.data['imageDetails']['dockerVersion'] = image_detail_ele.find('{Dataprov}dockerVersion').text
             labels = defaultdict()
-            for item in image_detail_ele.find('labels').findall('item'):
+            for item in image_detail_ele.find('{Dataprov}labels').findall('{Dataprov}item'):
                 attributes = item.attrib
                 labels[attributes['key']] = attributes['value']
             self.data['imageDetails']['labels'] = labels

@@ -21,7 +21,7 @@ class FileList(GenericElement):
         If a list of files is given, populate the data object.
         The files have to be a list of URIs
         '''
-        super().__init__()
+        super(FileList, self).__init__()
         self.data = defaultdict(list)
         if files:
             for file in files:
@@ -41,7 +41,7 @@ class FileList(GenericElement):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             exit(1)
-        for file_ele in root.findall('file'):
+        for file_ele in root.findall('{Dataprov}file'):
             new_file = File()
             new_file.from_xml(file_ele, validate)
             self.data['file'].append(new_file)

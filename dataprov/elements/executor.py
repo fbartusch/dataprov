@@ -1,5 +1,6 @@
+from __future__ import absolute_import, division, print_function
 import os
-import configparser
+from configparser import ConfigParser
 from collections import defaultdict
 from dataprov.utils.io import mkdir_p
 from dataprov.elements.generic_element import GenericElement
@@ -16,7 +17,7 @@ class Executor(GenericElement):
     schema_file = os.path.join(XML_DIR, 'executor_element.xsd')
     
     def __init__(self, config_file=None):
-        super().__init__()
+        super(Executor, self).__init__()
         # Load data from config file
         if config_file:
             self.from_config(config_file)
@@ -34,7 +35,7 @@ class Executor(GenericElement):
             self.create_empty_executor_config(config_file)
             exit(0)
         else:
-            config = configparser.ConfigParser()
+            config = ConfigParser()
             config.read(config_file)
             self.data['title'] = config.get('executor', 'title')
             self.data['firstName'] = config.get('executor', 'firstName')
@@ -59,26 +60,26 @@ class Executor(GenericElement):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        title_ele = root.find('title')
+        title_ele = root.find('{Dataprov}title')
         if title_ele is not None:
             self.data['title'] = title_ele.text
         else:
             self.data['title'] = None
-        self.data['firstName'] = root.find('firstName').text
-        middle_name_ele = root.find('middleName')
+        self.data['firstName'] = root.find('{Dataprov}firstName').text
+        middle_name_ele = root.find('{Dataprov}middleName')
         if middle_name_ele is not None:
             self.data['middleName'] = middle_name_ele.text
         else:
             self.data['middleName'] = None
-        self.data['surname'] = root.find('surname').text
-        suffix_ele = root.find('suffix')
+        self.data['surname'] = root.find('{Dataprov}surname').text
+        suffix_ele = root.find('{Dataprov}suffix')
         if suffix_ele is not None:
             self.data['suffix'] = suffix_ele.text
         else:
             self.data['suffix'] = None
-        self.data['mail'] = root.find('mail').text
+        self.data['mail'] = root.find('{Dataprov}mail').text
         affiliation_list = []
-        for affiliation_ele in root.findall('affiliation'):
+        for affiliation_ele in root.findall('{Dataprov}affiliation'):
             affiliation_list.append(affiliation_ele.text)
         self.data['affiliation'] = affiliation_list
             
@@ -108,7 +109,7 @@ class Executor(GenericElement):
         Create an empty executor information file.
         '''
         # A simple, empty configuration
-        config = configparser.ConfigParser()
+        config = ConfigParser()
         config['executor'] = {'title': '',
                               'firstName': '',
                               'middleName': '',

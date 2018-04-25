@@ -2,7 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="sx3p/xs3p.xsl"?>
 <xs:schema xmlns:dat="Dataprov"
            targetNamespace="Dataprov"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:complexType name="dict">
     <xs:annotation>
       <xs:documentation>

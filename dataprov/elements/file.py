@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 import hashlib
 from dataprov.elements.generic_element import GenericElement
@@ -20,7 +21,7 @@ class File(GenericElement):
         If a file is given, compute populate the data object.
         file has to be an URI.
         '''
-        super().__init__()
+        super(File, self).__init__()
         if file:
             # Check if file exists
             if not os.path.exists(file):

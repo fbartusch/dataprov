@@ -1,5 +1,5 @@
+from __future__ import absolute_import, division, print_function
 import os
-import subprocess
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
@@ -28,13 +28,12 @@ class OpClass(GenericElement):
     
     element_name = "opClass"
     schema_file = os.path.join(XML_DIR, 'opClass_element.xsd')
-         
     
     def __init__(self, remaining=None):
         '''
         Initialize this OpClass element.
         '''
-        super().__init__()
+        super(OpClass, self).__init__()
         self.remaining = None
         self.input_data_objects = []
         self.output_data_objects = []
@@ -66,21 +65,21 @@ class OpClass(GenericElement):
             return
         # Discriminate from child tag which class to use
         child_tag = root[0].tag
-        if child_tag == 'docker':
+        if child_tag == '{Dataprov}docker':
             op_class = Docker()
-            docker_ele = root.find('docker')
+            docker_ele = root.find('{Dataprov}docker')
             op_class.from_xml(docker_ele, validate)
-        elif child_tag =='singularity':
+        elif child_tag =='{Dataprov}singularity':
             op_class = Singularity()
-            singularity_ele = root.find('singularity')
+            singularity_ele = root.find('{Dataprov}singularity')
             op_class.from_xml(singularity_ele, validate)
-        elif child_tag == 'snakemake':
+        elif child_tag == '{Dataprov}snakemake':
             op_class = Snakemake()
-            snakemake_ele = root.find('snakemake')
+            snakemake_ele = root.find('{Dataprov}snakemake')
             op_class.from_xml(snakemake_ele, validate)
-        elif child_tag == 'commandLine':
+        elif child_tag == '{Dataprov}commandLine':
             op_class = CommandLine()
-            command_line_ele = root.find('commandLine')
+            command_line_ele = root.find('{Dataprov}commandLine')
             op_class.from_xml(command_line_ele, validate)
         else:
             print("Unknown root tag: ", child_tag)

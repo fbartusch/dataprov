@@ -1,10 +1,9 @@
+from __future__ import absolute_import, division, print_function
 import os
-import shutil
 import subprocess
 from collections import defaultdict
+from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
-from dataprov.elements.file_list import FileList
-from dataprov.elements.data_object import DataObject
 from dataprov.elements.data_object_list import DataObjectList
 from lxml import etree
 from dataprov.definitions import XML_DIR
@@ -18,7 +17,7 @@ class CommandLine(GenericOp):
     schema_file = schema_file = os.path.join(XML_DIR, 'commandLine_element.xsd')
     
     def __init__(self, remaining=None):
-        super().__init__()
+        super(CommandLine, self).__init__()
         
         self.remaining = remaining
         self.data['inputDataObjects'] = None
@@ -29,7 +28,7 @@ class CommandLine(GenericOp):
             self.data['command'] = ' '.join(remaining)
             # Tool Path
             tool = remaining[0].split()[0]
-            toolPath = shutil.which(tool)
+            toolPath = find_executable(tool)
             self.data['toolPath'] = toolPath
             # Tool Version
             FNULL = open(os.devnull, 'w')
@@ -74,11 +73,11 @@ class CommandLine(GenericOp):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        self.data['command'] = root.find('command').text
-        self.data['toolPath'] = root.find('toolPath').text
-        self.data['toolVersion'] = root.find('toolVersion').text
-        input_data_objects_ele = root.find('inputDataObjects')
-        output_data_objects_ele = root.find('outputDataObjects')
+        self.data['command'] = root.find('{Dataprov}command').text
+        self.data['toolPath'] = root.find('{Dataprov}toolPath').text
+        self.data['toolVersion'] = root.find('{Dataprov}toolVersion').text
+        input_data_objects_ele = root.find('{Dataprov}inputDataObjects')
+        output_data_objects_ele = root.find('{Dataprov}outputDataObjects')
         if input_data_objects_ele is not None:
             input_data_objects = DataObjectList()
             input_data_objects.from_xml(input_data_objects_ele, validate)
@@ -98,7 +97,7 @@ class CommandLine(GenericOp):
         '''
         self.data['command'] = command
         tool = command.split()[0]
-        toolPath = shutil.which(tool)
+        toolPath = find_executable(tool)
         self.data['toolPath'] = toolPath
         # Tool Version
         FNULL = open(os.devnull, 'w')

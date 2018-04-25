@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
+<xs:schema xmlns:dat="Dataprov"
+           targetNamespace="Dataprov"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="cwlCommandLineTool.xsd"/>
   <xs:complexType name="cwlWorkflow">
     <xs:sequence>
-      <xs:element name="cwlFile" type="file"/>
+      <xs:element name="cwlFile" type="dat:file"/>
       <xs:element name="cwlVersion" type="xs:string"/>
-      <xs:element name="workflowSteps" type="cwlCommandLineTool" maxOccurs="unbounded"/>
+      <xs:element name="workflowSteps" type="dat:cwlCommandLineTool" maxOccurs="unbounded"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>

@@ -2,7 +2,8 @@
 <?xml-stylesheet type="text/xsl" href="xs3p.xsl"?>
 <xs:schema xmlns:dat="Dataprov"
            targetNamespace="Dataprov"
-           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+           xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           elementFormDefault="qualified">
   <xs:include schemaLocation="singularity/singularityContainer.xsd"/>
   <xs:complexType name="singularity">
     <xs:annotation>

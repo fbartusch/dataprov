@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 import hashlib
 from dataprov.elements.generic_element import GenericElement
@@ -20,7 +21,7 @@ class Directory(GenericElement):
         Initialize this directory element.
         If an uri is given, compute populate the data object.
         '''
-        super().__init__()
+        super(Directory, self).__init__()
         if uri:
             # Check if file exists
             if not os.path.exists(uri):
@@ -81,9 +82,9 @@ class Directory(GenericElement):
         '''
         super().__init__()
         self.__init__()
-        self.data['name'] = root.find('name').text
-        self.data['uri'] = root.find('uri').text
-        self.data['shafile'] = File(root.find('sha1file').find('uri').text)
+        self.data['name'] = root.find('{Dataprov}name').text
+        self.data['uri'] = root.find('{Dataprov}uri').text
+        self.data['shafile'] = File(root.find('{Dataprov}sha1file').find('{Dataprov}uri').text)
         return
     
     def to_xml(self, root_tag=None):

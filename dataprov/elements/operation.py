@@ -1,8 +1,7 @@
+from __future__ import absolute_import, division, print_function
 import os
 import datetime
-from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
-from dataprov.elements.file_list import FileList
 from dataprov.elements.data_object import DataObject
 from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.executor import Executor
@@ -10,7 +9,6 @@ from dataprov.elements.host import Host
 from dataprov.elements.op_class import OpClass
 from dataprov.definitions import XML_DIR
 from lxml import etree
-from dataprov.utils.io import prettify
 
 class Operation(GenericElement):
     '''
@@ -21,7 +19,7 @@ class Operation(GenericElement):
     schema_file = os.path.join(XML_DIR, 'operation_element.xsd')
     
     def __init__(self):
-        super().__init__()      
+        super(Operation, self).__init__()      
         
     def from_xml(self, root, validate=True):
         '''
@@ -32,7 +30,7 @@ class Operation(GenericElement):
             print("XML document does not match XML-schema")
             return
         # Input Files (minOccurs=0)
-        input_data_objects_ele = root.find('inputDataObjects')
+        input_data_objects_ele = root.find('{Dataprov}inputDataObjects')
         if input_data_objects_ele is not None:
             input_data_objects = DataObjectList()
             input_data_objects.from_xml(input_data_objects_ele, validate)
@@ -40,33 +38,33 @@ class Operation(GenericElement):
         else:
             self.data['inputDataObjects'] = None
         # Target Files
-        target_data_objects_ele = root.find('targetDataObjects')
+        target_data_objects_ele = root.find('{Dataprov}targetDataObjects')
         target_data_objects = DataObjectList()
         target_data_objects.from_xml(target_data_objects_ele, validate)
         self.data['targetDataObjects'] = target_data_objects
         # Start time
-        start_time_ele = root.find('startTime')
+        start_time_ele = root.find('{Dataprov}startTime')
         self.data['startTime'] = start_time_ele.text
         # End time
-        end_time_ele = root.find('endTime')
+        end_time_ele = root.find('{Dataprov}endTime')
         self.data['endTime'] = end_time_ele.text
         # Executor
-        executor_ele = root.find('executor')
+        executor_ele = root.find('{Dataprov}executor')
         executor = Executor()
         executor.from_xml(executor_ele, validate)
         self.data['executor'] = executor
         # Host
-        host_ele = root.find('host')
+        host_ele = root.find('{Dataprov}host')
         host = Host()
         host.from_xml(host_ele, validate)
         self.data['host'] = host
         # Operation class (opClass)
-        op_class_ele = root.find('opClass')
+        op_class_ele = root.find('{Dataprov}opClass')
         op_class= OpClass()
         op_class.from_xml(op_class_ele, validate)
         self.data['opClass'] = op_class
         # Message
-        message_ele = root.find('message')
+        message_ele = root.find('{Dataprov}message')
         self.data['message'] = message_ele.text
 
     def to_xml(self):

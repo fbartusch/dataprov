@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import sys
 import os
 import cwltool
@@ -19,7 +20,7 @@ class CWLCommandLineTool(GenericOp):
     schema_file = os.path.join(XML_DIR, 'cwl/cwlCommandLineTool_element.xsd')
     
     def __init__(self, argsl=None, wf_requirements=None):
-        super().__init__()
+        super(CWLCommandLineTool, self).__init__()
         
         if argsl is not None:
             # Get information from the CWL file and the job order (e.g. input bindings)
@@ -181,17 +182,17 @@ class CWLCommandLineTool(GenericOp):
             return
         # CWL File
         cwl_file = File()
-        cwl_file.from_xml(root.find('cwlFile'))
+        cwl_file.from_xml(root.find('{Dataprov}cwlFile'))
         self.data['cwlFile'] = cwl_file
         # CWL Version
-        self.data['cwlVersion'] = root.find('cwlVersion').text
+        self.data['cwlVersion'] = root.find('{Dataprov}cwlVersion').text
         # Command
-        self.data['command'] = root.find('command').text        
+        self.data['command'] = root.find('{Dataprov}command').text        
         # Docker Requirement
-        docker_req_ele = root.find('dockerRequirement')
+        docker_req_ele = root.find('{Dataprov}dockerRequirement')
         if docker_req_ele is not None:
             docker_req = DockerContainer()
-            docker_req.from_xml(root.find('dockerRequirement'))
+            docker_req.from_xml(root.find('{Dataprov}dockerRequirement'))
             self.data['dockerRequirement'].append(docker_req)
                 
     def to_xml(self):

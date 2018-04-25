@@ -1,3 +1,4 @@
+from __future__ import absolute_import, division, print_function
 import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
@@ -27,7 +28,7 @@ class History(GenericElement):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
-        for operation_ele in root.findall('operation'):
+        for operation_ele in root.findall('{Dataprov}operation'):
             new_operation = Operation()
             new_operation.from_xml(operation_ele, validate)
             self.data['operation'].append(new_operation)
