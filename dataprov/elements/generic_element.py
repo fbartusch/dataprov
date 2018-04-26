@@ -31,8 +31,12 @@ class GenericElement(object):
         if validate and not self.validate_xml(root):
             print("XML document does not match XML-schema")
             return
+        # Usually there is a {Dataprov} namespace, but it should be removed
+        # if we use it to index the data dictionary
         for child in root:
-            self.data[child.tag] = child.text    
+            q = etree.QName(child.tag)
+            tag = q.localname
+            self.data[tag] = child.text    
     
     
     def to_xml(self):

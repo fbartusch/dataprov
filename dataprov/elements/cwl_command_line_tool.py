@@ -5,7 +5,7 @@ import cwltool
 import cwltool.flatten
 from collections import defaultdict
 from lxml import etree
-from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from dataprov.elements.file import File
@@ -58,7 +58,7 @@ class CWLCommandLineTool(GenericOp):
             del args.workflow
             del args.job_order
             jobiter = cwl_tool.job(job_order_object, self.do_nothing, **vars(args))            
-            job = jobiter.__next__()
+            job = next(jobiter)
             
             # CWL perfomrs computations in a temporary directory. The command string would countain these temporary directories.
             # Compute a map of path in cwltool temporary environment to real path

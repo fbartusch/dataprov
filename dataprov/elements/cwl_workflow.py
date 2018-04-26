@@ -5,7 +5,7 @@ import cwltool
 import cwltool.flatten
 from collections import defaultdict
 from lxml import etree
-from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
@@ -69,7 +69,7 @@ class CWLWorkflow(GenericElement):
             jobiter = cwl_tool.job(job_order_object, self.do_nothing, **vars(args))
             
             # The job for the whole workflow
-            workflow_job = jobiter.__next__()
+            workflow_job = next(jobiter)
             
             # Iterate over the workflow steps and collect data about them
             i = 0
@@ -77,7 +77,7 @@ class CWLWorkflow(GenericElement):
             #for workflow_step_job in jobiter:
             for workflow_step in workflow_job.steps:
                 print(i)
-                workflow_step_job = jobiter.__next__()
+                workflow_step_job = next(jobiter)
                 i = i+1
                 if not workflow_step_job:
                     break

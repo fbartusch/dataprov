@@ -57,7 +57,10 @@ class SingularityContainer(GenericElement):
         # ImageSource
         image_source_ele = root.find('{Dataprov}imageSource')
         children = list(image_source_ele)
-        self.data['method'] = children[0].tag
+        # Remove the Dataprov Namespace from this tag
+        q = etree.QName(children[0].tag)
+        tag = q.localname
+        self.data['method'] = tag
         if self.data['method'] == "singularityPull":
             self.data['source'] = image_source_ele.find('{Dataprov}singularityPull').text
         elif self.data['method'] == "singularityLocal":

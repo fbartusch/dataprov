@@ -1,14 +1,14 @@
 # dataprov: Automatic provenance metadata generation
 
-Dataprov is a wrapper that produces provenance metadata at the same time the data processing happens.
+Dataprov wraps your computation and produces provenance metadata at the same time the data processing happens.
 
 ## Install
 
-It's the best to install dataprov in a new conda environment:
+It's the best to install dataprov in a new conda environment. Dataprov is usable both with Python 2 and Python 3.
 [Howto install conda](https://conda.io/miniconda.html)
 
 ```
-conda create -n dataprov python=3.6
+conda create -n dataprov python=3.6 # or 2.7
 source activate dataprov
 ```
 
@@ -36,7 +36,7 @@ To try the 'First steps' examples without an the Docker container:
 conda install bwa
 ```
 
-For the snakemake example workflow:
+For the snakemake example workflow (Snakemake is only available for Python 3):
 
 ```
 pip install snakemake
@@ -80,6 +80,7 @@ docker pull biocontainers/bwa
 dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run docker run -v $PWD/examples/:/tmp/:z -it docker.io/biocontainers/bwa:latest bwa index /tmp/bwa/genome.fa
 
 # Using Singularity
+singularity pull docker://biocontainers/bwa
 dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run singularity exec bwa.simg bwa index examples/bwa/genome.fa
 ```
 
@@ -142,6 +143,7 @@ If you look into this file you will see that the history of `A.bam.prov` contain
 
 ## Running Snakemake workflows
 
+Because Snakemake is not available for Python 3, this works not for Python 2.
 The directory `examples/snakemake` contains the snakemake tutorial workflow and example data.
 
 ```

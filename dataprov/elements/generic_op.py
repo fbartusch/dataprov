@@ -33,8 +33,7 @@ class GenericOp(GenericElement):
         # The generic operation can be run via a subprocess and saves the output
         op_output = subprocess.check_output(' '.join(self.remaining), shell=True)
         self.output = op_output
-        self.executed = True
-        print("op_output: ", op_output)    
+        self.executed = True 
     
     def post_processing(self):
         '''

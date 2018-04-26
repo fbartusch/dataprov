@@ -8,7 +8,7 @@ import cwltool.main
 import cwltool.stdfsaccess
 from collections import defaultdict
 from lxml import etree
-from urllib.parse import urlparse
+from six.moves.urllib.parse import urlparse
 from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file import File

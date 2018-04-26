@@ -96,7 +96,6 @@ class Singularity(GenericOp):
                 try:
                     command = "singularity inspect " + s
                     out = subprocess.check_output(command, shell=True)
-                    print("s: ", s, " out: ", out)
                     return s
                 except:
                     continue
