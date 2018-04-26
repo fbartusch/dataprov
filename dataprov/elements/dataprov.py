@@ -5,7 +5,7 @@ from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.data_object import DataObject
 from dataprov.elements.history import History
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV, NSMAP
 from lxml import etree
 
 
@@ -13,15 +13,15 @@ class Dataprov(GenericElement):
     '''
     Class describing the whole dataprov element.
     This class handles the parsing of input dataprov metadata files.
-    
+
     A datprov model consists of:
     - a 'target': The file which provenance data gets provided
     - a 'history': A list of operations that lead to the target file
     '''
-    
-    element_name = "dataprov"
+
+    element_name = DATAPROV + "dataprov"
     schema_file = os.path.join(XML_DIR, 'dataprov_element.xsd')
-    
+
     def __init__(self, file=None, validate=True):
         '''
         Initialize an empty object or read directly from file
@@ -58,10 +58,10 @@ class Dataprov(GenericElement):
         '''
         Create a xml ElementTree object from the data attribute. 
         '''
-        root = etree.Element(self.element_name)
-        root.set("xmlns", "Dataprov")
+        # Set the correct namespace in the root element
+        root = etree.Element(self.element_name, nsmap=NSMAP)
         # Target
-        target_ele = self.data['target'].to_xml("target")
+        target_ele = self.data['target'].to_xml("{Dataprov}target")
         root.append(target_ele)
         # History
         root.append(self.data['history'].to_xml())

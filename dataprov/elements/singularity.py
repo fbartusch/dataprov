@@ -7,7 +7,7 @@ from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.singularity_container import SingularityContainer
 from lxml import etree
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 
 class Singularity(GenericOp):
@@ -15,7 +15,7 @@ class Singularity(GenericOp):
     This class describes a command executed in a Singularity container.
     '''
 
-    element_name = "singularity"
+    element_name = DATAPROV + "singularity"
     schema_file = schema_file = os.path.join(XML_DIR, 'singularity_element.xsd')
 
     def __init__(self, remaining=None):
@@ -71,9 +71,9 @@ class Singularity(GenericOp):
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, 'command').text = self.data['command']
-        etree.SubElement(root, 'singularityPath').text = self.data['singularityPath']
-        etree.SubElement(root, 'singularityVersion').text = self.data['singularityVersion']
+        etree.SubElement(root, DATAPROV + 'command').text = self.data['command']
+        etree.SubElement(root, DATAPROV + 'singularityPath').text = self.data['singularityPath']
+        etree.SubElement(root, DATAPROV + 'singularityVersion').text = self.data['singularityVersion']
         singularity_container_ele = self.data['singularityContainer'].to_xml()
         root.append(singularity_container_ele)
         return root

@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 import os
 import platform
 from dataprov.elements.generic_element import GenericElement
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 
@@ -11,7 +11,7 @@ class Host(GenericElement):
     Class describing the host system of an operation
     '''
     
-    element_name = "host"
+    element_name = DATAPROV + "host"
     schema_file = os.path.join(XML_DIR, 'host_element.xsd')
     
     def __init__(self):
@@ -34,12 +34,12 @@ class Host(GenericElement):
         Create a xml ElementTree object from the data attribute. 
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, "system").text = self.data["system"]
-        etree.SubElement(root, "dist").text = self.data["dist"]
-        etree.SubElement(root, "version").text = self.data["version"]
-        etree.SubElement(root, "codename").text = self.data["codename"]
-        etree.SubElement(root, "kernelVersion").text = self.data["kernelVersion"]
-        etree.SubElement(root, "machine").text = self.data["machine"]
-        etree.SubElement(root, "processor").text = self.data["processor"]
-        etree.SubElement(root, "hostname").text = self.data["hostname"]
+        etree.SubElement(root, DATAPROV + "system").text = self.data["system"]
+        etree.SubElement(root, DATAPROV + "dist").text = self.data["dist"]
+        etree.SubElement(root, DATAPROV + "version").text = self.data["version"]
+        etree.SubElement(root, DATAPROV + "codename").text = self.data["codename"]
+        etree.SubElement(root, DATAPROV + "kernelVersion").text = self.data["kernelVersion"]
+        etree.SubElement(root, DATAPROV + "machine").text = self.data["machine"]
+        etree.SubElement(root, DATAPROV + "processor").text = self.data["processor"]
+        etree.SubElement(root, DATAPROV + "hostname").text = self.data["hostname"]
         return root

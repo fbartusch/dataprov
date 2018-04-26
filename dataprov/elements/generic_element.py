@@ -4,7 +4,7 @@ import lxml
 from collections import defaultdict
 from lxml import etree
 from dataprov.utils.io import prettify
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class GenericElement(object):
     '''
@@ -12,7 +12,7 @@ class GenericElement(object):
     This class provides basic functionalities to read/write the dataprov element.
     '''
     
-    element_name = "generic"
+    element_name = DATAPROV + "generic"
     schema_file = os.path.join(XML_DIR, 'generic_element.xsd')
     
     def __init__(self):

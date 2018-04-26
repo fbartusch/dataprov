@@ -8,14 +8,14 @@ from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.command_line import CommandLine
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class Snakemake(GenericOp):
     '''
     This class describes a snakemake element.
     '''
     
-    element_name = "snakemake"
+    element_name = DATAPROV + "snakemake"
     schema_file = os.path.join(XML_DIR, 'snakemake_element.xsd')
     
     def __init__(self, remaining=None):
@@ -130,19 +130,19 @@ class Snakemake(GenericOp):
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, 'command').text = self.data['command']
-        etree.SubElement(root, 'snakemakePath').text = self.data['snakemakePath']
-        etree.SubElement(root, 'snakemakeVersion').text = self.data['snakemakeVersion']
+        etree.SubElement(root, DATAPROV + 'command').text = self.data['command']
+        etree.SubElement(root, DATAPROV + 'snakemakePath').text = self.data['snakemakePath']
+        etree.SubElement(root, DATAPROV + 'snakemakeVersion').text = self.data['snakemakeVersion']
         # Snakefile
-        snakefile_ele = self.data['snakefile'].to_xml("snakefile")
+        snakefile_ele = self.data['snakefile'].to_xml(DATAPROV + "snakefile")
         root.append(snakefile_ele)
         # Configfile
         if self.data['configFile'] is not None:
-            config_file_ele = self.data['configFile'].to_xml("configFile")
+            config_file_ele = self.data['configFile'].to_xml(DATAPROV + "configFile")
             root.append(config_file_ele)
         # Steps
         for step in self.data['step']:
-            step_ele = step.to_xml("step")
+            step_ele = step.to_xml(DATAPROV + "step")
             root.append(step_ele)
         return root
         

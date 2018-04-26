@@ -4,7 +4,7 @@ from configparser import ConfigParser
 from collections import defaultdict
 from dataprov.utils.io import mkdir_p
 from dataprov.elements.generic_element import GenericElement
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 
@@ -13,7 +13,7 @@ class Executor(GenericElement):
     Class describing the executor of an operation
     '''
     
-    element_name = "executor"
+    element_name = DATAPROV + "executor"
     schema_file = os.path.join(XML_DIR, 'executor_element.xsd')
     
     def __init__(self, config_file=None):
@@ -90,17 +90,17 @@ class Executor(GenericElement):
         '''
         root = etree.Element(self.element_name)
         if self.data['title'] is not None:
-            etree.SubElement(root, "title").text = self.data["title"]
-        etree.SubElement(root, "firstName").text = self.data["firstName"]
+            etree.SubElement(root, DATAPROV + "title").text = self.data["title"]
+        etree.SubElement(root, DATAPROV + "firstName").text = self.data["firstName"]
         if self.data['middleName'] is not None:
-            etree.SubElement(root, "middleName").text = self.data["middleName"]
-        etree.SubElement(root, "surname").text = self.data["surname"]
+            etree.SubElement(root, DATAPROV + "middleName").text = self.data["middleName"]
+        etree.SubElement(root, DATAPROV + "surname").text = self.data["surname"]
         if self.data['suffix'] is not None:
-            etree.SubElement(root, "suffix").text = self.data["suffix"]
-        etree.SubElement(root, "mail").text = self.data["mail"]
+            etree.SubElement(root, DATAPROV + "suffix").text = self.data["suffix"]
+        etree.SubElement(root, DATAPROV + "mail").text = self.data["mail"]
         # Affiliation(s)
         for affiliation in self.data['affiliation']:
-            etree.SubElement(root, "affiliation").text = affiliation
+            etree.SubElement(root, DATAPROV + "affiliation").text = affiliation
         return root
         
     

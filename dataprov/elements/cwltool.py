@@ -13,14 +13,14 @@ from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class CWLTool(GenericOp):
     '''
     This class describes an operation using CWLCommandLineTool or CWLWorkflow.
     '''
     
-    element_name = "cwltool"
+    element_name = DATAPROV + "cwltool"
     schema_file = os.path.join(XML_DIR, 'cwl/cwltool_element.xsd')
     
     def __init__(self, remaining=None):
@@ -105,11 +105,11 @@ class CWLTool(GenericOp):
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, "wrappedCommand").text = self.data["wrappedCommand"]
-        etree.SubElement(root, "cwltoolPath").text = self.data["cwltoolPath"]
-        etree.SubElement(root, "cwltoolVersion").text = self.data["cwltoolVersion"]
+        etree.SubElement(root, DATAPROV + "wrappedCommand").text = self.data["wrappedCommand"]
+        etree.SubElement(root, DATAPROV + "cwltoolPath").text = self.data["cwltoolPath"]
+        etree.SubElement(root, DATAPROV + "cwltoolVersion").text = self.data["cwltoolVersion"]
         
-        cwl_job_order_ele = self.data["cwlJobOrder"].to_xml("cwlJobOrder")
+        cwl_job_order_ele = self.data["cwlJobOrder"].to_xml(DATAPROV + "cwlJobOrder")
         root.append(cwl_job_order_ele)
         if self.data['cwlCommandLineTool'] is not None:
             command_line_tool_ele = self.data['cwlCommandLineTool'].to_xml()
@@ -117,7 +117,6 @@ class CWLTool(GenericOp):
         elif self.data['cwlWorkflow'] is not None:
             workflow_ele = self.data['cwlWorkflow'].to_xml()
             root.append(workflow_ele)
-        
         return root
                  
     def get_input_data_objects(self):

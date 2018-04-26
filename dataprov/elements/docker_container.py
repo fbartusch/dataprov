@@ -5,7 +5,7 @@ from collections import defaultdict
 from lxml import etree
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 
 class DockerContainer(GenericElement):
@@ -13,7 +13,7 @@ class DockerContainer(GenericElement):
     This class describes a Docker container used by some operation types.
     '''
 
-    element_name = "dockerContainer"
+    element_name = DATAPROV + "dockerContainer"
     schema_file = os.path.join(XML_DIR, 'docker/dockerContainer_element.xsd')
 
     docker_methods = ["dockerPull", "dockerLoad", "dockerFile", "dockerImport", "dockerLocal"]    
@@ -91,34 +91,34 @@ class DockerContainer(GenericElement):
         root = etree.Element(self.element_name)
 
         # ImageSource
-        image_source_ele = etree.SubElement(root, 'imageSource')
+        image_source_ele = etree.SubElement(root, DATAPROV + 'imageSource')
 
         if self.data['method'] == "dockerPull":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
+            etree.SubElement(image_source_ele, DATAPROV + self.data['method']).text = self.data['source']
         elif self.data['method'] == "dockerLoad":
-            docker_file_ele = File(self.data['source']).to_xml("dockerLoad")
+            docker_file_ele = File(self.data['source']).to_xml(DATAPROV + "dockerLoad")
             image_source_ele.append(docker_file_ele)
         elif self.data['method'] == "dockerFile":
-            docker_file_ele = File(self.data['source']).to_xml("dockerFile")
+            docker_file_ele = File(self.data['source']).to_xml(DATAPROV + "dockerFile")
             image_source_ele.append(docker_file_ele)
         elif self.data['method'] == "dockerImport":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
+            etree.SubElement(image_source_ele, DATAPROV + self.data['method']).text = self.data['source']
         elif self.data['method'] == "dockerLocal":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
+            etree.SubElement(image_source_ele, DATAPROV + self.data['method']).text = self.data['source']
         else:
             print("Unknown method; ", self.data['method'])
 
         # Image details
         if self.data['method'] == "dockerLocal":
-            image_detail_ele = etree.SubElement(root, "imageDetails")
-            etree.SubElement(image_detail_ele, 'imageID').text = self.data['imageDetails']['imageID']
-            etree.SubElement(image_detail_ele, 'repoTag').text = self.data['imageDetails']['repoTag']
-            etree.SubElement(image_detail_ele, 'repoDigest').text = self.data['imageDetails']['repoDigest']
-            etree.SubElement(image_detail_ele, 'created').text = self.data['imageDetails']['created']
-            etree.SubElement(image_detail_ele, 'dockerVersion').text = self.data['imageDetails']['dockerVersion']
-            labels = etree.SubElement(image_detail_ele, 'labels')
+            image_detail_ele = etree.SubElement(root, DATAPROV + "imageDetails")
+            etree.SubElement(image_detail_ele, DATAPROV + 'imageID').text = self.data['imageDetails']['imageID']
+            etree.SubElement(image_detail_ele, DATAPROV + 'repoTag').text = self.data['imageDetails']['repoTag']
+            etree.SubElement(image_detail_ele, DATAPROV + 'repoDigest').text = self.data['imageDetails']['repoDigest']
+            etree.SubElement(image_detail_ele, DATAPROV + 'created').text = self.data['imageDetails']['created']
+            etree.SubElement(image_detail_ele, DATAPROV + 'dockerVersion').text = self.data['imageDetails']['dockerVersion']
+            labels = etree.SubElement(image_detail_ele, DATAPROV + 'labels')
             for key,value in self.data['imageDetails']['labels'].items():
-                etree.SubElement(labels, 'item', attrib={'key':key, 'value':value})
+                etree.SubElement(labels, DATAPROV + 'item', attrib={'key':key, 'value':value})
         return root
 
     def get_image_details(self, image):

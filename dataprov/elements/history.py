@@ -3,7 +3,7 @@ import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.operation import Operation
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 class History(GenericElement):
@@ -12,7 +12,7 @@ class History(GenericElement):
     The history consists of a list of operations.
     '''
     
-    element_name = "history"
+    element_name = DATAPROV + "history"
     schema_file = os.path.join(XML_DIR, 'history_element.xsd')
     
     def __init__(self):

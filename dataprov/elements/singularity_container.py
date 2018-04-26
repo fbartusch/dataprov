@@ -6,7 +6,7 @@ from collections import defaultdict
 from lxml import etree
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.data_object import DataObject
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 
 class SingularityContainer(GenericElement):
@@ -14,7 +14,7 @@ class SingularityContainer(GenericElement):
     This class describes a Singularity container used by some operation types.
     '''
 
-    element_name = "singularityContainer"
+    element_name = DATAPROV + "singularityContainer"
     schema_file = os.path.join(XML_DIR, 'singularity/singularityContainer_element.xsd') 
 
     singularity_methods = ["singularityPull", "singularityLocal"]
@@ -84,25 +84,23 @@ class SingularityContainer(GenericElement):
         root = etree.Element(self.element_name)
 
         # ImageSource
-        image_source_ele = etree.SubElement(root, 'imageSource')
+        image_source_ele = etree.SubElement(root, DATAPROV + 'imageSource')
 
         if self.data['method'] == "singularityPull":
-            etree.SubElement(image_source_ele, self.data['method']).text = self.data['source']
+            etree.SubElement(image_source_ele, DATAPROV + self.data['method']).text = self.data['source']
         elif self.data['method'] == "singularityLocal":
-            source_ele = self.data['source'].to_xml(self.data['method'])
+            source_ele = self.data['source'].to_xml(DATAPROV + self.data['method'])
             image_source_ele.append(source_ele)
-            #sub_ele = etree.SubElement(image_source_ele, self.data['method'])
-            #sub_ele.append(source_ele)
         else:
             print("Unknown method; ", self.data['method'])
 
         # Image details
         if self.data['method'] == "singularityLocal":
-            image_detail_ele = etree.SubElement(root, "imageDetails")
-            etree.SubElement(image_detail_ele, 'singularityVersion').text = self.data['imageDetails']['singularityVersion']
-            labels = etree.SubElement(image_detail_ele, 'labels')
+            image_detail_ele = etree.SubElement(root, DATAPROV + "imageDetails")
+            etree.SubElement(image_detail_ele, DATAPROV + 'singularityVersion').text = self.data['imageDetails']['singularityVersion']
+            labels = etree.SubElement(image_detail_ele, DATAPROV + 'labels')
             for key,value in self.data['imageDetails']['labels'].items():
-                etree.SubElement(labels, 'item', attrib={'key':key, 'value':value})
+                etree.SubElement(labels, DATAPROV + 'item', attrib={'key':key, 'value':value})
         return root
 
     def get_image_details(self, image):

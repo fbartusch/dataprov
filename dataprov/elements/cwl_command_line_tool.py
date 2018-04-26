@@ -9,14 +9,14 @@ from urllib.parse import urlparse
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class CWLCommandLineTool(GenericOp):
     '''
     This class describes a CWLCommandLineTool element.
     '''
     
-    element_name = "cwlCommandLineTool"
+    element_name = DATAPROV + "cwlCommandLineTool"
     schema_file = os.path.join(XML_DIR, 'cwl/cwlCommandLineTool_element.xsd')
     
     def __init__(self, argsl=None, wf_requirements=None):
@@ -203,16 +203,16 @@ class CWLCommandLineTool(GenericOp):
         '''
         root = etree.Element(self.element_name)
         # CWL file
-        cwl_file_ele = self.data['cwlFile'].to_xml("cwlFile")
+        cwl_file_ele = self.data['cwlFile'].to_xml(DATAPROV + "cwlFile")
         root.append(cwl_file_ele)
         # CWL Version
-        etree.SubElement(root, "cwlVersion").text = self.data["cwlVersion"]
+        etree.SubElement(root, DATAPROV + "cwlVersion").text = self.data["cwlVersion"]
         # Command
-        etree.SubElement(root, "command").text = self.data['command']
+        etree.SubElement(root, DATAPROV + "command").text = self.data['command']
         # Docker Requirement
         if self.data['dockerRequirement'] is not None:
             docker_req_ele = self.data['dockerRequirement'].to_xml()
-            docker_req_ele.tag = "dockerRequirement"
+            docker_req_ele.tag = DATAPROV + "dockerRequirement"
             root.append(docker_req_ele)
         return root
 

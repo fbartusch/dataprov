@@ -8,7 +8,7 @@ from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.docker_container import DockerContainer
 from lxml import etree
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 
 class Docker(GenericOp):
@@ -16,7 +16,7 @@ class Docker(GenericOp):
     This class describes a command executed in a Docker container.
     '''
 
-    element_name = "docker"
+    element_name = DATAPROV + "docker"
     schema_file = schema_file = os.path.join(XML_DIR, 'docker_element.xsd')
 
     def __init__(self, remaining=None):
@@ -72,9 +72,9 @@ class Docker(GenericOp):
         Create a xml ElementTree object from the data attribute.
         '''
         root = etree.Element(self.element_name)
-        etree.SubElement(root, 'command').text = self.data['command']
-        etree.SubElement(root, 'dockerPath').text = self.data['dockerPath']
-        etree.SubElement(root, 'dockerVersion').text = self.data['dockerVersion']
+        etree.SubElement(root, DATAPROV + 'command').text = self.data['command']
+        etree.SubElement(root, DATAPROV + 'dockerPath').text = self.data['dockerPath']
+        etree.SubElement(root, DATAPROV + 'dockerVersion').text = self.data['dockerVersion']
         docker_container_ele = self.data['dockerContainer'].to_xml()
         root.append(docker_container_ele)
         return root

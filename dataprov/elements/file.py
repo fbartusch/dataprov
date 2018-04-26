@@ -2,7 +2,7 @@ from __future__ import absolute_import, division, print_function
 import os
 import hashlib
 from dataprov.elements.generic_element import GenericElement
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 
@@ -11,7 +11,7 @@ class File(GenericElement):
     Class describing the a file element.
     '''
     
-    element_name = "file"
+    element_name = DATAPROV + "file"
     schema_file = os.path.join(XML_DIR, 'file_element.xsd')
          
     
@@ -61,9 +61,9 @@ class File(GenericElement):
         root = etree.Element(self.element_name)
         if root_tag is not None:
             root.tag = root_tag
-        etree.SubElement(root, "name").text = self.data["name"]
-        etree.SubElement(root, "uri").text = self.data["uri"]
-        etree.SubElement(root, "sha1").text = self.data["sha1"]
+        etree.SubElement(root, DATAPROV + "name").text = self.data["name"]
+        etree.SubElement(root, DATAPROV + "uri").text = self.data["uri"]
+        etree.SubElement(root, DATAPROV + "sha1").text = self.data["sha1"]
         return root
     
     

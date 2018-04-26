@@ -3,9 +3,10 @@ import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.command_line import CommandLine
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from dataprov.elements.singularity import Singularity
 # Conditional imports. If the docker, cwltool or snakemake is not installed throw no error
+# TODO check somehow if they are installed / e.g. Snakemake only for python >3.?
 try:
     from dataprov.elements.docker import Docker
 except ImportError as e:
@@ -26,7 +27,7 @@ class OpClass(GenericElement):
     Class describing the a the opClass element.
     '''
     
-    element_name = "opClass"
+    element_name = DATAPROV + "opClass"
     schema_file = os.path.join(XML_DIR, 'opClass_element.xsd')
     
     def __init__(self, remaining=None):

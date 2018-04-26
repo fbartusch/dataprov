@@ -7,15 +7,16 @@ from dataprov.elements.data_object_list import DataObjectList
 from dataprov.elements.executor import Executor
 from dataprov.elements.host import Host
 from dataprov.elements.op_class import OpClass
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
+
 
 class Operation(GenericElement):
     '''
     This class describes an operation element of a dataprov object.
     '''
-    
-    element_name = "operation"
+
+    element_name = DATAPROV + "operation"
     schema_file = os.path.join(XML_DIR, 'operation_element.xsd')
     
     def __init__(self):
@@ -74,25 +75,27 @@ class Operation(GenericElement):
         root = etree.Element(self.element_name)
         # Input Data Objects
         if self.data['inputDataObjects']:
-            input_data_objects_ele = self.data['inputDataObjects'].to_xml(root_tag='inputDataObjects')
+            tag = DATAPROV + 'inputDataObjects'
+            input_data_objects_ele = self.data['inputDataObjects'].to_xml(root_tag=tag)
             root.append(input_data_objects_ele)
         # Target Files
-        root.append(self.data['targetDataObjects'].to_xml(root_tag='targetDataObjects'))
+        tag = DATAPROV + 'targetDataObjects'
+        root.append(self.data['targetDataObjects'].to_xml(root_tag=tag))
         # Start Time
-        start_time_ele = etree.SubElement(root, 'startTime')
+        start_time_ele = etree.SubElement(root, DATAPROV + 'startTime')
         start_time_ele.text = self.data['startTime']
         # End Time
-        end_time_ele = etree.SubElement(root, 'endTime')
+        end_time_ele = etree.SubElement(root, DATAPROV + 'endTime')
         end_time_ele.text = self.data['endTime']
         # Executor
         root.append(self.data['executor'].to_xml())
         # Host
         root.append(self.data['host'].to_xml())
         # Operation class (opClass)
-        op_class_ele = etree.SubElement(root, 'opClass')
+        op_class_ele = etree.SubElement(root, DATAPROV + 'opClass')
         op_class_ele.append(self.data['opClass'].to_xml())
         # Message
-        message_ele = etree.SubElement(root, 'message')
+        message_ele = etree.SubElement(root, DATAPROV + 'message')
         message_ele.text = self.data['message']
         return root
         

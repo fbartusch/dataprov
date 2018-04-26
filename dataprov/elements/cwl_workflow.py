@@ -9,14 +9,14 @@ from urllib.parse import urlparse
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
 from dataprov.elements.cwl_command_line_tool import CWLCommandLineTool
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class CWLWorkflow(GenericElement):
     '''
     This class describes a CWLWorkflow element.
     '''
     
-    element_name = "cwlWorkflow"
+    element_name = DATAPROV + "cwlWorkflow"
     schema_file = os.path.join(XML_DIR, 'cwl/cwlWorkflow_element.xsd')
     
     def __init__(self, argsl=None):
@@ -107,16 +107,15 @@ class CWLWorkflow(GenericElement):
         '''
         root = etree.Element(self.element_name)
         # CWL file
-        cwl_file_ele = self.data["cwlFile"].to_xml("cwlFile")
+        cwl_file_ele = self.data["cwlFile"].to_xml(DATAPROV + "cwlFile")
         root.append(cwl_file_ele)
         # CWL Version
-        etree.SubElement(root, "cwlVersion").text = self.data["cwlVersion"]
+        etree.SubElement(root, DATAPROV + "cwlVersion").text = self.data["cwlVersion"]
         # WorkflowSteps
-        steps_ele = etree.SubElement(root, "workflowSteps")
+        steps_ele = etree.SubElement(root, DATAPROV + "workflowSteps")
         print(self.data['workflowSteps'])
         for workflow_step in self.data['workflowSteps']:
             steps_ele.append(workflow_step.to_xml())
-        
         return root
     
     

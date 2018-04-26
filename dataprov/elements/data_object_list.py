@@ -3,7 +3,7 @@ import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.data_object import DataObject
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 
@@ -12,7 +12,7 @@ class DataObjectList(GenericElement):
     Class describing a list of data objects.
     '''
     
-    element_name = "dataObjectList"
+    element_name = DATAPROV + "dataObjectList"
     schema_file = os.path.join(XML_DIR, 'dataObjectList_element.xsd')
          
     def __init__(self, uris=None):

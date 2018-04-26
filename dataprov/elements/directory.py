@@ -3,9 +3,8 @@ import os
 import hashlib
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
-from dataprov.utils.io import prettify
 
 
 class Directory(GenericElement):
@@ -13,7 +12,7 @@ class Directory(GenericElement):
     Class describing the a directory element.
     '''
     
-    element_name = "directory"
+    element_name = DATAPROV + "directory"
     schema_file = os.path.join(XML_DIR, 'directory_element.xsd')
              
     def __init__(self, uri=None):
@@ -94,9 +93,9 @@ class Directory(GenericElement):
         root = etree.Element(self.element_name)
         if root_tag is not None:
             root.tag = root_tag
-        etree.SubElement(root, "name").text = self.data["name"]
-        etree.SubElement(root, "uri").text = self.data["uri"]
-        shafile_ele = self.data['shafile'].to_xml("sha1file")
+        etree.SubElement(root, DATAPROV + "name").text = self.data["name"]
+        etree.SubElement(root, DATAPROV + "uri").text = self.data["uri"]
+        shafile_ele = self.data['shafile'].to_xml(DATAPROV + "sha1file")
         root.append(shafile_ele)
         return root    
     

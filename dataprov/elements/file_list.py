@@ -2,7 +2,7 @@ import os
 from collections import defaultdict
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
 
 
@@ -11,7 +11,7 @@ class FileList(GenericElement):
     Class describing the fileList element.
     '''
     
-    element_name = "fileList"
+    element_name = DATAPROV + "fileList"
     schema_file = os.path.join(XML_DIR, 'fileList_element.xsd')
          
     

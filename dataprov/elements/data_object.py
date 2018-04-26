@@ -3,9 +3,8 @@ import os
 from dataprov.elements.generic_element import GenericElement
 from dataprov.elements.directory import Directory
 from dataprov.elements.file import File
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 from lxml import etree
-from dataprov.utils.io import prettify
 
 class DataObject(GenericElement):
     '''
@@ -15,7 +14,7 @@ class DataObject(GenericElement):
      - an object in a S3 bucket (TODO)
     '''
     
-    element_name = "dataObject"
+    element_name = DATAPROV + "dataObject"
     schema_file = os.path.join(XML_DIR, 'dataObject_element.xsd')
          
     

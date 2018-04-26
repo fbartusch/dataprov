@@ -6,14 +6,14 @@ from distutils.spawn import find_executable
 from dataprov.elements.generic_op import GenericOp
 from dataprov.elements.data_object_list import DataObjectList
 from lxml import etree
-from dataprov.definitions import XML_DIR
+from dataprov.definitions import XML_DIR, DATAPROV
 
 class CommandLine(GenericOp):
     '''
     This class describes a command line tool. .
     '''
     
-    element_name = "commandLine"
+    element_name = DATAPROV + "commandLine"
     schema_file = schema_file = os.path.join(XML_DIR, 'commandLine_element.xsd')
     
     def __init__(self, remaining=None):
@@ -54,14 +54,14 @@ class CommandLine(GenericOp):
         root = etree.Element(self.element_name)
         if root_tag is not None:
             root.tag = root_tag
-        etree.SubElement(root, 'command').text = self.data['command']
-        etree.SubElement(root, 'toolPath').text = self.data['toolPath']
-        etree.SubElement(root, 'toolVersion').text = self.data['toolVersion']
+        etree.SubElement(root, DATAPROV + 'command').text = self.data['command']
+        etree.SubElement(root, DATAPROV + 'toolPath').text = self.data['toolPath']
+        etree.SubElement(root, DATAPROV + 'toolVersion').text = self.data['toolVersion']
         if self.data['inputDataObjects'] is not None:
-            input_data_objects_ele = self.data['inputDataObjects'].to_xml("inputDataObjects")
+            input_data_objects_ele = self.data['inputDataObjects'].to_xml(DATAPROV + "inputDataObjects")
             root.append(input_data_objects_ele)
         if self.data['outputDataObjects'] is not None:
-            output_data_objects_ele = self.data['outputDataObjects'].to_xml("outputDataObjects")    
+            output_data_objects_ele = self.data['outputDataObjects'].to_xml(DATAPROV + "outputDataObjects")    
             root.append(output_data_objects_ele)
         return root
 
