@@ -90,29 +90,31 @@ class Dataprov(GenericElement):
     def to_dag(self):
         '''
         Create a graphical representation of the provenance metadata.
-        Input and output/target files are nodes. These nodes are connected by the tracket operations/workflow steps.
+        Input and output/target data objects are nodes. These nodes are connected by the tracket operations/workflow steps.
         '''
         # Create the empty graph        
         dag = gv.Digraph(format='svg')
         
-        # Dictionary of file objects with hash as key, name (not path!) as value
-        # These will be file nodes
-        file_dict = {}
+        # Dictionary of data objects with hash as key, name (not path!) as value
+        # These will be data object nodes
+        data_object_dict = {}
         # Iterate over the operations and collect the stored information
         op_num = 0
         for operation in self.data['history'].data['operation']:
             op_num += 1
-            # Input files
-            if operation.data['inputFiles']:
-                input_files = operation.data['inputFiles']
-                for input_file in input_files.data['file']:
-                    file_dict[input_file.data['sha1']] = input_file.data['name']
+            # Input data objects
+            if operation.data['inputDataObjects']:
+                input_data_objects = operation.data['inputDataObjects']
+                for input_data_object in input_data_objects.data['objects']:
+                    #TODO also consider other types of data objects (like directories)
+                    data_object_dict[input_data_object.data['dataObject'].data['sha1']] = input_data_object.data['dataObject'].data['name']
             # Output files
-            output_files = operation.data['targetFiles']
-            for output_file in output_files.data['file']:
-                file_dict[output_file.data['sha1']] = output_file.data['name']
+            output_data_objects = operation.data['targetDataObjects']
+            for output_data_object in output_data_objects.data['objects']:
+                # TODO also consider other types of data objects (like directories)
+                data_object_dict[output_data_object.data['dataObject'].data['sha1']] = output_data_object.data['dataObject'].data['name']
 
-            for key, value in file_dict.items():
+            for key, value in data_object_dict.items():
                 # Name of file node is <name>:<sha1>
                 node_name = value + ":" + key
                 #dag.node(node_name)
@@ -121,11 +123,11 @@ class Dataprov(GenericElement):
             # For commandLine, connect each input node with the corresponding output node
             # Label is the command?
             command = operation.data['opClass'].data['opClass'].data['command']
-            if operation.data['inputFiles']:
-                for input_file in input_files.data['file']:
-                    for output_file in output_files.data['file']:
-                        in_node = input_file.data['name'] + ":" + input_file.data['sha1']
-                        out_node = output_file.data['name'] + ":" + output_file.data['sha1']
+            if operation.data['inputDataObjects']:
+                for input_data_object in input_data_objects.data['objects']:
+                    for output_data_object in output_data_objects.data['objects']:
+                        in_node = input_data_object.data['dataObject'].data['name'] + ":" + input_data_object.data['dataObject'].data['sha1']
+                        out_node = output_data_object.data['dataObject'].data['name'] + ":" + output_data_object.data['dataObject'].data['sha1']
                         label = "Op " + str(op_num)
                         dag.edge(in_node, out_node, label=label)
         dag.render("test.svg")
