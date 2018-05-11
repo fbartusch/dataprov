@@ -1,27 +1,33 @@
-<dataprov>
-  <target>
-    <name>A.bam</name>
-    <uri>/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam</uri>
-    <sha1>891153c56a8f9f8545368c26d789f725549c524c</sha1>
+<dataprov xmlns="Dataprov">
+  <target type="file">
+    <file>
+      <name>A.bam</name>
+      <uri>/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam</uri>
+      <sha1>891153c56a8f9f8545368c26d789f725549c524c</sha1>
+    </file>
   </target>
   <history>
     <operation>
-      <inputFiles>
-        <file>
-          <name>genome.fa</name>
-          <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa</uri>
-          <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
-        </file>
-      </inputFiles>
-      <targetFiles>
-        <file>
-          <name>genome.fa.bwt</name>
-          <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
-          <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
-        </file>
-      </targetFiles>
-      <startTime>2018-03-14T09:03:35</startTime>
-      <endTime>2018-03-14T09:03:35</endTime>
+      <inputDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>genome.fa</name>
+            <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa</uri>
+            <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
+          </file>
+        </dataObject>
+      </inputDataObjects>
+      <targetDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>genome.fa.bwt</name>
+            <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
+            <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
+          </file>
+        </dataObject>
+      </targetDataObjects>
+      <startTime>2018-05-11T13:10:21</startTime>
+      <endTime>2018-05-11T13:10:21</endTime>
       <executor>
         <title>M.Sc</title>
         <firstName>Felix</firstName>
@@ -37,41 +43,45 @@
         <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
         <machine>x86_64</machine>
         <processor>x86_64</processor>
-        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+        <hostname>u-023-d143.wae76.uni-tuebingen.de</hostname>
       </host>
       <opClass>
         <commandLine>
           <command>bwa index examples/bwa/genome.fa</command>
           <toolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa</toolPath>
           <toolVersion>unknown</toolVersion>
-          <inputFiles/>
-          <outputFiles/>
         </commandLine>
       </opClass>
       <message/>
     </operation>
     <operation>
-      <inputFiles>
-        <file>
-          <name>genome.fa.bwt</name>
-          <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
-          <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
-        </file>
-        <file>
-          <name>A.fastq</name>
-          <uri>/home/fbartusch/github/dataprov/examples/bwa/samples/A.fastq</uri>
-          <sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</sha1>
-        </file>
-      </inputFiles>
-      <targetFiles>
-        <file>
-          <name>A.bam</name>
-          <uri>/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam</uri>
-          <sha1>891153c56a8f9f8545368c26d789f725549c524c</sha1>
-        </file>
-      </targetFiles>
-      <startTime>2018-03-14T09:03:40</startTime>
-      <endTime>2018-03-14T09:03:41</endTime>
+      <inputDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>genome.fa.bwt</name>
+            <uri>/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt</uri>
+            <sha1>59c631cb08515ee8d7678acaeb9cfb41c7661763</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>A.fastq</name>
+            <uri>/home/fbartusch/github/dataprov/examples/bwa/samples/A.fastq</uri>
+            <sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</sha1>
+          </file>
+        </dataObject>
+      </inputDataObjects>
+      <targetDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>A.bam</name>
+            <uri>/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam</uri>
+            <sha1>891153c56a8f9f8545368c26d789f725549c524c</sha1>
+          </file>
+        </dataObject>
+      </targetDataObjects>
+      <startTime>2018-05-11T13:10:27</startTime>
+      <endTime>2018-05-11T13:10:28</endTime>
       <executor>
         <title>M.Sc</title>
         <firstName>Felix</firstName>
@@ -89,15 +99,13 @@
         <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
         <machine>x86_64</machine>
         <processor>x86_64</processor>
-        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+        <hostname>u-023-d143.wae76.uni-tuebingen.de</hostname>
       </host>
       <opClass>
         <commandLine>
           <command>bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq &gt; examples/bwa/mapped_reads/A.bam</command>
           <toolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa</toolPath>
           <toolVersion>unknown</toolVersion>
-          <inputFiles/>
-          <outputFiles/>
         </commandLine>
       </opClass>
       <message></message>

@@ -1,72 +1,96 @@
-<dataprov>
-  <target>
-    <name>B.bam</name>
-    <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
-    <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
+<dataprov xmlns="Dataprov">
+  <target type="file">
+    <file>
+      <name>B.bam</name>
+      <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
+      <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
+    </file>
   </target>
   <history>
     <operation>
-      <inputFiles>
-        <file>
-          <name>genome.fa</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/genome.fa</uri>
-          <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
-        </file>
-        <file>
-          <name>B.fastq</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/B.fastq</uri>
-          <sha1>2e24d0fa4339aede22ac73182f0cd14f5ee2faf9</sha1>
-        </file>
-        <file>
-          <name>A.fastq</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/A.fastq</uri>
-          <sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</sha1>
-        </file>
-      </inputFiles>
-      <targetFiles>
-        <file>
-          <name>B.bam</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
-          <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
-        </file>
-        <file>
-          <name>A.bam</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/A.bam</uri>
-          <sha1>0577196c0b4a29fe1a16fcef7ce3cfef8d97fea5</sha1>
-        </file>
-        <file>
-          <name>B.bam</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam</uri>
-          <sha1>f197e85bf62b66e5242d6a3130a6f478a58eb0ec</sha1>
-        </file>
-        <file>
-          <name>A.bam</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam</uri>
-          <sha1>a96cd1348e8b1d102bfcc9887055987da80ed7f5</sha1>
-        </file>
-        <file>
-          <name>B.bam.bai</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam.bai</uri>
-          <sha1>a24640ccb8fd2e64330d2ebfbc68a26c8f6494b6</sha1>
-        </file>
-        <file>
-          <name>A.bam.bai</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam.bai</uri>
-          <sha1>2f5440c28f8931fca56e6c4dd925b23edb949c2f</sha1>
-        </file>
-        <file>
-          <name>all.vcf</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/calls/all.vcf</uri>
-          <sha1>074856cbdd4052986f74411cf0f04cb3aa5811a5</sha1>
-        </file>
-        <file>
-          <name>report.html</name>
-          <uri>/home/fbartusch/github/dataprov/examples/snakemake/report.html</uri>
-          <sha1>d868a43eaf2a0e77fd5c80b1a8c249e0e3361c4d</sha1>
-        </file>
-      </targetFiles>
-      <startTime>2018-03-15T16:03:00</startTime>
-      <endTime>2018-03-15T16:03:05</endTime>
+      <inputDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>genome.fa</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/genome.fa</uri>
+            <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>B.fastq</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/B.fastq</uri>
+            <sha1>2e24d0fa4339aede22ac73182f0cd14f5ee2faf9</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>A.fastq</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/A.fastq</uri>
+            <sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</sha1>
+          </file>
+        </dataObject>
+      </inputDataObjects>
+      <targetDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>B.bam</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
+            <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>A.bam</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/A.bam</uri>
+            <sha1>0577196c0b4a29fe1a16fcef7ce3cfef8d97fea5</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>B.bam</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam</uri>
+            <sha1>f197e85bf62b66e5242d6a3130a6f478a58eb0ec</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>A.bam</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam</uri>
+            <sha1>a96cd1348e8b1d102bfcc9887055987da80ed7f5</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>B.bam.bai</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam.bai</uri>
+            <sha1>a24640ccb8fd2e64330d2ebfbc68a26c8f6494b6</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>A.bam.bai</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam.bai</uri>
+            <sha1>2f5440c28f8931fca56e6c4dd925b23edb949c2f</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>all.vcf</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/calls/all.vcf</uri>
+            <sha1>1cd129d43286ac54a53c685e14013a2510847dac</sha1>
+          </file>
+        </dataObject>
+        <dataObject type="file">
+          <file>
+            <name>report.html</name>
+            <uri>/home/fbartusch/github/dataprov/examples/snakemake/report.html</uri>
+            <sha1>3b5bde4fec853b74ff39b7e7fca21a810cfff200</sha1>
+          </file>
+        </dataObject>
+      </targetDataObjects>
+      <startTime>2018-05-11T13:15:19</startTime>
+      <endTime>2018-05-11T13:15:24</endTime>
       <executor>
         <title>M.Sc</title>
         <firstName>Felix</firstName>
@@ -84,7 +108,7 @@
         <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
         <machine>x86_64</machine>
         <processor>x86_64</processor>
-        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+        <hostname>u-023-d143.wae76.uni-tuebingen.de</hostname>
       </host>
       <opClass>
         <snakemake>
@@ -101,49 +125,11 @@
             <command>bwa mem data/genome.fa data/samples/B.fastq | samtools view -Sb - &gt; data/mapped_reads/B.bam</command>
             <toolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa</toolPath>
             <toolVersion>unknown</toolVersion>
-            <inputFiles>
-              <file>
-                <name>genome.fa</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/genome.fa</uri>
-                <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
-              </file>
-              <file>
-                <name>B.fastq</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/B.fastq</uri>
-                <sha1>2e24d0fa4339aede22ac73182f0cd14f5ee2faf9</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>B.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
-                <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>bwa mem data/genome.fa data/samples/A.fastq | samtools view -Sb - &gt; data/mapped_reads/A.bam</command>
             <toolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa</toolPath>
             <toolVersion>unknown</toolVersion>
-            <inputFiles>
-              <file>
-                <name>genome.fa</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/genome.fa</uri>
-                <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
-              </file>
-              <file>
-                <name>A.fastq</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/samples/A.fastq</uri>
-                <sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>A.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/A.bam</uri>
-                <sha1>0577196c0b4a29fe1a16fcef7ce3cfef8d97fea5</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>samtools sort -T sorted_reads/B -O bam data/mapped_reads/B.bam &gt; data/sorted_reads/B.bam</command>
@@ -152,20 +138,6 @@
 Using htslib 1.6
 Copyright (C) 2017 Genome Research Ltd.
 </toolVersion>
-            <inputFiles>
-              <file>
-                <name>B.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/B.bam</uri>
-                <sha1>cfa3447c1ad7dd8aa74b778799b009c760056c56</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>B.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam</uri>
-                <sha1>f197e85bf62b66e5242d6a3130a6f478a58eb0ec</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>samtools sort -T sorted_reads/A -O bam data/mapped_reads/A.bam &gt; data/sorted_reads/A.bam</command>
@@ -174,20 +146,6 @@ Copyright (C) 2017 Genome Research Ltd.
 Using htslib 1.6
 Copyright (C) 2017 Genome Research Ltd.
 </toolVersion>
-            <inputFiles>
-              <file>
-                <name>A.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/mapped_reads/A.bam</uri>
-                <sha1>0577196c0b4a29fe1a16fcef7ce3cfef8d97fea5</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>A.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam</uri>
-                <sha1>a96cd1348e8b1d102bfcc9887055987da80ed7f5</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>samtools index data/sorted_reads/B.bam</command>
@@ -196,20 +154,6 @@ Copyright (C) 2017 Genome Research Ltd.
 Using htslib 1.6
 Copyright (C) 2017 Genome Research Ltd.
 </toolVersion>
-            <inputFiles>
-              <file>
-                <name>B.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam</uri>
-                <sha1>f197e85bf62b66e5242d6a3130a6f478a58eb0ec</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>B.bam.bai</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam.bai</uri>
-                <sha1>a24640ccb8fd2e64330d2ebfbc68a26c8f6494b6</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>samtools index data/sorted_reads/A.bam</command>
@@ -218,20 +162,6 @@ Copyright (C) 2017 Genome Research Ltd.
 Using htslib 1.6
 Copyright (C) 2017 Genome Research Ltd.
 </toolVersion>
-            <inputFiles>
-              <file>
-                <name>A.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam</uri>
-                <sha1>a96cd1348e8b1d102bfcc9887055987da80ed7f5</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>A.bam.bai</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam.bai</uri>
-                <sha1>2f5440c28f8931fca56e6c4dd925b23edb949c2f</sha1>
-              </file>
-            </outputFiles>
           </step>
           <step>
             <command>samtools mpileup -g -f data/genome.fa data/sorted_reads/A.bam data/sorted_reads/B.bam | bcftools call -mv - &gt; data/calls/all.vcf</command>
@@ -240,40 +170,6 @@ Copyright (C) 2017 Genome Research Ltd.
 Using htslib 1.6
 Copyright (C) 2017 Genome Research Ltd.
 </toolVersion>
-            <inputFiles>
-              <file>
-                <name>genome.fa</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/genome.fa</uri>
-                <sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</sha1>
-              </file>
-              <file>
-                <name>A.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam</uri>
-                <sha1>a96cd1348e8b1d102bfcc9887055987da80ed7f5</sha1>
-              </file>
-              <file>
-                <name>B.bam</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam</uri>
-                <sha1>f197e85bf62b66e5242d6a3130a6f478a58eb0ec</sha1>
-              </file>
-              <file>
-                <name>A.bam.bai</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/A.bam.bai</uri>
-                <sha1>2f5440c28f8931fca56e6c4dd925b23edb949c2f</sha1>
-              </file>
-              <file>
-                <name>B.bam.bai</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/sorted_reads/B.bam.bai</uri>
-                <sha1>a24640ccb8fd2e64330d2ebfbc68a26c8f6494b6</sha1>
-              </file>
-            </inputFiles>
-            <outputFiles>
-              <file>
-                <name>all.vcf</name>
-                <uri>/home/fbartusch/github/dataprov/examples/snakemake/data/calls/all.vcf</uri>
-                <sha1>074856cbdd4052986f74411cf0f04cb3aa5811a5</sha1>
-              </file>
-            </outputFiles>
           </step>
         </snakemake>
       </opClass>

@@ -1,27 +1,33 @@
-<dataprov>
-  <target>
-    <name>Hello.class</name>
-    <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
-    <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
+<dataprov xmlns="Dataprov">
+  <target type="file">
+    <file>
+      <name>Hello.class</name>
+      <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
+      <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
+    </file>
   </target>
   <history>
     <operation>
-      <inputFiles>
-        <file>
-          <name>Hello.java</name>
-          <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.java</uri>
-          <sha1>084144159163a53537389bf205dce76ba47ff7c2</sha1>
-        </file>
-      </inputFiles>
-      <targetFiles>
-        <file>
-          <name>Hello.class</name>
-          <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
-          <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
-        </file>
-      </targetFiles>
-      <startTime>2018-03-27T15:03:18</startTime>
-      <endTime>2018-03-27T15:03:24</endTime>
+      <inputDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>Hello.java</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.java</uri>
+            <sha1>084144159163a53537389bf205dce76ba47ff7c2</sha1>
+          </file>
+        </dataObject>
+      </inputDataObjects>
+      <targetDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>Hello.class</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
+            <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
+          </file>
+        </dataObject>
+      </targetDataObjects>
+      <startTime>2018-05-11T13:17:13</startTime>
+      <endTime>2018-05-11T13:17:18</endTime>
       <executor>
         <title>M.Sc</title>
         <firstName>Felix</firstName>
@@ -39,7 +45,7 @@
         <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
         <machine>x86_64</machine>
         <processor>x86_64</processor>
-        <hostname>u-023-d137.wae76.uni-tuebingen.de</hostname>
+        <hostname>u-023-d143.wae76.uni-tuebingen.de</hostname>
       </host>
       <opClass>
         <cwltool>
@@ -64,9 +70,6 @@
               <imageSource>
                 <dockerPull>openjdk:9.0.1-11-slim</dockerPull>
               </imageSource>
-              <dockerPath>/usr/bin/docker</dockerPath>
-              <dockerVersion>Docker version 1.12.6, build 88a4867/1.12.6
-</dockerVersion>
             </dockerRequirement>
           </cwlCommandLineTool>
         </cwltool>
