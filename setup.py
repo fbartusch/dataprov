@@ -19,8 +19,7 @@ setup(name='dataprov',
           'configparser',
           'docker',
           'html5lib',
-          'graphviz',
-          'plotly'
+          'networkx',
       ],
       include_package_data=True,
       zip_safe=False)

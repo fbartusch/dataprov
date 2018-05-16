@@ -126,9 +126,18 @@ class Dataprov(GenericElement):
             if operation.data['inputDataObjects']:
                 for input_data_object in input_data_objects.data['objects']:
                     for output_data_object in output_data_objects.data['objects']:
-                        in_node = input_data_object.data['dataObject'].data['name'] + ":" + input_data_object.data['dataObject'].data['sha1']
-                        out_node = output_data_object.data['dataObject'].data['name'] + ":" + output_data_object.data['dataObject'].data['sha1']
+                        in_node = input_data_object.data['dataObject'].data['name']# + ":" + input_data_object.data['dataObject'].data['sha1']
+                        print(in_node)
+                        out_node = output_data_object.data['dataObject'].data['name']# + ":" + output_data_object.data['dataObject'].data['sha1']
+                        print(out_node)
                         label = "Op " + str(op_num)
                         dag.edge(in_node, out_node, label=label)
         dag.render("test.svg")
         return
+
+
+    def to_interactive_graph(self):
+        '''
+        Create an interactive graph from the provenance metadata.
+        '''
+        
