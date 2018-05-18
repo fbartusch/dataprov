@@ -8,8 +8,8 @@
 
   <style type="text/css">
     #mynetwork {
-      width: 2000px;
-      height: 2000px;
+      width: 500px;
+      height: 500px;
       border: 1px solid lightgray;
     }
   </style>
@@ -21,21 +21,31 @@
 </p>
 
 <div id="mynetwork"></div>
+<pre id="eventSpan"></pre>
 
 <script type="text/javascript">
   // create an array with nodes
   var nodes = new vis.DataSet([
-    {id: 1, label: 'genome.fa'},
-    {id: 2, label: 'genome.fa.bwt'},
-    {id: 3, label: 'A.fastq'},
-    {id: 4, label: 'A.bam'},
+    {id: 1, label: 'genome.fa', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
+    {id: 2, label: 'genome.fa.bwt', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
+    {id: 3, label: 'A.fastq', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
+    {id: 4, label: 'A.bam', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
+    {id: 5, label: 'Op1', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box'},
+    {id: 6, label: 'Op2', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box'},
+    {id: 7, label: '', color :{background:'rgb(253, 238, 205)', border:'rgb(0,0,0)'}, shape:'diamond'}
   ]);
+
+  
 
   // create an array with edges
   var edges = new vis.DataSet([
-    {from: 1, to: 2, label: 'Op1'},
-    {from: 2, to: 3, label: 'Op2'},
-    {from: 3, to: 4, label: 'Op2'},
+    {from: 1, to: 5, arrows:'from', label:'Used'},
+    {from: 5, to: 2, arrows:'from', label:'WasGeneratedBy'},
+    {from: 2, to: 6, arrows:'from', label:'Used'},
+    {from: 3, to: 6, arrows:'from', label:'Used'},
+    {from: 6, to: 4, arrows:'from', label:'WasGeneratedBy'},
+    {from: 7, to: 5, arrows:'from', label:'WasStartedBy'},
+    {from: 7, to: 6, arrows:'from', label:'WasStartedBy'}
   ]);
 
   // create a network
@@ -44,8 +54,28 @@
     nodes: nodes,
     edges: edges
   };
-  var options = {};
+  var options = {
+    interaction: { hover: false },
+    manipulation: {
+      enabled: false
+    },
+    /*layout: {
+      hierarchical: {
+        sortMethod: 'directed'
+      }
+    }*/
+  };
   var network = new vis.Network(container, data, options);
+
+  network.on("click", function (params) {
+    params.event = "[original event]";
+    document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + JSON.stringify(params, null, 4);
+    console.log('click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
+
+    
+  });
+
+
 </script>
 
 
