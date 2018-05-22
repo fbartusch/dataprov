@@ -8,7 +8,7 @@
 
   <style type="text/css">
     #mynetwork {
-      width: 500px;
+      width: 700px;
       height: 500px;
       border: 1px solid lightgray;
     }
@@ -17,25 +17,34 @@
 <body>
 
 <p>
-  Create a simple network with some nodes and edges.
+  Visualize Dataprov provenance metadata.
 </p>
 
 <div id="mynetwork"></div>
-<pre id="eventSpan"></pre>
+<pre id="metadataSpan"></pre>
 
 <script type="text/javascript">
   // create an array with nodes
   var nodes = new vis.DataSet([
-    {id: 1, label: 'genome.fa', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
-    {id: 2, label: 'genome.fa.bwt', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
-    {id: 3, label: 'A.fastq', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
-    {id: 4, label: 'A.bam', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse'},
-    {id: 5, label: 'Op1', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box'},
-    {id: 6, label: 'Op2', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box'},
-    {id: 7, label: '', color :{background:'rgb(253, 238, 205)', border:'rgb(0,0,0)'}, shape:'diamond'}
-  ]);
+    {id: 1, label: 'genome.fa', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse', type:'data_object', uri:'/home/fbartusch/github/dataprov/examples/bwa/genome.fa', checksum:'sha1:fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc'},
+    {id: 2, label: 'genome.fa.bwt', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse', type:'data_object', uri:'/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt',  checksum:'sha1:59c631cb08515ee8d7678acaeb9cfb41c7661763'},
+    {id: 3, label: 'A.fastq', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse', type:'data_object', uri:'/home/fbartusch/github/dataprov/examples/bwa/samples/A.fastq', checksum:'sha1:0709abb4d7b5ec64e60b3040b8da537977544eb5'},
+    {id: 4, label: 'A.bam', color: {background:'rgb(255, 253, 229)', border:'rgb(128, 128, 128)'}, shape:'ellipse', type:'data_object', uri:'/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam', checksum:'sha1:891153c56a8f9f8545368c26d789f725549c524c'},
+    {id: 5, label: 'Command Line Op1', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box', type:'operation', },
+    {id: 6, label: 'Command Line Op2', color: {background:'rgb(216, 217, 254)', border:'rgb(0, 0, 255)'}, shape:'box', type:'operation'},
+    {id: 7, label: 'Executor 1', color :{background:'rgb(253, 238, 205)', border:'rgb(0,0,0)'}, shape:'diamond', type:'executor'}
+  ]); 
 
-  
+  // node metadata that will be desplayed upon clicking on the node
+  var node_metadata = new vis.DataSet([
+    {id: 1, "file": {"name": "genome.fa", "uri": "/home/fbartusch/github/dataprov/examples/bwa/genome.fa", "sha1": "fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc"}},
+    {id: 2, "file": {"name": "genome.fa.bwt", "uri": "/home/fbartusch/github/dataprov/examples/bwa/genome.fa.bwt", "sha1": "59c631cb08515ee8d7678acaeb9cfb41c7661763"}},
+    {id: 3, "file": {"name": "A.fastq", "uri": "/home/fbartusch/github/dataprov/examples/bwa/samples/A.fastq", "sha1": "0709abb4d7b5ec64e60b3040b8da537977544eb5"}},
+    {id: 4, "file": {"name": "A.bam", "uri": "/home/fbartusch/github/dataprov/examples/bwa/mapped_reads/A.bam", "sha1": "891153c56a8f9f8545368c26d789f725549c524c"}},
+    {id: 5, "operation": {"startTime": "2018-05-11T13:10:21", "endTime": "2018-05-11T13:10:21", "host": {"system": "Linux", "dist": "CentOS Linux", "version": "7.3.1611", "codename": "Core", "kernelVersion": "4.9.34-29.el7.x86_64", "machine": "x86_64", "processor": "x86_64", "hostname": "u-023-d143.wae76.uni-tuebingen.de"}, "opClass": {"commandLine": {"command": "bwa index examples/bwa/genome.fa", "toolPath": "/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa", "toolVersion": "unknown"}}}},
+    {id: 6, "operation": {"startTime": "2018-05-11T13:10:27", "endTime": "2018-05-11T13:10:28", "host": {"system": "Linux", "dist": "CentOS Linux", "version": "7.3.1611", "codename": "Core", "kernelVersion": "4.9.34-29.el7.x86_64", "machine": "x86_64", "processor": "x86_64", "hostname": "u-023-d143.wae76.uni-tuebingen.de"}, "opClass": {"commandLine": {"command": "bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam", "toolPath": "/home/fbartusch/miniconda2/envs/wfprovenance/bin/bwa", "toolVersion": "unknown"}}}}, 
+    {id: 7, "executor": {"title": "M.Sc", "firstName": "Felix", "surname": "Bartusch", "mail": "felix.bartusch@uni-tuebingen.de", "affiliation": "Zentrum fuer Datenverarbeitung, University of Tuebingen"}}
+  ]);
 
   // create an array with edges
   var edges = new vis.DataSet([
@@ -48,31 +57,41 @@
     {from: 7, to: 6, arrows:'from', label:'WasStartedBy'}
   ]);
 
+
   // create a network
   var container = document.getElementById('mynetwork');
   var data = {
     nodes: nodes,
     edges: edges
   };
-  var options = {
-    interaction: { hover: false },
-    manipulation: {
-      enabled: false
+ 
+var options = {
+  "edges": {
+    "smooth": {
+      "type": "continuous",
+      "forceDirection": "none"
+    }
+  },
+  "physics": {
+    "hierarchicalRepulsion": {
+      "centralGravity": 0,
+      "springLength": 250,
+      "springConstant": 0.75,
+      "damping": 0.45
     },
-    /*layout: {
-      hierarchical: {
-        sortMethod: 'directed'
-      }
-    }*/
-  };
+    "minVelocity": 0.28,
+    "solver": "hierarchicalRepulsion",
+    "timestep": 0.48
+  }
+}
+ 
   var network = new vis.Network(container, data, options);
 
   network.on("click", function (params) {
+    // Print information about node
     params.event = "[original event]";
-    document.getElementById('eventSpan').innerHTML = '<h2>Click event:</h2>' + JSON.stringify(params, null, 4);
+    document.getElementById('metadataSpan').innerHTML = JSON.stringify(node_metadata.get(params.nodes), null, 4);
     console.log('click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM));
-
-    
   });
 
 
