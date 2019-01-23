@@ -20,6 +20,7 @@ setup(name='dataprov',
           'docker',
           'html5lib',
           'networkx',
+          'psycopg2'
       ],
       include_package_data=True,
       zip_safe=False)
