@@ -1,0 +1,27 @@
+set -e
+
+# examples/bwa/mapped reads will containe the file A.bam
+# Remove the directory, if it exists before the tests to ensure
+# false positives
+if [ -d "examples/bwa/mapped_reads" ]; then
+    rm -r examples/bwa/mapped_reads
+fi
+
+# Create the directory, as bwa mem fails if it does not exist beforehand
+mkdir examples/bwa/mapped_reads
+
+# Create index file genome.fa.bwt from reference genome
+python -m dataprov2 -d --show-attributes -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt \
+	run bwa index examples/bwa/genome.fa
+
+# Map reads against the reference
+python -m dataprov2 -d --show-attributes -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \
+	run 'bwa mem examples/bwa/genome.fa examples/bwa/samples/A.fastq > examples/bwa/mapped_reads/A.bam'
+
+# Very simple CWL tool test
+python -m dataprov2 -d --show-attributes -i examples/cwl_command_line/hello.tar -i examples/bwa/mapped_reads/A.bam -o hello.txt \
+	run cwltool --orcid https://orcid.org/0000-0002-8951-3413 examples/cwl_command_line/tar.cwl examples/cwl_command_line/tar-job.yml
+
+# Snakemake Tutorial workflow
+cd examples/snakemake
+dataprov -d --show-attributes run snakemake --use-conda all 

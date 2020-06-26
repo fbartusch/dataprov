@@ -1,0 +1,2 @@
+#!/bin/bash
+bwa mem /tmp/genome.fa /tmp/samples/A.fastq > /tmp/mapped_reads/A.bam

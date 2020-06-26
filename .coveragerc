@@ -1,0 +1,3 @@
+[run]
+omit = dataprov2/tests/*
+       setup.py

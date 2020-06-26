@@ -1,0 +1,80 @@
+<dataprov xmlns="Dataprov">
+  <target type="file">
+    <file>
+      <name>Hello.class</name>
+      <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
+      <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
+    </file>
+  </target>
+  <history>
+    <operation>
+      <inputDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>Hello.java</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.java</uri>
+            <sha1>084144159163a53537389bf205dce76ba47ff7c2</sha1>
+          </file>
+        </dataObject>
+      </inputDataObjects>
+      <targetDataObjects>
+        <dataObject type="file">
+          <file>
+            <name>Hello.class</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.class</uri>
+            <sha1>fdb876b40ad9ebc7fee873212e02d5940588642e</sha1>
+          </file>
+        </dataObject>
+      </targetDataObjects>
+      <startTime>2018-05-11T13:17:13</startTime>
+      <endTime>2018-05-11T13:17:18</endTime>
+      <executor>
+        <title>M.Sc</title>
+        <firstName>Felix</firstName>
+        <middleName></middleName>
+        <surname>Bartusch</surname>
+        <suffix></suffix>
+        <mail>felix.bartusch@uni-tuebingen.de</mail>
+        <affiliation>Zentrum fuer Datenverarbeitung, University of Tuebingen</affiliation>
+      </executor>
+      <host>
+        <system>Linux</system>
+        <dist>CentOS Linux</dist>
+        <version>7.3.1611</version>
+        <codename>Core</codename>
+        <kernelVersion>4.9.34-29.el7.x86_64</kernelVersion>
+        <machine>x86_64</machine>
+        <processor>x86_64</processor>
+        <hostname>u-023-d143.wae76.uni-tuebingen.de</hostname>
+      </host>
+      <opClass>
+        <cwltool>
+          <wrappedCommand>cwltool arguments.cwl arguments-job.yml</wrappedCommand>
+          <cwltoolPath>/home/fbartusch/miniconda2/envs/wfprovenance/bin/cwltool</cwltoolPath>
+          <cwltoolVersion>/home/fbartusch/miniconda2/envs/wfprovenance/bin/cwltool 1.0.20180302231433
+</cwltoolVersion>
+          <cwlJobOrder>
+            <name>arguments-job.yml</name>
+            <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/arguments-job.yml</uri>
+            <sha1>a65a550e8666d7adcad8da380937fdc54467f405</sha1>
+          </cwlJobOrder>
+          <cwlCommandLineTool>
+            <cwlFile>
+              <name>arguments.cwl</name>
+              <uri>/home/fbartusch/github/dataprov/examples/cwl_command_line/arguments.cwl</uri>
+              <sha1>1cb416b1a286d6730dbccb3486c620911e69b8e1</sha1>
+            </cwlFile>
+            <cwlVersion>v1.0</cwlVersion>
+            <command>javac -d /var/spool/cwl /home/fbartusch/github/dataprov/examples/cwl_command_line/Hello.java</command>
+            <dockerRequirement>
+              <imageSource>
+                <dockerPull>openjdk:9.0.1-11-slim</dockerPull>
+              </imageSource>
+            </dockerRequirement>
+          </cwlCommandLineTool>
+        </cwltool>
+      </opClass>
+      <message></message>
+    </operation>
+  </history>
+</dataprov>

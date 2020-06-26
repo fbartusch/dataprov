@@ -1,0 +1,290 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<prov:document xmlns:web="https://" xmlns:ex="example" xmlns:orcid="https://orcid.org/" xmlns:sha256="urn:hash::sha256:" xmlns:uuid="urn:uuid" xmlns:data="urn:hash::sha1:" xmlns:prov="http://www.w3.org/ns/prov#" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <prov:agent prov:id="web:https://uni-tuebingen.de/einrichtungen/zentrum-fuer-datenverarbeitung/">
+    <prov:label>ZDV Uni Tübingen</prov:label>
+    <ex:title>ZDV Uni Tübingen</ex:title>
+    <ex:web>https://uni-tuebingen.de/einrichtungen/zentrum-fuer-datenverarbeitung/</ex:web>
+  </prov:agent>
+  <prov:agent prov:id="orcid:0000-0003-0711-5196">
+    <prov:label>M.Sc. Felix Bartusch </prov:label>
+    <ex:firstname>Felix</ex:firstname>
+    <ex:mail>felix.bartusch@uni-tuebingen.de</ex:mail>
+    <ex:orcid>0000-0003-0711-5196</ex:orcid>
+    <ex:surname>Bartusch</ex:surname>
+    <ex:title>M.Sc.</ex:title>
+  </prov:agent>
+  <prov:actedOnBehalfOf>
+    <prov:delegate prov:ref="orcid:0000-0003-0711-5196"/>
+    <prov:responsible prov:ref="web:https://uni-tuebingen.de/einrichtungen/zentrum-fuer-datenverarbeitung/"/>
+  </prov:actedOnBehalfOf>
+  <prov:agent prov:id="sha256:d307af2d00a7a602f3a2cc9d5d9bb50a312ede1550d0eaffeade3d35c1a45ae9">
+    <prov:label>localhost.localdomain</prov:label>
+    <ex:codename>Core</ex:codename>
+    <ex:dist>CentOS Linux</ex:dist>
+    <ex:hostname>localhost.localdomain</ex:hostname>
+    <ex:kernelVersion>4.9.165-35.el7.x86_64</ex:kernelVersion>
+    <ex:machine>x86_64</ex:machine>
+    <ex:processor>x86_64</ex:processor>
+    <ex:system>Linux</ex:system>
+    <ex:version>7</ex:version>
+  </prov:agent>
+  <prov:actedOnBehalfOf>
+    <prov:delegate prov:ref="sha256:d307af2d00a7a602f3a2cc9d5d9bb50a312ede1550d0eaffeade3d35c1a45ae9"/>
+    <prov:responsible prov:ref="orcid:0000-0003-0711-5196"/>
+  </prov:actedOnBehalfOf>
+  <prov:agent prov:id="sha256:910a4fe7d50acdd74fabd9a32a65a3b17a2da57daf34e16169a11dae3ce0ee2a">
+    <prov:label>/home/fbartusch/miniconda3/envs/dataprov/bin/snakemake</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/miniconda3/envs/dataprov/bin/snakemake</prov:location>
+    <prov:value xsi:type="xsd:string">snakemake</prov:value>
+    <ex:version>5.10.0</ex:version>
+  </prov:agent>
+  <prov:entity prov:id="ex:wf70"/>
+  <prov:entity prov:id="ex:snakefile35"/>
+  <prov:entity prov:id="sha256:27271bc26e7a772c36d0c31913807d78d898d5828498a866e85d60adc2c00f2e">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/config.yaml</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/config.yaml</prov:location>
+    <prov:value xsi:type="xsd:string">config.yaml</prov:value>
+    <ex:sha1>cd214112c286c3a766fbc127bb8e5242df940169</ex:sha1>
+    <ex:sha256>27271bc26e7a772c36d0c31913807d78d898d5828498a866e85d60adc2c00f2e</ex:sha256>
+  </prov:entity>
+  <prov:wasInfluencedBy>
+    <prov:influencee prov:ref="ex:wf70"/>
+    <prov:influencer prov:ref="sha256:27271bc26e7a772c36d0c31913807d78d898d5828498a866e85d60adc2c00f2e"/>
+  </prov:wasInfluencedBy>
+  <prov:wasInfluencedBy>
+    <prov:influencee prov:ref="ex:wf70"/>
+    <prov:influencer prov:ref="ex:snakefile35"/>
+  </prov:wasInfluencedBy>
+  <prov:agent prov:id="sha256:abcf04471adff8361c23b101630157fac1f81533408e7f3434651713274c0b2e">
+    <prov:label>/home/fbartusch/miniconda3/envs/dataprov/bin/bwa</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/miniconda3/envs/dataprov/bin/bwa</prov:location>
+    <prov:value xsi:type="xsd:string">bwa</prov:value>
+  </prov:agent>
+  <prov:agent prov:id="sha256:f20b7f8d2c521939b3cf96dac5f58bcafb368afa2fb0e80f8635ac34ea7aec2a">
+    <prov:label>/usr/local/bin/samtools</prov:label>
+    <prov:location xsi:type="xsd:string">/usr/local/bin/samtools</prov:location>
+    <prov:value xsi:type="xsd:string">samtools</prov:value>
+    <ex:version>samtools 1.6</ex:version>
+  </prov:agent>
+  <prov:agent prov:id="sha256:cc673910d7f188f29f5743a24f22af6a9ed36685787ac6cd4a31f73d0ea0e9a2">
+    <prov:label>/usr/bin/script</prov:label>
+    <prov:location xsi:type="xsd:string">/usr/bin/script</prov:location>
+    <prov:value xsi:type="xsd:string">script</prov:value>
+    <ex:version>script from util-linux 2.23.2</ex:version>
+  </prov:agent>
+  <prov:activity prov:id="uuid:c70d154f-5b95-4046-a6ac-15330d10d00d">
+    <prov:startTime>2020-02-19T14:37:25.677188</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:32.793219</prov:endTime>
+    <prov:label>snakemake --use-conda all</prov:label>
+    <ex:task>snakemake --use-conda all</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:c70d154f-5b95-4046-a6ac-15330d10d00d"/>
+    <prov:agent prov:ref="sha256:910a4fe7d50acdd74fabd9a32a65a3b17a2da57daf34e16169a11dae3ce0ee2a"/>
+  </prov:wasAssociatedWith>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="ex:wf70"/>
+    <prov:activity prov:ref="uuid:c70d154f-5b95-4046-a6ac-15330d10d00d"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:4c957198-b881-43e5-9b00-e3d67b90e2b9">
+    <prov:startTime>2020-02-19T14:37:32.794294</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:32.794299</prov:endTime>
+    <prov:label>bwa mem -t 4 data/genome.fa data/samples/B.fastq | samtools view -Sb - &amp;gt; mapped/B.bam</prov:label>
+    <ex:task>bwa mem -t 4 data/genome.fa data/samples/B.fastq | samtools view -Sb - &amp;gt; mapped/B.bam</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:4c957198-b881-43e5-9b00-e3d67b90e2b9"/>
+    <prov:agent prov:ref="sha256:abcf04471adff8361c23b101630157fac1f81533408e7f3434651713274c0b2e"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:entity prov:id="sha256:25f7d0cbb04c9e7d357fad6e4977d5792c56108a27b5cef4e557e21e87d9c6c9">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/data/genome.fa</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/data/genome.fa</prov:location>
+    <prov:value xsi:type="xsd:string">genome.fa</prov:value>
+    <ex:sha1>fb7944c8852c4c2f0948f3eb4a809bc689c7d9fc</ex:sha1>
+    <ex:sha256>25f7d0cbb04c9e7d357fad6e4977d5792c56108a27b5cef4e557e21e87d9c6c9</ex:sha256>
+  </prov:entity>
+  <prov:entity prov:id="sha256:71026772dbe12b1d6d4aa05b5f98342b2713a426b454438dc60dd95009702e1b">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/data/samples/B.fastq</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/data/samples/B.fastq</prov:location>
+    <prov:value xsi:type="xsd:string">B.fastq</prov:value>
+    <ex:sha1>2e24d0fa4339aede22ac73182f0cd14f5ee2faf9</ex:sha1>
+    <ex:sha256>71026772dbe12b1d6d4aa05b5f98342b2713a426b454438dc60dd95009702e1b</ex:sha256>
+  </prov:entity>
+  <prov:used>
+    <prov:activity prov:ref="uuid:4c957198-b881-43e5-9b00-e3d67b90e2b9"/>
+    <prov:entity prov:ref="sha256:25f7d0cbb04c9e7d357fad6e4977d5792c56108a27b5cef4e557e21e87d9c6c9"/>
+  </prov:used>
+  <prov:used>
+    <prov:activity prov:ref="uuid:4c957198-b881-43e5-9b00-e3d67b90e2b9"/>
+    <prov:entity prov:ref="sha256:71026772dbe12b1d6d4aa05b5f98342b2713a426b454438dc60dd95009702e1b"/>
+  </prov:used>
+  <prov:entity prov:id="data:B.bam">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/mapped/B.bam</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/mapped/B.bam</prov:location>
+    <prov:value xsi:type="xsd:string">B.bam</prov:value>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="data:B.bam"/>
+    <prov:activity prov:ref="uuid:4c957198-b881-43e5-9b00-e3d67b90e2b9"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:0e4fba07-6001-48de-b1c4-d6931db4e844">
+    <prov:startTime>2020-02-19T14:37:32.881812</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:32.881820</prov:endTime>
+    <prov:label>bwa mem -t 4 data/genome.fa data/samples/A.fastq | samtools view -Sb - &amp;gt; mapped/A.bam</prov:label>
+    <ex:task>bwa mem -t 4 data/genome.fa data/samples/A.fastq | samtools view -Sb - &amp;gt; mapped/A.bam</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:0e4fba07-6001-48de-b1c4-d6931db4e844"/>
+    <prov:agent prov:ref="sha256:abcf04471adff8361c23b101630157fac1f81533408e7f3434651713274c0b2e"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:entity prov:id="sha256:e108a9695584af2eccb97a0411b4fa04644c9b58de47e4aa8f3702f72d4aa3e9">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/data/samples/A.fastq</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/data/samples/A.fastq</prov:location>
+    <prov:value xsi:type="xsd:string">A.fastq</prov:value>
+    <ex:sha1>0709abb4d7b5ec64e60b3040b8da537977544eb5</ex:sha1>
+    <ex:sha256>e108a9695584af2eccb97a0411b4fa04644c9b58de47e4aa8f3702f72d4aa3e9</ex:sha256>
+  </prov:entity>
+  <prov:used>
+    <prov:activity prov:ref="uuid:0e4fba07-6001-48de-b1c4-d6931db4e844"/>
+    <prov:entity prov:ref="sha256:e108a9695584af2eccb97a0411b4fa04644c9b58de47e4aa8f3702f72d4aa3e9"/>
+  </prov:used>
+  <prov:used>
+    <prov:activity prov:ref="uuid:0e4fba07-6001-48de-b1c4-d6931db4e844"/>
+    <prov:entity prov:ref="sha256:25f7d0cbb04c9e7d357fad6e4977d5792c56108a27b5cef4e557e21e87d9c6c9"/>
+  </prov:used>
+  <prov:entity prov:id="data:A.bam">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/mapped/A.bam</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/mapped/A.bam</prov:location>
+    <prov:value xsi:type="xsd:string">A.bam</prov:value>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="data:A.bam"/>
+    <prov:activity prov:ref="uuid:0e4fba07-6001-48de-b1c4-d6931db4e844"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:7332dd5f-c627-474a-bcd5-1298cae2dd3b">
+    <prov:startTime>2020-02-19T14:37:32.969480</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:32.969487</prov:endTime>
+    <prov:label>samtools sort -o mapped/B.sorted.bam mapped/B.bam</prov:label>
+    <ex:task>samtools sort -o mapped/B.sorted.bam mapped/B.bam</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:7332dd5f-c627-474a-bcd5-1298cae2dd3b"/>
+    <prov:agent prov:ref="sha256:f20b7f8d2c521939b3cf96dac5f58bcafb368afa2fb0e80f8635ac34ea7aec2a"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:used>
+    <prov:activity prov:ref="uuid:7332dd5f-c627-474a-bcd5-1298cae2dd3b"/>
+    <prov:entity prov:ref="data:B.bam"/>
+  </prov:used>
+  <prov:entity prov:id="sha256:d9e3c4a1915ee905ec34c10f12c91619e580d6c2c3174d8d0dd9548f4d502747">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/mapped/B.sorted.bam</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/mapped/B.sorted.bam</prov:location>
+    <prov:value xsi:type="xsd:string">B.sorted.bam</prov:value>
+    <ex:sha1>accae50af6c75ce433c8ad0c5ac839aa5d4146cd</ex:sha1>
+    <ex:sha256>d9e3c4a1915ee905ec34c10f12c91619e580d6c2c3174d8d0dd9548f4d502747</ex:sha256>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="sha256:d9e3c4a1915ee905ec34c10f12c91619e580d6c2c3174d8d0dd9548f4d502747"/>
+    <prov:activity prov:ref="uuid:7332dd5f-c627-474a-bcd5-1298cae2dd3b"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:3f35a471-2252-4ab2-804a-f8341ca93e79">
+    <prov:startTime>2020-02-19T14:37:33.003265</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:33.003273</prov:endTime>
+    <prov:label>samtools sort -o mapped/A.sorted.bam mapped/A.bam</prov:label>
+    <ex:task>samtools sort -o mapped/A.sorted.bam mapped/A.bam</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:3f35a471-2252-4ab2-804a-f8341ca93e79"/>
+    <prov:agent prov:ref="sha256:f20b7f8d2c521939b3cf96dac5f58bcafb368afa2fb0e80f8635ac34ea7aec2a"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:used>
+    <prov:activity prov:ref="uuid:3f35a471-2252-4ab2-804a-f8341ca93e79"/>
+    <prov:entity prov:ref="data:A.bam"/>
+  </prov:used>
+  <prov:entity prov:id="sha256:982c5e7135da2a598db547d31180ba90c2add5879bfc299c2d6d13da14b36afa">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/mapped/A.sorted.bam</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/mapped/A.sorted.bam</prov:location>
+    <prov:value xsi:type="xsd:string">A.sorted.bam</prov:value>
+    <ex:sha1>c90112b89c0fc4575fc576a025dea7b6deebcd48</ex:sha1>
+    <ex:sha256>982c5e7135da2a598db547d31180ba90c2add5879bfc299c2d6d13da14b36afa</ex:sha256>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="sha256:982c5e7135da2a598db547d31180ba90c2add5879bfc299c2d6d13da14b36afa"/>
+    <prov:activity prov:ref="uuid:3f35a471-2252-4ab2-804a-f8341ca93e79"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b">
+    <prov:startTime>2020-02-19T14:37:33.039258</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:33.039269</prov:endTime>
+    <prov:label>samtools mpileup -g -f data/genome.fa mapped/A.sorted.bam mapped/B.sorted.bam | bcftools call -mv - &amp;gt; calls/all.vcf</prov:label>
+    <ex:task>samtools mpileup -g -f data/genome.fa mapped/A.sorted.bam mapped/B.sorted.bam | bcftools call -mv - &amp;gt; calls/all.vcf</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b"/>
+    <prov:agent prov:ref="sha256:f20b7f8d2c521939b3cf96dac5f58bcafb368afa2fb0e80f8635ac34ea7aec2a"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:used>
+    <prov:activity prov:ref="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b"/>
+    <prov:entity prov:ref="sha256:982c5e7135da2a598db547d31180ba90c2add5879bfc299c2d6d13da14b36afa"/>
+  </prov:used>
+  <prov:used>
+    <prov:activity prov:ref="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b"/>
+    <prov:entity prov:ref="sha256:25f7d0cbb04c9e7d357fad6e4977d5792c56108a27b5cef4e557e21e87d9c6c9"/>
+  </prov:used>
+  <prov:used>
+    <prov:activity prov:ref="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b"/>
+    <prov:entity prov:ref="sha256:d9e3c4a1915ee905ec34c10f12c91619e580d6c2c3174d8d0dd9548f4d502747"/>
+  </prov:used>
+  <prov:entity prov:id="sha256:4e243287f024103fb520e4e136195c8d58799412265d331918ef2fcbe7e78db1">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/calls/all.vcf</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/calls/all.vcf</prov:location>
+    <prov:value xsi:type="xsd:string">all.vcf</prov:value>
+    <ex:sha1>cf4ae1dcbd9ae08d1bd3dfe4493b9ef9e7c0e0d3</ex:sha1>
+    <ex:sha256>4e243287f024103fb520e4e136195c8d58799412265d331918ef2fcbe7e78db1</ex:sha256>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="sha256:4e243287f024103fb520e4e136195c8d58799412265d331918ef2fcbe7e78db1"/>
+    <prov:activity prov:ref="uuid:e1523942-3ccf-43bb-b677-9a0d1e35402b"/>
+  </prov:wasGeneratedBy>
+  <prov:activity prov:id="uuid:a74c9fcf-629a-4893-a117-5f64c1663218">
+    <prov:startTime>2020-02-19T14:37:33.111683</prov:startTime>
+    <prov:endTime>2020-02-19T14:37:33.111692</prov:endTime>
+    <prov:label>script directive.</prov:label>
+    <ex:task>script directive.</ex:task>
+  </prov:activity>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:a74c9fcf-629a-4893-a117-5f64c1663218"/>
+    <prov:agent prov:ref="sha256:cc673910d7f188f29f5743a24f22af6a9ed36685787ac6cd4a31f73d0ea0e9a2"/>
+    <prov:plan prov:ref="ex:wf70"/>
+  </prov:wasAssociatedWith>
+  <prov:used>
+    <prov:activity prov:ref="uuid:a74c9fcf-629a-4893-a117-5f64c1663218"/>
+    <prov:entity prov:ref="sha256:4e243287f024103fb520e4e136195c8d58799412265d331918ef2fcbe7e78db1"/>
+  </prov:used>
+  <prov:entity prov:id="sha256:af6da24a3353afbcffffa3637cebaa4c0f0a61d65d0648a998b2766f75f9c7c5">
+    <prov:label>/home/fbartusch/github/dataprov2/examples/snakemake/plots/quals.svg</prov:label>
+    <prov:location xsi:type="xsd:string">/home/fbartusch/github/dataprov2/examples/snakemake/plots/quals.svg</prov:location>
+    <prov:value xsi:type="xsd:string">quals.svg</prov:value>
+    <ex:sha1>8af17a48ff12eb65de4a897ba842a19cf28f0c45</ex:sha1>
+    <ex:sha256>af6da24a3353afbcffffa3637cebaa4c0f0a61d65d0648a998b2766f75f9c7c5</ex:sha256>
+  </prov:entity>
+  <prov:wasGeneratedBy>
+    <prov:entity prov:ref="sha256:af6da24a3353afbcffffa3637cebaa4c0f0a61d65d0648a998b2766f75f9c7c5"/>
+    <prov:activity prov:ref="uuid:a74c9fcf-629a-4893-a117-5f64c1663218"/>
+  </prov:wasGeneratedBy>
+  <prov:actedOnBehalfOf>
+    <prov:delegate prov:ref="sha256:910a4fe7d50acdd74fabd9a32a65a3b17a2da57daf34e16169a11dae3ce0ee2a"/>
+    <prov:responsible prov:ref="orcid:0000-0003-0711-5196"/>
+  </prov:actedOnBehalfOf>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:c70d154f-5b95-4046-a6ac-15330d10d00d"/>
+    <prov:agent prov:ref="sha256:d307af2d00a7a602f3a2cc9d5d9bb50a312ede1550d0eaffeade3d35c1a45ae9"/>
+  </prov:wasAssociatedWith>
+  <prov:wasAssociatedWith>
+    <prov:activity prov:ref="uuid:c70d154f-5b95-4046-a6ac-15330d10d00d"/>
+    <prov:agent prov:ref="orcid:0000-0003-0711-5196"/>
+  </prov:wasAssociatedWith>
+</prov:document>
