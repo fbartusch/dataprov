@@ -1,4 +1,4 @@
 """
-Module docstring dataprov2
+Module docstring dataprov
 """
 __version__ = "0.0.3"

@@ -140,7 +140,7 @@ def main() -> None:
         sys.exit(0)
 
     if args.command == "run":
-        from dataprov2.commands.run import run
+        from dataprov.commands.run import run
 
         run(args, remaining)
 

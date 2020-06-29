@@ -27,7 +27,7 @@ Just grab the official package from PyPI and you're good to go.
   
 .. code:: bash
 
-    $ pip install dataprov2
+    $ pip install dataprov
 
 If you want to use additional features (like support for Snakemake workflows), you have to add this to the `pip install` command.
 
@@ -50,8 +50,8 @@ If you want the latest development version, install Dataprov via Github. If the 
 
 .. code:: bash
 
-    $ git clone https://github.com/jonasgloning/dataprov2.git
-    $ cd dataprov2
+    $ git clone https://github.com/fbartusch/dataprov.git
+    $ cd dataprov
     $ pip install .
 
 Using additional features is the same as for the installation from PyPI.
@@ -73,7 +73,7 @@ The documentation is then created in the following way.
 
     $ # Rebuild api information if new functions/classes were added to the code
     $ cd docs
-    $ sphinx-apidoc -o api/internal ../dataprov2
+    $ sphinx-apidoc -o api/internal ../dataprov
 
     $ # Build documentation in html format
     $ make html

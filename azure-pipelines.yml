@@ -1,63 +1,37 @@
-name: 'build & test on linux'
+trigger:
+- dev
 
 pool:
   vmImage: 'ubuntu-latest'
 strategy:
-    maxParallel: 2
-    matrix:
-      Python_3.6:
-        python.version: 3.6
-      Python_3.7:
-        python.version: 3.7
+  matrix:
+    Python36:
+      python.version: '3.6'
+    Python37:
+      python.version: '3.7'
+
 steps:
-- bash: echo "##vso[task.prependpath]$CONDA/bin"
-  displayName: Add conda to PATH
-
-- script: conda create --yes -n dataprov2 python=$(python.version)
-  displayName: Create Anaconda environment
-
-- script: |
-    sudo apt update
-    sudo apt install libxml2-dev libxslt-dev
-  displayName: Install APT dependencies
-
-- script: |
-    source activate dataprov2
-    conda config --add channels bioconda
-    conda install --yes bwa graphviz
-  displayName: Install conda dependencies
-
-- script: |
-    cp -r test-config ~/.dataprov
-    source activate dataprov2
-    pip install .
-    ./run_module_d
-  displayName: Install from setup.py and run
-
-- script: |
-    source activate dataprov2
-    pip install -r requirements.txt
-    pytest .
-  displayName: 'enforcing style & running tests'
-  env:
-    PYTHONPATH: $(System.DefaultWorkingDirectory)/dataprov2
-
-- task: PublishTestResults@2
-  condition: succeededOrFailed()
-  displayName: 'public test results to DevOps'
+- task: UsePythonVersion@0
   inputs:
-    testResultsFormat: JUnit
-    testResultsFiles: '**/test-results.xml'
-    searchFolder: $(System.DefaultWorkingDirectory)
-    testRunTitle: Python $(python.version)
-    mergeTestResults: true
+    versionSpec: '$(python.version)'
+  displayName: 'Use Python $(python.version)'
 
+- script: |
+    python -m pip install --upgrade pip
+    pip install .[all]
+  displayName: 'Install all dependencies'
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'publish code coverage to DevOps'
-  inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: $(System.DefaultWorkingDirectory)/**/coverage.xml
+- script:
+    sphinx-apidoc -o api/internal ../dataprov
+    make html
+  workingDirectory: docs
+  displayName: 'Build documentation'
 
-- script: bash <(curl -s https://codecov.io/bash) -t $(CODECOV_TOKEN)
-  displayName: 'publish code coverage to CodeCov'
+#- script:
+#    conda env create --quiet --file environment.yml
+#  displayName: 'Create conda environment for integration tests'
+
+#- script:
+#    conda env create --quiet --file environment.yml
+#    dataprov -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run bwa index examples/bwa/genome.fa
+#  displayName: 'indexExample'

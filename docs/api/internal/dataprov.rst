@@ -1,10 +1,10 @@
-dataprov2 Package
-=================
+dataprov Package
+================
 
-:mod:`dataprov2` Package
+:mod:`dataprov` Package
 ------------------------
 
-.. automodule:: dataprov2.__init__
+.. automodule:: dataprov.__init__
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ dataprov2 Package
 :mod:`__main__` Module
 ----------------------
 
-.. automodule:: dataprov2.__main__
+.. automodule:: dataprov.__main__
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ dataprov2 Package
 :mod:`config` Module
 --------------------
 
-.. automodule:: dataprov2.config
+.. automodule:: dataprov.config
     :members:
     :undoc-members:
     :show-inheritance:
@@ -30,9 +30,9 @@ Subpackages
 
 .. toctree::
 
-    dataprov2.commands
-    dataprov2.elements
-    dataprov2.helper
-    dataprov2.operations
-    dataprov2.tests
+    dataprov.commands
+    dataprov.elements
+    dataprov.helper
+    dataprov.operations
+    dataprov.tests
 

@@ -4,7 +4,7 @@ commands Package
 :mod:`run` Module
 -----------------
 
-.. automodule:: dataprov2.commands.run
+.. automodule:: dataprov.commands.run
     :members:
     :undoc-members:
     :show-inheritance:

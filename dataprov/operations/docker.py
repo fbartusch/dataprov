@@ -1,31 +1,31 @@
-# pylint: skip-file
-
 import logging
-import sif
 import subprocess
+import warnings
 from typing import Optional
 
-from prov.model import ProvDocument
-
-from ..elements import dockerimage
+from ..elements.dockerimage import DockerImage
 from .genericoperation import GenericOperation
 
+try:
+    import docker
+    from docker.models.images import Image
+except ImportError:
+    # dependency missing, issue a warning
+    warnings.warn("Python package docker not found, please install to enable Docker feature.")
 
-class Singularity(GenericOperation):
-    """Class describing a Singularity command.
 
-    Additional information will contain details about the Singularity image, Singularity version,
-    and the command executed in the container.
+class Docker(GenericOperation):
+    """Class describing a Docker command.
+
+    Additional information will contain details about the Docker image,
+    in which the command is executed.
     """
 
     image: Optional[Image] = None  # type:ignore
-    _singularity_and_pipe = False
-
-    def __init__(self, document: ProvDocument, task: str) -> None:
-        super(Singularity, self).__init__(document, task)
+    _docker_and_pipe = False
 
     def run(self) -> None:
-        """Run Singularity command.
+        """Run Docker command.
 
         The docker command is run. The container ID is inferred from the subprocess output.
         The Python Docker client package is used to get details about the Docker container.
@@ -48,7 +48,7 @@ class Singularity(GenericOperation):
             container_id = subprocess.check_output(task.split()).decode("utf-8").strip()
             container = client.containers.get(container_id)
             image_id = container.attrs["Image"]
-            self.image = DockerImage(self._document, client.images.get(image_id))  # type:ignore
+            self.image = DockerImage(self._document, client.images.get(image_id))
             container.wait()
             logging.info(container.logs().decode("utf-8"))
             if task is not self._task:
@@ -57,12 +57,12 @@ class Singularity(GenericOperation):
         else:
             super().run()
 
-    def post_run(self) -> None:
+    def post_run(self, op_id: str) -> None:
         if self._docker_and_pipe:
             logging.warning(
                 """
 Docker and unix pipe symbols detected.
 This command might not have worked as expected.
-Fore more information visit https://github.com/jonasgloning/dataprov2/
+Fore more information visit https://github.com/fbartusch/dataprov/
 """
             )

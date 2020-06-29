@@ -4,7 +4,7 @@ helper Package
 :mod:`helper` Package
 ---------------------
 
-.. automodule:: dataprov2.helper
+.. automodule:: dataprov.helper
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ helper Package
 :mod:`class_name` Module
 ------------------------
 
-.. automodule:: dataprov2.helper.class_name
+.. automodule:: dataprov.helper.class_name
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ helper Package
 :mod:`config_file` Module
 -------------------------
 
-.. automodule:: dataprov2.helper.config_file
+.. automodule:: dataprov.helper.config_file
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ helper Package
 :mod:`deserialize` Module
 -------------------------
 
-.. automodule:: dataprov2.helper.deserialize
+.. automodule:: dataprov.helper.deserialize
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ helper Package
 :mod:`hash_file` Module
 -----------------------
 
-.. automodule:: dataprov2.helper.hash_file
+.. automodule:: dataprov.helper.hash_file
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ helper Package
 :mod:`ostr` Module
 ------------------
 
-.. automodule:: dataprov2.helper.ostr
+.. automodule:: dataprov.helper.ostr
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ helper Package
 :mod:`sort` Module
 ------------------
 
-.. automodule:: dataprov2.helper.sort
+.. automodule:: dataprov.helper.sort
     :members:
     :undoc-members:
     :show-inheritance:

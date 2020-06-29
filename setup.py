@@ -2,17 +2,19 @@ import os
 
 from setuptools import find_packages, setup
 
-import dataprov2
+import dataprov
 
 setup(
-    name="dataprov2",
-    version=dataprov2.__version__,
+    name="dataprov",
+    version=dataprov.__version__,
     description="Automatic provenance metadata creator",
-    url="https://github.com/jonasgloning/dataprov2",
-    author="Jonas Gloning",
-    author_email="dataprov2.jonas@gloning.name",
+    url="https://github.com/fbartusch/dataprov",
+    author="Felix Bartusch",
+    author_email="felix.bartusch@uni-tuebingen.de",
     packages=find_packages(),
-    classifiers=["Programming Language :: Python :: 3.6", "Programming Language :: Python :: 3.7"],
+    classifiers=["Programming Language :: Python :: 3.8",
+                 "Programming Language :: Python :: 3.7",
+                 "Programming Language :: Python :: 3.6"],
     install_requires=[
         "distro>=1.0.0",
         "fluent_prov>=0.0.5",
@@ -29,5 +31,5 @@ setup(
         "snakemake": ["snakemake>=5.10.0, <6.0", "wrapt>=1.11, <1.12"],
         "cwl": ["cwltool>=1.0.20191022103248"],
     },
-    entry_points={"console_scripts": ["dataprov=dataprov2.__main__:main"]},
+    entry_points={"console_scripts": ["dataprov=dataprov.__main__:main"]},
 )

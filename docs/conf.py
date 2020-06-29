@@ -19,7 +19,7 @@ sys.path.insert(0, os.path.abspath("../"))
 # -- Project information -----------------------------------------------------
 
 project = "Dataprov"
-copyright = "2019, Felix Bartusch, Jonas Gloning"
+copyright = "2020, Felix Bartusch, Jonas Gloning"
 author = "Felix Bartusch <felix.bartusch@uni-tuebingen.de>, Jonas Gloning <jonas@gloning.name>"
 
 # -- General configuration ---------------------------------------------------

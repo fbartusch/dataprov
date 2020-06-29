@@ -95,7 +95,7 @@ Types of Contributions
 Report Bugs
 ===========
 
-Report bugs at https://github.com/jonasgloning/dataprov2/issues
+Report bugs at https://github.com/fbartusch/dataprov/issues
 
 If you are reporting a bug, please include:
 
@@ -110,7 +110,7 @@ Contributing a command or operation
 ===================================
 
 Command backends are added by implementing an ``Operation``.
-All operations are located in `dataprov2/Operations <https://github.com/jonasgloning/dataprov2/tree/master/dataprov2/Operations>`_.
+All operations are located in `dataprov/Operations <https://github.com/fbartusch/dataprov/tree/master/dataprov/Operations>`_.
 In order to implement a new operation, you have to inherit from the class ``GenericOperation``.
 Below you find a skeleton
 
@@ -148,7 +148,7 @@ Have a look in the installation section for instructions that rebuild this docum
 Submit Feedback
 ===============
 
-The best way to send feedback is to file an issue at https://github.com/jonasgloning/dataprov2/issues
+The best way to send feedback is to file an issue at https://github.com/fbartusch/dataprov/issues
 You can also write a mail to felix.bartusch(at)uni-tuebingen.de.
 
 

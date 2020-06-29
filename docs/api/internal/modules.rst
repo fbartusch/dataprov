@@ -1,7 +1,7 @@
-dataprov2
-=========
+dataprov
+========
 
 .. toctree::
    :maxdepth: 4
 
-   dataprov2
+   dataprov

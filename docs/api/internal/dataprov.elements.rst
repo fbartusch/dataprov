@@ -4,7 +4,7 @@ elements Package
 :mod:`dockerimage` Module
 -------------------------
 
-.. automodule:: dataprov2.elements.dockerimage
+.. automodule:: dataprov.elements.dockerimage
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ elements Package
 :mod:`executor` Module
 ----------------------
 
-.. automodule:: dataprov2.elements.executor
+.. automodule:: dataprov.elements.executor
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ elements Package
 :mod:`file` Module
 ------------------
 
-.. automodule:: dataprov2.elements.file
+.. automodule:: dataprov.elements.file
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ elements Package
 :mod:`host` Module
 ------------------
 
-.. automodule:: dataprov2.elements.host
+.. automodule:: dataprov.elements.host
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ elements Package
 :mod:`operation` Module
 -----------------------
 
-.. automodule:: dataprov2.elements.operation
+.. automodule:: dataprov.elements.operation
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ elements Package
 :mod:`organisation` Module
 --------------------------
 
-.. automodule:: dataprov2.elements.organisation
+.. automodule:: dataprov.elements.organisation
     :members:
     :undoc-members:
     :show-inheritance:
@@ -52,7 +52,7 @@ elements Package
 :mod:`singularitycontainer` Module
 ----------------------------------
 
-.. automodule:: dataprov2.elements.singularitycontainer
+.. automodule:: dataprov.elements.singularitycontainer
     :members:
     :undoc-members:
     :show-inheritance:

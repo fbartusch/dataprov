@@ -422,7 +422,7 @@ known-standard-library=
 known-third-party=enchant
 
 # List of modules that can be imported at any level, not just the top level one
-allow-any-import-level=dataprov2.commands.run
+allow-any-import-level=dataprov.commands.run
 
 [DESIGN]
 

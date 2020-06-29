@@ -1,11 +1,7 @@
 <h1 align="center">dataprov: Automatic provenance metadata generation</h1>
 
 <p align="center">
-<a href="https://dev.azure.com/zdv-dataprov/fluent_prov/_build/latest?definitionId=3&branchName=master"><img alt="Build Status" src="https://dev.azure.com/zdv-dataprov/fluent_prov/_apis/build/status/jonasgloning.dataprov2?branchName=master"></a>
-<a href="https://codecov.io/gh/jonasgloning/dataprov2"><img alt="codecov" src="https://codecov.io/gh/jonasgloning/dataprov2/branch/master/graph/badge.svg?token=uRydlkWAt0"></a>
-<a href="https://www.codefactor.io/repository/github/jonasgloning/dataprov2"><img alt="CodeFactor" src="https://www.codefactor.io/repository/github/jonasgloning/dataprov2/badge"></a>
 <a href="https://github.com/python/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
-<a href="https://dependabot.com"><img alt="Dependabot Status" src="https://api.dependabot.com/badges/status?host=github&repo=jonasgloning/dataprov2&identifier=187416501"></a>
 </p>
 
 
@@ -26,7 +22,7 @@ $ conda  activate dataprov # for any other shell
 Install dataprov
 
 ```bash
-$ pip install dataprov2
+$ pip install dataprov
 ```
 
 ### Install additonal packages.

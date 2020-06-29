@@ -7,7 +7,7 @@ from typing import Dict, Optional
 
 from prov.model import ProvDocument, ProvEntity
 
-import dataprov2.elements.operation as op
+import dataprov.elements.operation as op
 
 from ..elements.file import File
 from .genericoperation import GenericOperation

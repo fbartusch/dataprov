@@ -4,7 +4,7 @@ operations Package
 :mod:`commandline` Module
 -------------------------
 
-.. automodule:: dataprov2.operations.commandline
+.. automodule:: dataprov.operations.commandline
     :members:
     :undoc-members:
     :show-inheritance:
@@ -12,7 +12,7 @@ operations Package
 :mod:`cwl` Module
 -----------------
 
-.. automodule:: dataprov2.operations.cwl
+.. automodule:: dataprov.operations.cwl
     :members:
     :undoc-members:
     :show-inheritance:
@@ -20,7 +20,7 @@ operations Package
 :mod:`docker` Module
 --------------------
 
-.. automodule:: dataprov2.operations.docker
+.. automodule:: dataprov.operations.docker
     :members:
     :undoc-members:
     :show-inheritance:
@@ -28,7 +28,7 @@ operations Package
 :mod:`genericoperation` Module
 ------------------------------
 
-.. automodule:: dataprov2.operations.genericoperation
+.. automodule:: dataprov.operations.genericoperation
     :members:
     :undoc-members:
     :show-inheritance:
@@ -36,7 +36,7 @@ operations Package
 :mod:`singularity` Module
 -------------------------
 
-.. automodule:: dataprov2.operations.singularity
+.. automodule:: dataprov.operations.singularity
     :members:
     :undoc-members:
     :show-inheritance:
@@ -44,7 +44,7 @@ operations Package
 :mod:`snakemake` Module
 -----------------------
 
-.. automodule:: dataprov2.operations.snakemake
+.. automodule:: dataprov.operations.snakemake
     :members:
     :undoc-members:
     :show-inheritance:

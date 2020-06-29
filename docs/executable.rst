@@ -111,8 +111,8 @@ All Options
 -----------
 
 .. argparse::
-   :module: dataprov2.__main__
+   :module: dataprov.__main__
    :func: get_parser
-   :prog: dataprov2
+   :prog: dataprov
 
    All command line options can be printed by calling ``dataprov -h``.

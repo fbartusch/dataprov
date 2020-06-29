@@ -1,6 +1,0 @@
-set -e
-python -m dataprov2 -i examples/bwa/genome.fa -o examples/bwa/genome.fa.bwt run bwa index examples/bwa/genome.fa
-python -m dataprov2 -i examples/bwa/genome.fa.bwt -i examples/bwa/samples/A.fastq -o examples/bwa/mapped_reads/A.bam \
-    run docker run -v $PWD/examples/bwa/:/tmp/ biocontainers/bwa:v0.7.15_cv4 /tmp/run_example_2
-python -m dataprov2 -i examples/cwl_command_line/hello.tar -i examples/bwa/mapped_reads/A.bam -o hello.txt \
-	run cwltool --orcid https://orcid.org/0000-0002-8951-3413 examples/cwl_command_line/tar.cwl examples/cwl_command_line/tar-job.yml
