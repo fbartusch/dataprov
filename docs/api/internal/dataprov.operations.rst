@@ -33,14 +33,6 @@ operations Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`singularity` Module
--------------------------
-
-.. automodule:: dataprov.operations.singularity
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 :mod:`snakemake` Module
 -----------------------
 

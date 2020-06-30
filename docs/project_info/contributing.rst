@@ -10,6 +10,20 @@ Code Style and Quality
 ----------------------
 
 
+Test dependencies
+=================
+
+You can test new dependencies simply by installing Dataprov with every extra package in a new conda environment:
+
+.. code-block:: bash
+
+    conda create --name dataprov_test python=2.8
+    conda activate dataprov_test
+    pip install dataprov[testing,docs,singularity,cwl,docker,snakemake]
+
+The same test is also performed by an Azure Pipeline, that runs several tests after every commit.
+
+
 Check Quality Before Commit / Pull Request
 ==========================================
 
@@ -32,6 +46,7 @@ To run these tests, simply execute :code:`pytest`. The extensions are automatica
     pytest .
 
 If these tests return no errors and warnings, feel free to create a pull request.
+These tests are also run by an Azure Pipeline checking the code for several Python versions.
 
 
 String Formatting (Especially for Logging)
@@ -43,10 +58,8 @@ Please use the standard string formatting of Python 3. Otherwise the quality che
 
     # String formatting OK
     logging.warning("Key in executor ini-file not supported: {}".format(key))
-
     # String formatting throws errors during pytest -> NOT OK
     logging.warning("Key in executor ini-file not supported: %s", key)
-
     # f-Strings only works for Python 3.6+ -> NOT OK
     logging.warning(f"Key in executor ini-file not supported: {key}")
 
@@ -64,13 +77,16 @@ This is good practice for Python projects.
 The main dependencies are stated in the `install_requires` section of `setup.py`.
 These basic dependencies should be very minimalistic.
 This means, do not add additional dependencies, except it is really necessary.
-Also a dependency's version range should be really vague.
+The dependency's version range should be really vague.
 This should allow the user to install additional Python packages without getting problems with unfulfillable version constraints.
 
 Dataprov offers functionality for software that is not installed on every computer, like Docker and Singularity.
 Python package dependencies handling these special features are listed in the `extras_require` section of `setup.py`.
 Dependencies for `pytest` and for creating the documentation are also stated in the `extras_require` section.
 As a consequence users has to install these packages only if they want to build documentation or want to run `pytest`.
+
+If you add a new package to setup.py, please also add it to `requirements.in`.
+The tool `pip-compile` is then used to create `requirements.txt`, which is used to create the development environment.
 
 The following command should install dependencies for each functionality.
 
@@ -80,11 +96,15 @@ The following command should install dependencies for each functionality.
 
 In addition to the vague dependency declaration in `setup.py`, we offer a `requirements.txt` file in the projects root directory.
 The `requirements.txt` lists every dependency with an exact version needed for every Dataprov feature.
+Thus, this file should be use to create the development environment.
 It is created using `pip-compile` on the `setup.py` file.
 
 .. code-block:: bash
 
     echo "-e .[testing,docs,docker,singularity,snakemake,cwl]" | pip-compile - -qo- | sed '/^-e / d' > requirements.txt
+    pip install -r requirements.txt
+
+
 
 
 ----------------------

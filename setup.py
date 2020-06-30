@@ -29,7 +29,7 @@ setup(
         "docker": ["docker>=4.1.0, <5.0"],
         "singularity": ["spython>=0.0.76", "sif>=0.0.11"],
         "snakemake": ["snakemake>=5.10.0, <6.0", "wrapt>=1.11, <1.12"],
-        "cwl": ["cwltool>=1.0.20191022103248"],
+        "cwl": ["cwltool>=1.0.20191022103248", "rdflib >= 4.2.2, < 4.3.0"],
     },
     entry_points={"console_scripts": ["dataprov=dataprov.__main__:main"]},
 )

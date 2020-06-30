@@ -49,11 +49,3 @@ elements Package
     :undoc-members:
     :show-inheritance:
 
-:mod:`singularitycontainer` Module
-----------------------------------
-
-.. automodule:: dataprov.elements.singularitycontainer
-    :members:
-    :undoc-members:
-    :show-inheritance:
-

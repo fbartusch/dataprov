@@ -1,0 +1,23 @@
+# These should always be in sync with all packages and version ranges from setup.py
+distro>=1.0.0
+fluent_prov>=0.0.5
+mkdir_p
+prov==1.5.1
+pydot
+typing_extensions
+pytest-black
+pytest-cov
+pytest-isort
+pytest-mypy
+pytest-pylint
+sphinx
+sphinx-argparse==0.2.5
+sphinx_rtd_theme
+recommonmark
+docker>=4.1.0, <5.0
+spython>=0.0.76
+sif>=0.0.11
+snakemake>=5.10.0, <6.0
+wrapt>=1.11, <1.12
+cwltool>=1.0.20191022103248
+rdflib >= 4.2.2, < 4.3.0
