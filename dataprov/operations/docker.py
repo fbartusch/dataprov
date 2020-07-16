@@ -38,9 +38,9 @@ class Docker(GenericOperation):
 
         if self._task.split()[1] == "run":
             self._docker_and_pipe = (
-                self._task.find(">") is -1
-                or self._task.find("<") is -1
-                or self._task.find("|") is -1
+                self._task.find(">") == -1
+                or self._task.find("<") == -1
+                or self._task.find("|") == -1
             )
             self._task = self._task.replace("docker run", "docker run -d", 1)
             task = self._task.replace(" --rm ", "", 1)

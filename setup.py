@@ -18,6 +18,7 @@ setup(
     install_requires=[
         "distro>=1.0.0",
         "fluent_prov>=0.0.5",
+        "graphviz",
         "mkdir_p",
         "prov==1.5.1",
         "pydot",

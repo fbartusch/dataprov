@@ -130,11 +130,16 @@ def run(args: Namespace, remaining: List[str]) -> NoReturn:
     for i in sort(document.records):
         export_document.add_record(i)
     export_document.serialize(provenance_file, format="xml")
-    # document.serialize(output_file + ".json", indent=2)
-    logger.debug("Export final provenance to plot: {}".format(provenance_file + ".svg"))
-    export_document.plot(
-        provenance_file + ".svg",
-        show_element_attributes=args.show_attributes,
-        use_labels=args.hide_labels,
-    )
+
+    # Of graphviz and dot is installed on the system, create a plot
+    try:
+        logger.debug("Export final provenance to plot: {}".format(provenance_file + ".svg"))
+        export_document.plot(
+            provenance_file + ".svg",
+            show_element_attributes=args.show_attributes,
+            use_labels=args.hide_labels,
+        )
+    except OSError as e:
+        print("OSError: {}.format.err")
+        print("Maybe you have to install the graphviz package in your system.")
     sys.exit(0)

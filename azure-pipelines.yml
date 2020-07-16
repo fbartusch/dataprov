@@ -27,8 +27,13 @@ steps:
   displayName: 'Build documentation'
 
 #- script:
-#    conda env create --quiet --file environment.yml
-#  displayName: 'Create conda environment for integration tests'
+#    conda create --quiet --file bwa_env.yaml
+#    dataprov -i genome.fa -o genome.fa.bwt run bwa index genome.fa
+#    mkdir mapped_reads
+#    dataprov -i genome.fa.bwt -i samples/A.fastq -o mapped_reads/A.bam run \
+#      'bwa mem genome.fa samples/A.fastq > mapped_reads/A.bam'
+#  workingDirectory: examples/bwa
+#  displayName: 'Create conda envianment for integration tests'
 
 #- script:
 #    conda env create --quiet --file environment.yml

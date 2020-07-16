@@ -32,12 +32,12 @@ def get_parser() -> argparse.ArgumentParser:
     )
 
     # Default place for resulting provenance file
-    provenance_file_default = "./provenance.prov.xml"
+    #provenance_file_default = "./provenance.prov.xml"
     parser.add_argument(
         "-p",
         "--provenance-file",
         help="Path to resulting provenance file.",
-        default=provenance_file_default,
+        default=None,
     )
 
     # Default place for personal information
@@ -141,7 +141,6 @@ def main() -> None:
 
     if args.command == "run":
         from dataprov.commands.run import run
-
         run(args, remaining)
 
 
