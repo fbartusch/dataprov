@@ -1,5 +1,7 @@
 import html
 import logging
+import os
+import prov
 from datetime import datetime
 from typing import Any, Set
 
@@ -154,18 +156,35 @@ class Operation(Activity):
     def link_input(self) -> None:
         """Link input files to the operation activity.
 
+        Input files are specified by the user on the command line or inferred by the software agent.
+        Input files are appended to the PROV document.
+        Input files' provenance is also added to the document if available.
+
         Returns
         -------
 
         """
 
+        logger.debug("Get input files from agent.")
+        self.input_files.union(self.software_agent.get_input_files())
+        logger.debug("Input files are: " + self.input_files.__str__())
+
         # Add input files' provenance to the provenance document
         input_file_entities = []
         for input_file in self.input_files:
+            logger.debug("Add File to document: " + input_file)
             input_file_entities.append(File(self.document, input_file))
-        #    prov_file = input_file + ".prov.xml"
-        #    deserialize(self._document, prov_file)
-        self.used(*input_file_entities)
+
+            # Add input's provenance to new document
+            input_prov_file = input_file + ".prov"
+            if os.path.exists(input_prov_file):
+                logger.debug("Found provenance for: " + input_prov_file)
+                logger.debug("Deserialize provenance file")
+                # TODO Infer prov format (json, provn, rdf, ...) https://prov.readthedocs.io/en/latest/prov.serializers.html
+                input_doc = ProvDocument().deserialize(input_prov_file, format="xml")
+                # TODO merge the two documents: Use bundle and unify?
+                # https://prov.readthedocs.io/en/latest/prov.html#prov.model.ProvBundle.unified
+
         self.used(*input_file_entities)
 
     def link_output(self) -> None:
